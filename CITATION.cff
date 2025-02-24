@@ -1,0 +1,47 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: SADYCOS
+message: 'If you use this software, please cite it as below.'
+type: software
+authors:
+  - name: >-
+      Institute of Flight Mechanics and Controls, University
+      of Stuttgart
+    address: Pfaffenwaldring 27
+    city: Stuttgart
+    country: DE
+    post-code: '70565'
+    alias: iFR
+    website: 'https://www.ifr.uni-stuttgart.de/en/'
+  - given-names: Friedrich
+    family-names: Tuttas
+    orcid: 'https://orcid.org/0000-0002-2950-1517'
+    email: f.tuttas@mail.de
+  - given-names: Fabian
+    family-names: Geyer
+    email: fbn.geyer@gmail.com
+    orcid: 'https://orcid.org/0009-0001-8967-5279'
+  - given-names: Paul Jannik
+    family-names: Haufe
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.14918034
+repository-code: 'https://github.com/SADYCOS/sadycos'
+abstract: >-
+  SADYCOS is a simulation environment for satellite dynamics
+  and control algorithms implemented in MATLAB Simulink. It
+  features a structure that allows for a highly customizable
+  creation and execution of satellite simulations. A
+  constantly expanding library of models is provided to
+  enable the user to quickly set up new simulations. By
+  implementing custom models and controllers, the user is in
+  charge of making an own trade-off between simulation speed
+  and level of detail.
+keywords:
+  - satellite simulation
+  - satellite dynamics
+  - GNC
+  - AOCS
+license: BSD-3-Clause
