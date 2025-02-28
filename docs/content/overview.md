@@ -85,7 +85,8 @@ E.g., if the plant models the point-mass equations of motion of the satellite, t
 If one wanted to use a measurement of this acceleration within the control loop, it would have to be output by the `Plant` subsystem.
 Since it directly depends on the input, it cannot be a proper output.
 For this reason, the model provides the improper output `PlantFeedthrough` which is only fed to the `Sensors` subsystem and is thus only used within the control loop.
-At the moment, to prevent an algebraic loop within the control loop, the user is forced to configure a delay somewhere in the subsystems `Sensors`, `GNC Algorithms`, or `Actuators`.
+Usage of this output is optional and can be enabled or disabled by the user through the parameter structure.
+To prevent an algebraic loop within the control loop, the user is forced to configure a delay somewhere in the subsystems `Sensors`, `GNC Algorithms`, or `Actuators` if the improper output is enabled.
 
 #### Continuous / Discrete
 Through the parameter structure, the user can choose whether the subsystems `Sensors`, `Actuators`, and `GNC Algorithms` should be simulated continuously or with a discrete sample time (`Environment` and `Plant` are always continuous).
@@ -105,7 +106,7 @@ The user can configure delays for the outputs of the subsystems `Sensors`, `Actu
 Depending on whether the subsystem was configured to be simulated continuously or with a discrete sample time, the delay must be implemented either with a continuous `Transport Delay` block or a discrete `Delay` block.
 Similarly to the states update, this is done automatically based on the user's parametrization by using the utility Simulink model `delay.slx` which is included in the [`Utilities`](#utilities) folder as well.
 The block is shown in the above picture before the output port `ActuatorsOutputs`.
-As was mentioned in [Dynamic Systems](#dynamic-systems), the user is currently forced to configure at least one delay to prevent algebraic loops within the control loop.
+As was mentioned in [Dynamic Systems](#dynamic-systems), if the user wants to use the improper output `PlantFeedthrough`, he is forced to configure at least one delay to prevent algebraic loops within the control loop.
 
 #### Logging
 Each MATLAB function block within the five main subsystems has an output port for logging purposes.
