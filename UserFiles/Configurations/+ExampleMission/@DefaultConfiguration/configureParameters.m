@@ -55,6 +55,7 @@ parameter_creator = ParameterCreator(InitialPlantStates, ...
 % GNC Algorithms
 gnc_delay = 1;
 InitialActuatorCommands.ReactionWheels.torque_commands__N_m = zeros(3,1);
+InitialActuatorCommands.MagneticTorquers.magnetic_dipole_moment_commands__A_m2 = zeros(3,1);
 
 parameter_creator.activateDelay("GncAlgorithms", gnc_delay, InitialActuatorCommands);
 
