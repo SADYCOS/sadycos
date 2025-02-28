@@ -4,8 +4,8 @@
 cff-version: 1.2.0
 title: SADYCOS
 message: >-
-  If you use this software, please cite it using the
-  metadata from this file.
+  If you use this software, please cite it using the metadata from this file.
+  This software might use submodules whose files are not included in archives.
 type: software
 authors:
   - given-names: Friedrich
