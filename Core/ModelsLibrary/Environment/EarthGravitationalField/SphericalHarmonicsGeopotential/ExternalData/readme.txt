@@ -1,0 +1,1 @@
+Data files for the coefficients of the spherical harmonics geopotential model can be downloaded from https://icgem.gfz-potsdam.de/.

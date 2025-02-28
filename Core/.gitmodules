@@ -1,0 +1,11 @@
+[submodule "external_namespaces/space-math-utilities"]
+	path = external_namespaces/space-math-utilities
+	url = https://github.com/ifrunistuttgart/space-math-utilities.git
+	branch = main
+[submodule "external_namespaces/vleo-aerodynamics-core"]
+	path = external_namespaces/vleo-aerodynamics-core
+	url = https://github.com/ifrunistuttgart/vleo-aerodynamics-core.git
+	branch = main
+[submodule "ModelsLibrary/Environment/EarthAtmosphere/Nrlmsise00/c_code/nrlmsise-00"]
+	path = ModelsLibrary/Environment/EarthAtmosphere/Nrlmsise00/c_code/nrlmsise-00
+	url = https://git.linta.de/~brodo/nrlmsise-00.git/

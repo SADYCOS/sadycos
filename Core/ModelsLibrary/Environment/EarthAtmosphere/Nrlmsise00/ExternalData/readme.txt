@@ -1,0 +1,1 @@
+Space weather data files can be downloaded from https://celestrak.org/spacedata/.

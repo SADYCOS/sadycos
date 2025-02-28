@@ -1,0 +1,1 @@
+Data files for the coefficients of the IGRF model can be downloaded from https://www.ncei.noaa.gov/products/international-geomagnetic-reference-field.
