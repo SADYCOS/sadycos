@@ -21,10 +21,9 @@ The page [Subsystem Functions]({% link content/setup/subsystem_functions.md %}) 
 
 ## `Core`
 The `Core` folder makes up the main functionality of the simulator.
-To simplify updates to newer versions of the simulator, the contents of `Core` are contained within a separate [SADYCOS Core repository](https://github.com/SADYCOS/sadycos_core) with the folder `Core` being a git submodule.
 The user should not need to edit any files within this folder but instead implement everything in the [`UserFiles`](#userfiles).
-The SADYCOS Core repository is itself a MATLAB project (with the corresponding `SADYCOS_CORE.prj` file) which is included as a reference within the simulator's main MATLAB project.
-The following section describe the remaining contents of the `Core` folder.
+The following sections describe the contents of the `Core` folder.
+
 ### `external_namespaces`
 This folder contains namespaces that are used throughout the simulator, such as the [Space Math Utilities](https://github.com/ifrunistuttgart/space-math-utilities) with common mathematical functions for space applications.
 
