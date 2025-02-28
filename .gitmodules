@@ -1,4 +1,11 @@
-[submodule "Core"]
-	path = Core
-	url = https://github.com/SADYCOS/sadycos_core.git
+[submodule "Core/external_namespaces/space-math-utilities"]
+	path = Core/external_namespaces/space-math-utilities
+	url = https://github.com/ifrunistuttgart/space-math-utilities.git
 	branch = main
+[submodule "Core/external_namespaces/vleo-aerodynamics-core"]
+	path = Core/external_namespaces/vleo-aerodynamics-core
+	url = https://github.com/ifrunistuttgart/vleo-aerodynamics-core.git
+	branch = main
+[submodule "Core/ModelsLibrary/Environment/EarthAtmosphere/Nrlmsise00/c_code/nrlmsise-00"]
+	path = Core/ModelsLibrary/Environment/EarthAtmosphere/Nrlmsise00/c_code/nrlmsise-00
+	url = https://git.linta.de/~brodo/nrlmsise-00.git/
