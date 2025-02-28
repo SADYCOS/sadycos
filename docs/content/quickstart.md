@@ -16,7 +16,7 @@ This guide will help you set up SADYCOS on your machine, run a simple simulation
 ## Prerequisites
 To effectively work with SADYCOS, you need the following software installed on your machine:
 - Git
-- MATLAB R2024a or newer with
+- MATLAB R2024b or newer with
     - Simulink
     - a supported compiler for the inclusion of external c code
         - e.g. [MinGW](https://de.mathworks.com/matlabcentral/fileexchange/52848-matlab-support-for-mingw-w64-c-c-fortran-compiler) on Windows machines
