@@ -22,7 +22,6 @@ classdef BusesInfoCreator < handle
 
     properties (SetAccess = immutable)
         required_buses_names (:,1) string
-        num_required_buses (1,1) uint64
     end
 
     properties(Access = private)
@@ -83,8 +82,6 @@ classdef BusesInfoCreator < handle
             if Parameters.General.enable_stop_criterion
                 obj.required_buses_names(end+1) = "LogStopCriterion";
             end
-
-            obj.num_required_buses = numel(obj.required_buses_names);
 
 
         end
