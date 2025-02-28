@@ -38,11 +38,6 @@ sensors_sample_time_parameter__s = [0.1, 0];
 % GNC Algorithms
 gnc_algorithms_sample_time_parameter__s = [0.1, 0];
 
-% Delays
-% GNC Algorithms
-gnc_delay = 1;
-InitialActuatorCommands.ReactionWheels.torque_commands__N_m = zeros(3,1);
-
 % Use helper class to prepare Parameters structure
 parameter_creator = ParameterCreator(InitialPlantStates, ...
                                     enable_plant_feedthrough = true, ...
@@ -54,6 +49,12 @@ parameter_creator = ParameterCreator(InitialPlantStates, ...
                                     pacing_rate = pacing_rate, ...
                                     enable_send_sim_data = enable_send_sim_data, ...
                                     enable_stop_criterion = enable_stop_criterion);
+
+
+% Delays
+% GNC Algorithms
+gnc_delay = 1;
+InitialActuatorCommands.ReactionWheels.torque_commands__N_m = zeros(3,1);
 
 parameter_creator.activateDelay("GncAlgorithms", gnc_delay, InitialActuatorCommands);
 
