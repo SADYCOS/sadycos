@@ -8,6 +8,7 @@ classdef ParameterCreator < handle
 
     properties (SetAccess = immutable, GetAccess = private)
         InitialPlantStates (1,1) struct
+        enabled_plant_feedthrough (1,1) logical
         SampleTimeParameters__s (1,1) struct
         is_discrete (1,1) struct
         simulation_duration__s (1,1) double {mustBePositive} = 10
@@ -31,6 +32,7 @@ classdef ParameterCreator < handle
 
             arguments
                 InitialPlantStates (1,1) struct {mustBeNumericStructure}
+                NameValueArgs.enable_plant_feedthrough (1,1) logical = false
                 NameValueArgs.sensors_sample_time_parameter__s (1,2) double {mustBeValidSampleTimeParameter} = [0, 0]
                 NameValueArgs.actuators_sample_time_parameter__s (1,2) double {mustBeValidSampleTimeParameter} = [0, 0]
                 NameValueArgs.gnc_algorithms_sample_time_parameter__s (1,2) double {mustBeValidSampleTimeParameter} = [0, 0]
@@ -43,6 +45,8 @@ classdef ParameterCreator < handle
             end
 
             obj.InitialPlantStates = InitialPlantStates;
+
+            obj.enabled_plant_feedthrough = NameValueArgs.enable_plant_feedthrough;
 
             obj.SampleTimeParameters__s.Sensors = NameValueArgs.sensors_sample_time_parameter__s;
             obj.is_discrete.Sensors = ParameterCreator.isDiscreteSampleTimeParameter(obj.SampleTimeParameters__s.Sensors);        
@@ -149,6 +153,9 @@ classdef ParameterCreator < handle
             Parameters.Settings(3) = SimulinkModelSetting("EnablePacing", enable_pacing_string);
             Parameters.Settings(4) = SimulinkModelSetting("PacingRate", convertCharsToStrings(num2str(obj.pacing_rate)));
 
+            %% Plant Feedthrough
+            Parameters.General.enable_plant_feedthrough = obj.enabled_plant_feedthrough;
+
             %% Send Simulation Data
             Parameters.General.enable_send_sim_data = obj.enable_send_sim_data;
 
@@ -166,10 +173,13 @@ classdef ParameterCreator < handle
             Parameters.General.States.InitialStates.Plant = obj.InitialPlantStates;
 
             % Delays
-            any_delay = (sum(cell2mat(struct2cell(obj.DelayValues))) > 0);
-            if ~any_delay
-                error("At least one of the subsystems %s must have a delay to prevent algebraic loops due to PlantFeedthrough.", ...
-                        strjoin(obj.subsystems_option_delay, ", "));
+            % if PlantFeedthrough is enabled, at least one of the subsystems must have a delay
+            if obj.enabled_plant_feedthrough
+                any_delay = (sum(cell2mat(struct2cell(obj.DelayValues))) > 0);
+                if ~any_delay
+                    error("With ""PlantFeedthrough"" enabled, at least one of the subsystems %s must have a delay to prevent algebraic loops.", ...
+                            strjoin(obj.subsystems_option_delay, ", "));
+                end
             end
             Parameters.General.Delays.Type = obj.getDelayTypes();
             Parameters.General.Delays.Value = obj.DelayValues;
