@@ -10,7 +10,7 @@ SimulationConfiguration.codeWrapper(@() obj.createSimulinkInterfaceFiles(), "Gen
 
 %% Start Simulations
 if NameValueArgs.use_parsim
-    the_function = @() parsim(obj.simulation_inputs, "ShowSimulationManager","on", "UseFastRestart", "on");
+    the_function = @() parsim(obj.simulation_inputs, "ShowSimulationManager","on");
 else
     the_function = @() sim(obj.simulation_inputs);
 end
