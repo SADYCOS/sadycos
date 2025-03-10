@@ -29,7 +29,7 @@ function [aerodynamic_force_B__N, aerodynamic_torque_B__Nm] ...
 %   atmosphere_mass_density__kg_per_m3: Mass density of atmosphere in kg/m^3
 %   atmosphere_number_density__1_per_m3: Number density of atmosphere in 1/m^3
 %   atmosphere_temperature__K: Temperature of atmosphere in K
-%   bodies_rotation_angles__rad: 3xN matrix of rotation angles of bodies in body frame
+%   bodies_rotation_angles__rad: 1xN matrix of rotation angles of bodies in body frame
 %   ParametersSimplifiedVleoAerodynamics: Parameters of the SimplifiedVleoAerodynamics model
 %
 %   Outputs:
