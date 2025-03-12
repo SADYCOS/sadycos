@@ -14,7 +14,7 @@ log_moon_position_MI_I__m = zeros(numel(tvec),3);
 for i=1:numel(tvec)
     time_current_mjd = time0_mjd + tvec(i);
     [sun_position_SI_I__m,moon_position_MI_I__m] ...
-                            = SimpleSolarLunarPos.execute(time_current_mjd);
+                            = SimpleSolarLunarPosRelEarth.execute(time_current_mjd);
 
     log_sun_position_SI_I__m(i,:) = sun_position_SI_I__m;
     log_moon_position_MI_I__m(i,:) = moon_position_MI_I__m;

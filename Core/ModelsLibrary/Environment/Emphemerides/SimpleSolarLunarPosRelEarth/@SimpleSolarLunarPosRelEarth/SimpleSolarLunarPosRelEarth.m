@@ -1,4 +1,4 @@
-classdef SimpleSolarLunarPos < ModelBase
+classdef SimpleSolarLunarPosRelEarth < ModelBase
     methods (Static)
 
         [sun_position_SI_I__m,moon_position_MI_I__m] ...

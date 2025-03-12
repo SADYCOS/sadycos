@@ -14,6 +14,7 @@ function [sun_position_SI_I__m,moon_position_MI_I__m] ...
 %   Outputs:
 %   time_current_mjd: time in modified julian date
 %
+% Reference!
                    
 %% Constants
 arcsec2rad = pi/(180*3600);
