@@ -20,8 +20,9 @@ function [sun_position_SI_I__m,moon_position_MI_I__m] ...
 arcsec2rad = pi/(180*3600);
 
 %% Computation
+time_current_jd = smu.time.jdFromMjd(time_current_mjd);
+
 % T0, the number of Julian centuries elapsed since J2000
-time_current_jd = time_current_mjd + 2400000.5;
 T0 = (time_current_jd-2451545.0)/36525.0;
 
 %% Sun Position
