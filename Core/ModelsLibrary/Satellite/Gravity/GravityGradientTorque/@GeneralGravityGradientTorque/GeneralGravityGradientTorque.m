@@ -1,4 +1,4 @@
-classdef GravityGradientGeneral < ModelBase
+classdef GeneralGravityGradientTorque < ModelBase
     methods (Static)
         gravity_gradient_torque_BI_B__Nm = execute(position_BI_I__m,...
                                                 attitude_quaternion_BI,...
@@ -9,7 +9,7 @@ classdef GravityGradientGeneral < ModelBase
 
     methods (Access = public)
 
-        function obj = GravityGradientGeneral(inertia__kg_m2)
+        function obj = GeneralGravityGradientTorque(inertia__kg_m2)
         % GravityGradientSpherical
         %
         %   Inputs:

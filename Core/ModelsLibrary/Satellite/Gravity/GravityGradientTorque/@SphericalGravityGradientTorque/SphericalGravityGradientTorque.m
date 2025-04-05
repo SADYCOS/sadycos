@@ -1,4 +1,4 @@
-classdef GravityGradientPointMass < ModelBase
+classdef SphericalGravityGradientTorque < ModelBase
     methods (Static)
         gravity_gradient_torque_BI_B__Nm = execute(position_BI_I__m,...
                                             attitude_quaternion_BI,...
@@ -8,7 +8,7 @@ classdef GravityGradientPointMass < ModelBase
 
     methods (Access = public)
 
-        function obj = GravityGradientPointMass(inertia__kg_m2,...
+        function obj = SphericalGravityGradientTorque(inertia__kg_m2,...
                                 gravitational_parameter_Earth__m3_per_s2)
         % GravityGradientPointMass
         %

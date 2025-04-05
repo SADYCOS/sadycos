@@ -1,4 +1,4 @@
-classdef PointMassGravity < ModelBase
+ classdef ForceFromAcceleration < ModelBase
     methods (Static)
 
         gravitational_force_I__N = execute(gravitational_acceleration_I__m_per_s2, ParametersPointMassGravity)
@@ -7,7 +7,7 @@ classdef PointMassGravity < ModelBase
 
     methods (Access = public)
 
-        function obj = PointMassGravity(mass__kg)
+        function obj = ForceFromAcceleration(mass__kg)
         % PointMassGravity
         %
         %   Inputs:
