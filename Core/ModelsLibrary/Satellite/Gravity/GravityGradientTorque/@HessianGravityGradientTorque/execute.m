@@ -26,9 +26,10 @@ function gravity_gradient_torque_BI_B__Nm = execute(position_BI_I__m,...
 %
 %% References
 % adapted from
-% [1] F. L. Markley and J. L. Crassidis, Fundamentals of Spacecraft 
-% Attitude Determination and Control. New York, NY: Springer New York, 2014. 
-% doi: 10.1007/978-1-4939-0802-8.
+% [1] R. G. Gottlieb, “Fast Gravity, Gravity Partials, Normalized Gravity, 
+% Gravity Gradient Torque and Magnetic Field: Derivation, Code and Data,” 
+% 1993, pp. 21–23.
+
 
 % Constants
 inertia_B = paramsGravityGradient.inertia_B__kg_m2;
