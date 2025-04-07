@@ -34,13 +34,12 @@ g = GM/R^2;
 c_coeffs = parametersSphericalHarmonicsGeopotential.DenormCoeffs.C;
 s_coeffs = parametersSphericalHarmonicsGeopotential.DenormCoeffs.S;
 
-n_max = size(c_coeffs,1) -1;
+n_max = size(c_coeffs,1) - 1;
 
 q_EI = attitude_quaternion_EI;
-p_I = position_BI_I__m;
 
 %% Extraxt and process position data
-p_E = smu.unitQuat.att.transformVector(q_EI, p_I);
+p_E = smu.unitQuat.att.transformVector(q_EI, position_BI_I__m);
 x = p_E(1);
 y = p_E(2);
 z = p_E(3);
@@ -64,7 +63,7 @@ a_E__m_per_s2 = zeros(3,1);
 H_E__1_per_s2 = zeros(3,3);
 
 % Loop over all degrees n
-for n = 0:n_max
+for n = 0:n_max+1
 
     % Loop over all relevant orders m to calculate new values for V and W
     % for degree n+1.
@@ -94,7 +93,9 @@ for n = 0:n_max
                                 n+1, m, R, r, z);
         end
     end
+end
 
+for n = 0:n_max
     % Calculate accelerations from new row of values for V and W
     for m = 0:n
         increment = zeros(3,1);
@@ -130,43 +131,43 @@ for n = 0:n_max
 end
 
 %% Calculate the hessian of the gravitation potential
-for n = 0:n_max-1
+for n = 0:n_max
     for m = 0:n
         H_incr = zeros(3,3);
         c = c_coeffs(n+1, m+1);
         s = s_coeffs(n+1, m+1);
 
+        idx_n = n+3;
 
-        V_m   = V(n+3,m+1);
-        V_r   = V(n+3,m+2);
-        V_rr  = V(n+3,m+3);        
-        W_m   = W(n+3,m+1);
-        W_r   = W(n+3,m+2);
-        W_rr  = W(n+3,m+3);
+        V_m   = V(idx_n,m+1);
+        V_r   = V(idx_n,m+2);
+        V_rr  = V(idx_n,m+3);        
+        W_m   = W(idx_n,m+1);
+        W_r   = W(idx_n,m+2);
+        W_rr  = W(idx_n,m+3);
         
-
         if m == 0
-            H_incr(1,1) = 1/2*c * (V_rr - (n+2)*(n+1)*V_m);
+            H_incr(1,1) = 1/2* (c*V_rr - (n+2)*(n+1)*c*V_m);
             H_incr(2,1) = 1/2*(c*W_rr);            
             H_incr(3,1) = (n+1)*(c*V_r);
             H_incr(3,2) = (n+1)*(c*W_r);
 
         elseif m == 1
-
             H_incr(1,1) = 1/4* (c*V_rr + s*W_rr ...
                                 + (n+1)*n* (-3*c*V_m - s*W_m));
             H_incr(2,1) = 1/4* (c*W_rr - s*V_rr...
                                 + (n+1)*n* (-c*W_m - s*V_m));
+
         else
-            V_ll  = V(n+3,m-1);
-            V_l   = V(n+3,m);
-            W_ll  = V(n+3,m-1);
-            W_l   = W(n+3,m);
+            V_ll  = V(idx_n,m-1);
+            V_l   = V(idx_n,m);
+            W_ll  = W(idx_n,m-1);
+            W_l   = W(idx_n,m);
 
             H_incr(1,1) = 1/4* (c*V_rr+s*W_rr ...
                                 + 2*(n-m+2)*(n-m+1) * (-c*V_m - s*W_m)...
                                 + (n-m+4)*(n-m+3)*(n-m+2)*(n-m+1) * (c*V_ll+s*W_ll));
-            H_incr(2,1) = 1/4* (c*W_rr- s*V_rr...
+            H_incr(2,1) = 1/4* (c*W_rr-s*V_rr...
                                 + (n-m+4)*(n-m+3)*(n-m+2)*(n-m+1) * (-c*W_ll + s*V_ll));
             H_incr(3,1) = (n-m+1)/2 * (c*V_r+s*W_r) ...
                           + (n-m+3)*(n-m+2)*(n-m+1)/2 * (-c*V_l - s*W_l);
@@ -193,8 +194,8 @@ end
 
 %% Transform gravitational acceleration vector into inertial frame
 gravitational_acceleration_I__m_per_s2 = smu.unitQuat.att.transformVector(smu.unitQuat.invert(q_EI), a_E__m_per_s2);
-
-gravitational_hessian_I__1_per_s2 = smu.unitQuat.att.transformVector(smu.unitQuat.invert(q_EI), H_E__1_per_s2);
+dcm_IE = smu.unitQuat.att.toDcm(smu.unitQuat.invert(q_EI));
+gravitational_hessian_I__1_per_s2 = dcm_IE'*H_E__1_per_s2*dcm_IE;
 
 outputstruct.gravitational_acceleration_I__m_per_s2 = gravitational_acceleration_I__m_per_s2;
 outputstruct.gravitational_hessian_I__1_per_s2 = gravitational_hessian_I__1_per_s2;

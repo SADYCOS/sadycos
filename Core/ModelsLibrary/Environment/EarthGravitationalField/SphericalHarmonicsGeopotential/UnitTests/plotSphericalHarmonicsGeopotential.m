@@ -21,7 +21,7 @@ inertia_B__kg_m2 = diag([0.4,1,0.1]);
 Parameters = [];
 
 % Gravity Field Models
-gravitationalField_max_Degree = 3;
+gravitationalField_max_Degree = 12;
 ParamsSHG = SphericalHarmonicsGeopotential(gravitationalField_max_Degree);
 ParamsASHG = AdjustedSphericalHarmonicsGeopotential(gravitationalField_max_Degree);
 
@@ -72,12 +72,14 @@ xlabel('index')
 ylabel('e (m/s^2)')
 legend('a_{shg}','a_{ashg}','a_{matlab}')
 
-%% Error
-if 0
+%% Components
 figure
-plot(magn_shg_m_per_s2-magn_2_m_per_s2)
+plot(log_acceleration_shg)
+hold on
+plot(log_acceleration_ashg,'o')
+plot(log_acceleration_matlab,'--')
+
 title('Magnitude of gravity error between the two models')
 xlabel('index')
 ylabel('e (m/s^2)')
-legend('a_{spherical}-a_{2}')
-end
+legend('a_{shg}','','','a_{ashg}','','','a_{matlab}')
