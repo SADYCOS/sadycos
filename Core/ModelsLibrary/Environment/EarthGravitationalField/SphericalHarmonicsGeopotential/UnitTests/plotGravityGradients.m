@@ -56,8 +56,6 @@ end
 %% Plot
 % Components
 figure
-% magn_shg_m_per_s2 = vecnorm(log_gradient_ashg,2,2);
-% magn_ashg_m_per_s2 = vecnorm(log_gradient_spherical,2,2);
 plot(log_hessian_ashg(:,1,1))
 hold on
 plot(log_hessian_ashg(:,2,2))
@@ -79,11 +77,14 @@ ylabel('e (m/s^2)')
 legend('a_{ashg}','','','','','','a_{spherical}')
 
 % Error
-if 0
 figure
-plot(magn_shg_m_per_s2-magn_2_m_per_s2)
-title('Gravity gradient error of the two models')
+for i=1:size(log_hessian_ashg,1)
+    magn_ashg_m_per_s2(i) = norm(squeeze(log_hessian_ashg(i,:,:)));
+    magn_spher_m_per_s2(i) = norm(squeeze(log_hessian_spherical(i,:,:)));
+end
+
+plot(magn_ashg_m_per_s2-magn_spher_m_per_s2)
+title('Difference of matrixnorm of hessians of the two models')
 xlabel('index')
 ylabel('e (m/s^2)')
-legend('a_{spherical}-a_{2}')
-end
+legend('||H_{ashg}||-||H_{spher}||')

@@ -15,13 +15,17 @@ initial_position_BI_I__m ...
 
 position_BI_I__m = initial_position_BI_I__m;
 
-inertia_B__kg_m2 = diag([0.4,1,0.1]);
+% inertia_B__kg_m2 = diag([0.4,-0.05,1,0.1]);
+inertia_B__kg_m2 = 10^(-2)*...
+        [51705.21, -33.00027871, 283.850084; ...
+        -33.00027871, 51327.91, -29.03914903;  ...
+        283.850084, -29.03914903, 9411.55];
 
 %% Initialise Models
 Parameters = [];
 
 % Gravity Field Models
-gravitationalField_max_Degree = 3;
+gravitationalField_max_Degree = 12;
 ParamsSHG ...
     = SphericalHarmonicsGeopotential(gravitationalField_max_Degree);
 ParamsASHG ...
@@ -160,7 +164,7 @@ title("Points show direction of z-axis after direct rotation. " + ...
 
 legend([qg,qh,qs],'General Model','Hessian Model', 'Spherical Model')
 
-%%
+%% Magnitude
 figure
 magn_generalgg_Nm = vecnorm(log_generalgravity_gradient_torque_BI_B__Nm,2,2);
 magn_hessiangg_Nm = vecnorm(log_hessiangravity_gradient_torque_BI_B__Nm,2,2);
@@ -171,8 +175,20 @@ hold on
 plot(magn_hessiangg_Nm,'.-')
 plot(magn_sphericalgg_Nm,'--')
 
-title('Magnitude of gravity gradient error between the two models')
+title('Magnitude of gravity gradient torque error between the two models')
 xlabel('angle tuple')
 ylabel('L (Nm)')
 legend('Torque')
 legend('General Model','Hessian Model', 'Spherical Model')
+
+%% Error
+figure
+plot(magn_hessiangg_Nm-magn_generalgg_Nm)
+hold on
+plot(magn_hessiangg_Nm-magn_sphericalgg_Nm,'.-')
+
+title('Magnitude of gravity gradient torque error between the two models')
+xlabel('angle tuple')
+ylabel('L (Nm)')
+legend('Torque')
+legend('L_{Hess}-L{Grad}','L_{Hess}-L{Spher}')
