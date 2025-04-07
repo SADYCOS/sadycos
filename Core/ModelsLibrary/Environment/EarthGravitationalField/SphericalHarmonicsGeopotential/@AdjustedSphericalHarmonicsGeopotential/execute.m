@@ -72,7 +72,7 @@ for n = 0:n_max+1
 
     % Start with the diagonal recursion. Then, continue with the vertical
     % recursions in a loop over all remaining orders m.
-    for m = n:-1:0
+    for m = 0:1:n
         
         if m == n
             [V(n+2, m+2), W(n+2, m+2)] ...
