@@ -10,4 +10,5 @@ close all
 parameters = NRLTSI21(mjuliandate(datetime('now')),42536000);
 
 %% Execute
-NRLTSI21.execute(6.1000e+04,parameters.Parameters.Nrltsi21Data)
+total_solar_irradiance_at_1AU_W_per_m2 ...
+    = NRLTSI21.execute(6.1000e+04,parameters.Parameters.Nrltsi21Data)
