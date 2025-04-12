@@ -43,6 +43,9 @@ classdef (Abstract) SimulationConfiguration < handle
             
         end
 
+        % Force recompilation of interfaces
+        forceRecompile(obj);          
+
         % Execute Simulations
         run(obj, use_parsim)
     
