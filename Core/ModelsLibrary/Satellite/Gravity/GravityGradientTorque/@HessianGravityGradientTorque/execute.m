@@ -1,23 +1,21 @@
-function gravity_gradient_torque_BI_B__Nm = execute(position_BI_I__m,...
-                                                attitude_quaternion_BI,...
-                                                gravitational_hessian_I__1_per_s2, ...
-                                                paramsGravityGradient)
+function gravity_gradient_torque_BI_B__Nm...
+                = execute(attitude_quaternion_BI,...
+                            gravitational_hessian_I__1_per_s2, ...
+                            paramsHessianGravityTorque)
 %% HessianGravityGradient - Calculate gravity gradient torque in body
 %  frame using a given hessian of the gravity potential
 %
 %   gravity_gradient_torque_BI_B__Nm ...
-%       = execute(position_BI_I__m,...
-%                   attitude_quaternion_BI,...
-%                   gravitational_hessian_I__1_per_s2, ...
-%                   paramsGravityGradient)
+%       = execute(attitude_quaternion_BI,...
+%                  gravitational_hessian_I__1_per_s2, ...
+%                  paramsGravityGradient)
 %
 %   Inputs:
-%   position_BI_I__m: 3x1 vector of position in inertial frame
 %   attitude_quaternion_BI: 4x1 quaternion of attitude from inertial to
 %       body frame
 %   gravitational_hessian_I__1_per_s2: 3x3 hessian of the gravity potential 
 %       at body position in inertial frame
-%   paramsGravityGradient: Structure containing parameters for general
+%   paramsHessianGravityTorque: Structure containing parameters for general
 %       gravity gradient model
 %
 %   Outputs:
@@ -30,35 +28,13 @@ function gravity_gradient_torque_BI_B__Nm = execute(position_BI_I__m,...
 % Gravity Gradient Torque and Magnetic Field: Derivation, Code and Data,” 
 % 1993, pp. 21–23.
 
-
-% Constants
-inertia_B = paramsGravityGradient.inertia_B__kg_m2;
-
-%
-position_BI_B__m ...
-    = smu.unitQuat.att.transformVector(attitude_quaternion_BI,position_BI_I__m);
-r = position_BI_B__m;
-r_tilde = smu.cpm(position_BI_B__m);
-r_norm = norm(position_BI_B__m);
+inertia_B = paramsHessianGravityTorque.inertia_B__kg_m2;
+I = inertia_B;
 
 dcm_BI = smu.unitQuat.att.toDcm(attitude_quaternion_BI);
 
 gravitational_hessian_B__1_per_s2 = dcm_BI*gravitational_hessian_I__1_per_s2*dcm_BI';
-
-% Nadir unit vector
-nadir_B = -position_BI_B__m/r_norm;
-
-% Gravity gradient torque in body frame for spherical Earth
-% gravity_gradient_torque_BI_B__Nm ...
-%         = -1/r_norm^2*(2*eye(3)*(r'*gravitational_acceleration_I__m_per_s2))*cross(nadir_B,inertia_B*nadir_B);
-% gravity_gradient_torque_BI_B__Nm ...
-%         = -1/r_norm^2*(2*eye(3)*(r'*gravitational_acceleration_I__m_per_s2)...
-%                         +r_norm^2*gravitational_hessian_B__1_per_s2)*cross(nadir_B,inertia_B*nadir_B);
-% gravity_gradient_torque_BI_B__Nm ...
-%         = -(gravitational_hessian_B__1_per_s2)*cross(nadir_B,inertia_B*nadir_B);
-
 g = gravitational_hessian_B__1_per_s2;
-I = inertia_B;
 
 gravity_gradient_torque_BI_B__Nm ...
     = [g(2,3)*(I(3,3)-I(2,2))+g(1,3)*I(1,2)-g(1,2)*I(1,3)+I(2,3)*(g(3,3)-g(2,2));...
