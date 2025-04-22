@@ -1,20 +1,25 @@
-function [total_solar_irradiance_at_1AU_W_per_m2] ...
-                    = execute(current_modified_julian_date, ...
+function [irradiance_at_sat_I_I__W_per_m2] ...
+                    = execute(position_BI_I__m, ...
+                               sun_position_SI_I__m, ...
+                               current_modified_julian_date, ...
                                ParametersNrltsi21)
-% execute - Get Total Solar Irradiance at 1AU distance to sun using the NRLTSI21 model 
+% execute - Get Total Solar Irradiance at satellite position using the NRLTSI21 model 
 %
-% [total_solar_irradiance_at_1AU_W_per_m2] ...
-%                     = execute(position_BI_I__m,...
-%                                 current_modified_julian_date, ...
+% [irradiance_at_sat_I_I__W_per_m2] ...
+%                     = execute(current_modified_julian_date, ...
 %                                 ParametersNrltsi21)
 %
 %   Inputs:
-%   position_BI_I__m: 3x1 vector of position in inertial frame
+%   position_BI_I__m: 3x1 satellite position in inertial coordinates
+%   sun_position_SI_I__m: 3x1 vector from the Earth to the Sun in inertial
+%                               coordinates
 %   current_modified_julian_date: Current modified julian date
 %   ParametersNrltsi21: Structure containing NRLTSI21 parameters
 %
 %   Outputs:
-%   total_solar_irradiance_at_1AU_W_per_m2: TSI at 1AU distance to sun in W/m^2
+%   irradiance_at_sat_I_I__W_per_m2: 3x1 vector of total solar 
+%           irradiance (TSI) at satellite position in inertial coordinates
+%   inertial coordinates in W/m^2
 %
 %% References:
 % [1] Odele Coddington, Judith L. Lean, Doug Lindholm, Peter Pilewskie, 
@@ -23,6 +28,9 @@ function [total_solar_irradiance_at_1AU_W_per_m2] ...
 % data: "tsi-ssi-projection_v03r00_annual_s1610_e2100_c20250225.txt". 
 % NOAA National Centers for Environmental Information. 
 % https://doi.org/10.7289/V56W985W accessed 2025-04-08.
+
+%% Constants
+AU__m = 149597870700; % m
 
 %% Abbreviations
 mjd = current_modified_julian_date;
@@ -35,7 +43,18 @@ if mjd < min(dataMjd) || mjd > max(dataMjd)
             ,mjd, min(dataMjd), max(dataMjd))
 end
 
-total_solar_irradiance_at_1AU_W_per_m2 ...
+irradiance_at_1AU_W_per_m2 ...
     = interp1(dataMjd,dataIrr,current_modified_julian_date, 'linear','extrap');
+
+% Get relative vector and distance
+sun_sat_SB_I = position_BI_I__m-sun_position_SI_I__m;
+sun_sat_norm_SB = norm(sun_sat_SB_I);
+incoming_direction_I_I = sun_sat_SB_I/sun_sat_norm_SB;
+
+% Scale solar irradiance
+irradiance_at_sat_W_per_m2 = irradiance_at_1AU_W_per_m2*(AU__m^2)/(sun_sat_norm_SB^2);
+
+% Calculate solar radiation pressure
+irradiance_at_sat_I_I__W_per_m2 = irradiance_at_sat_W_per_m2*incoming_direction_I_I;
 
 end
