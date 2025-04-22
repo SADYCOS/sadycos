@@ -7,14 +7,18 @@ function [sun_position_SI_I__m,moon_position_MI_I__m] ...
 %                                    = execute(time_current_mjd)
 %
 %   Inputs:
+%   time_current_mjd: time in modified julian date
+%
+%   Outputs:
 %   sun_position_SI_I__m: (3x1) vector from the Earth to the Sun in inertial
 %                               coordinates
 %   moon_position_MI_I__m: (3x1) vector from the Earth to the Moon in inertial
 %                                coordinates
-%   Outputs:
-%   time_current_mjd: time in modified julian date
 %
-% Reference!
+%% Reference
+% [1] O. Montenbruck and G. Eberhard, “Low-Precision Solar and Lunar Coordinates,” 
+% in Satellite orbits: models, methods, and applications, 
+% Berlin : New York: Springer, 2000, pp. 70–73.
                    
 %% Constants
 arcsec2rad = pi/(180*3600);
@@ -34,6 +38,7 @@ epsilon = deg2rad(23.43929111); % inclination of the ecliptic relative to the Ea
 
 % Sun Position
 lambda_se = raan_aop_se + ma_se + 6892*arcsec2rad*sin(ma_se) + 72*arcsec2rad*sin(2*ma_se);
+lambda_se = lambda_se + deg2rad(1.3972)*T0; % correction for precession
 radius_se = (149.619 - 2.499*cos(ma_se) - 0.021*cos(2*ma_se))*1E9;
 sun_position_SI_I__m =  radius_se*[cos(lambda_se);  ...
                                    sin(lambda_se)*cos(epsilon); ...
