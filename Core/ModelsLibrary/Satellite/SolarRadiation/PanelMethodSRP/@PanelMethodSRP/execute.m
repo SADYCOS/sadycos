@@ -35,13 +35,20 @@ c_light__m_per_s = 299792458; %m/s
 Param = ParametersPanelMethodSRP;
 bodies = Param.bodies;
 
-solar_radiation_pressure_I_I__N_per_m2 = irradiance_at_sat_I_I__W_per_m2/(c_light__m_per_s);
+% Check if any element of irradiance is non-zero - method fails if direction is zero vector
+if any(irradiance_at_sat_I_I__W_per_m2)
 
-% Call smu panel method
-[srp_force_B__N, srp_torque_B__Nm] ...
-    = panel_based_pressure_response.panelMethod(attitude_quaternion_BI, ...
-                                                solar_radiation_pressure_I_I__N_per_m2, ...
-                                                bodies, ...                                                       
-                                                bodies_rotation_angles__rad);
+    % Compute SRP
+    solar_radiation_pressure_I_I__N_per_m2 = irradiance_at_sat_I_I__W_per_m2/(c_light__m_per_s);
 
+    % Call smu panel method
+    [srp_force_B__N, srp_torque_B__Nm] ...
+        = panel_based_pressure_response.panelMethod(attitude_quaternion_BI, ...
+                                                    solar_radiation_pressure_I_I__N_per_m2, ...
+                                                    bodies, ...                                                       
+                                                    bodies_rotation_angles__rad);
+else
+    warning("Irradiance in PanelMethodSRP is zero vector!")
+    srp_force_B__N = zeros(3,1);
+    srp_torque_B__Nm = zeros(3,1);
 end

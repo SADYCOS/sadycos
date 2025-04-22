@@ -33,11 +33,12 @@ ParametersPanelMethodSRP = PanelMethodSRP(obj_files, ...
                                             DCM_B_from_CAD, ...
                                             center_of_mass_CAD, ...
                                             false);
-%% Sun Position
-% Determine sun position
-[sun_position_SI_I__m,~] = SimpleSolarLunarPosRelEarth.execute(time_current_mjd);
-% override
-sun_position_SI_I__m = [0;1;0]*norm(sun_position_SI_I__m);
+%% Sun and Moon Positions
+[sun_position_SI_I__m,moon_position_MI_I__m] = SimpleSolarLunarPosRelEarth.execute(time_current_mjd);
+
+% override for testing purposes
+sun_position_SI_I__m = [1;0;0]*norm(sun_position_SI_I__m);
+moon_position_MI_I__m = [1;0;0]*norm(moon_position_MI_I__m);
 
 %% Model for solar irradiance
 nrltiseParams = NRLTSI21(mjuliandate(datetime('now')),42536000);
@@ -47,6 +48,21 @@ irradiance_at_sat_I_I__W_per_m2 ...
                             sun_position_SI_I__m, ...
                             time_current_mjd, ...
                             nrltiseParams.Parameters.Nrltsi21Data);
+
+%% Model for Sun occultation by Earth and the Moon
+earth_radius__m = 6378e3; % mean radius
+sun_radius__m = 696340e3; % mean radius
+moon_radius__m = 1737.4e3; % mean radius
+ParametersEarthMoonOccultation = EarthMoonOccultation(earth_radius__m, ...    
+                                                        sun_radius__m, ...
+                                                        moon_radius__m);
+[sun_visibility_fraction] ...
+       = EarthMoonOccultation.execute(position_BI_I__m, ...
+                                       sun_position_SI_I__m, ...
+                                       moon_position_MI_I__m, ...
+                                       ParametersEarthMoonOccultation.Parameters);
+
+irradiance_at_sat_I_I__W_per_m2 = sun_visibility_fraction*irradiance_at_sat_I_I__W_per_m2
 
 %% Execute the model
 time_current_mjd = juliandate(datetime("now"));
