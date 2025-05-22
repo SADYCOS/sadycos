@@ -48,7 +48,7 @@ if any(irradiance_at_sat_I_I__W_per_m2)
                                                     bodies, ...                                                       
                                                     bodies_rotation_angles__rad);
 else
-    warning("Irradiance in PanelMethodSRP is zero vector!")
+    % Irradiance in PanelMethodSRP is zero vector so no computation
     srp_force_B__N = zeros(3,1);
     srp_torque_B__Nm = zeros(3,1);
 end
