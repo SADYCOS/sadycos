@@ -1,6 +1,6 @@
 function gravity_gradient_torque_BI_B__Nm...
                 = execute(attitude_quaternion_BI,...
-                            gravitational_hessian_I__1_per_s2, ...
+                            gravity_hessian_I__1_per_s2, ...
                             paramsHessianGravityTorque)
 %% HessianGravityGradient - Calculate gravity gradient torque in body
 %  frame using a given hessian of the gravity potential
@@ -13,7 +13,7 @@ function gravity_gradient_torque_BI_B__Nm...
 %   Inputs:
 %   attitude_quaternion_BI: 4x1 quaternion of attitude from inertial to
 %       body frame
-%   gravitational_hessian_I__1_per_s2: 3x3 hessian of the gravity potential 
+%   gravity_hessian_I__1_per_s2: 3x3 hessian of the gravity potential 
 %       at body position in inertial frame
 %   paramsHessianGravityTorque: Structure containing parameters for general
 %       gravity gradient model
@@ -22,6 +22,13 @@ function gravity_gradient_torque_BI_B__Nm...
 %   gravity_gradient_torque_BI_B__Nm: 3x1 vector of gravity gradient torque
 %       in body frame
 %
+
+arguments
+    attitude_quaternion_BI (4,1) {mustBeNumeric, mustBeReal, smu.argumentValidation.mustBeUnitQuaternion}
+    gravity_hessian_I__1_per_s2 (3,3) {mustBeNumeric, mustBeReal} 
+    paramsHessianGravityTorque
+end
+
 %% References
 % adapted from
 % [1] R. G. Gottlieb, “Fast Gravity, Gravity Partials, Normalized Gravity, 
@@ -33,7 +40,7 @@ I = inertia_B;
 
 dcm_BI = smu.unitQuat.att.toDcm(attitude_quaternion_BI);
 
-gravitational_hessian_B__1_per_s2 = dcm_BI*gravitational_hessian_I__1_per_s2*dcm_BI';
+gravitational_hessian_B__1_per_s2 = dcm_BI*gravity_hessian_I__1_per_s2*dcm_BI';
 g = gravitational_hessian_B__1_per_s2;
 
 gravity_gradient_torque_BI_B__Nm ...

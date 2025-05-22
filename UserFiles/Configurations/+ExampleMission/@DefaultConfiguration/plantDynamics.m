@@ -31,8 +31,8 @@ rw_torque_commands__N_m = ActuatorsOutputs.ReactionWheels.torque_commands__N_m;
 %% Forces and Torques
 
 % Gravity
-gravitational_force_I__N = PointMassGravity.execute(gravitational_acceleration_I__m_per_s2, ...
-                                                                ParametersPlant.PointMassGravity);
+gravitational_force_I__N = ForceFromAcceleration.execute(gravitational_acceleration_I__m_per_s2, ...
+                                                            ParametersPlant.ForceFromAcceleration);
 
 % Aerodynamics
 [aerodynamic_force_B__N, aerodynamic_torque_B__Nm] ...
