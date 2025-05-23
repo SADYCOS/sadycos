@@ -34,8 +34,8 @@ AU__m = 149597870700; % m
 
 %% Abbreviations
 mjd = current_modified_julian_date;
-dataMjd = [ParametersNrltsi21.mjd];
-dataIrr = [ParametersNrltsi21.irradianceMean];
+dataMjd = [ParametersNrltsi21.Nrltsi21Data.mjd];
+dataIrr = [ParametersNrltsi21.Nrltsi21Data.irradianceMean];
 
 %% Interpolation using current mjd
 if mjd < min(dataMjd) || mjd > max(dataMjd)
