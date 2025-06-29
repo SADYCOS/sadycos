@@ -21,8 +21,7 @@ function [position_derivative_BI_I__m_per_s, ...
 %                   net_torque_B__N_m, ...
 %                   velocity_BI_I__m_per_s, ...
 %                   attitude_quaternion_BI, ...
-%                   angular_velocity_BI_B__rad_per_s, ...
-%                   ParametersRigidBodyMechanics)
+%                   angular_velocity_BI_B__rad_per_s)
 %
 %   Inputs:
 %   mass__kg: Satellite mass in kg
@@ -32,7 +31,6 @@ function [position_derivative_BI_I__m_per_s, ...
 %   velocity_BI_I__m_per_s: Velocity in the inertial frame
 %   attitude_quaternion_BI: Attitude quaternion from the body frame to the inertial frame
 %   angular_velocity_BI_B__rad_per_s: Angular velocity in the body frame
-%   ParametersRigidBodyMechanics: Parameters of the RigidBodyMechanics model
 %
 %   Outputs:
 %   position_derivative_BI_I__m_per_s: Derivative of the position in the inertial frame
@@ -42,8 +40,6 @@ function [position_derivative_BI_I__m_per_s, ...
 %
                    
 %% Abbreviations
-% Parameters
-
 % States
 mass = mass__kg;
 inertia = inertia_B_B__kg_m2;
