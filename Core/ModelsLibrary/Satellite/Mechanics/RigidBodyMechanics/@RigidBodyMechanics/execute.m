@@ -40,10 +40,10 @@ function [position_derivative_BI_I__m_per_s, ...
                    
 %% Abbreviations
 % Parameters
-mass = ParametersRigidBodyMechanics.mass__kg;
-inertia = ParametersRigidBodyMechanics.inertia_B_B__kg_m2;
 
 % States
+mass = mass__kg;
+inertia = inertia_B_B__kg_m2;
 v = velocity_BI_I__m_per_s;
 q = attitude_quaternion_BI;
 omega = angular_velocity_BI_B__rad_per_s;
