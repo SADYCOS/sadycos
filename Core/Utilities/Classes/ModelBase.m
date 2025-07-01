@@ -15,8 +15,6 @@ classdef (Abstract) ModelBase < handle
             arguments
                 NameValueArgs.Settings (1,:) SimulinkModelSetting = SimulinkModelSetting.empty(1,0)
             end
-
-            obj.Parameters = NameValueArgs.Parameters;
             obj.Settings = NameValueArgs.Settings;
         end
 
