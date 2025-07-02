@@ -82,11 +82,6 @@ parameter_creator.addModel("Environment", Igrf(mjd0, simulation_duration__s, mag
 
 % Plant Models
 
-% Mechanics
-mass__kg = 2;
-inertia_B_B__kg_m2 = 1*diag([1,1,1]);
-parameter_creator.addModel("Plant", RigidBodyMechanics(mass__kg, inertia_B_B__kg_m2));
-
 % Aerodynamics
 % Get absolute path of this file's folder
 [this_folder,~,~] = fileparts(mfilename("fullpath"));
@@ -115,9 +110,6 @@ parameter_creator.addModel("Plant", SimplifiedVleoAerodynamics(obj_files, ...
                                                     center_of_mass_CAD, ...
                                                     false, ...
                                                     1));
-
-% Gravity
-parameter_creator.addModel("Plant", PointMassGravity(mass__kg));
 
 % Reaction Wheels
 reaction_wheels_spin_directions_B = eye(3);
@@ -152,6 +144,12 @@ Parameters.GncAlgorithms.reaction_wheels_spin_directions_B = reaction_wheels_spi
 Parameters.GncAlgorithms.magnetic_torquers_directions_B = magnetic_torquers_directions;
 Parameters.GncAlgorithms.reaction_wheels_desaturation_gain__1_per_s = 1E-2;
 Parameters.GncAlgorithms.reaction_wheels_inertias__kg_m2 = reaction_wheels_inertias__kg_m2;
+
+mass__kg = 2;
+inertia_B_B__kg_m2 = 1*diag([1,1,1]);
+
+Parameters.Plant.mass__kg = mass__kg;
+Parameters.Plant.inertia_B_B__kg_m2 = inertia_B_B__kg_m2;
 
 %% Write Structure to Cell for Output
 parameters_cells = {Parameters};

@@ -13,8 +13,11 @@ classdef (Abstract) ModelBase < handle
 
         function obj = ModelBase(NameValueArgs)
             arguments
+                NameValueArgs.Parameters (1,1) struct = struct()
                 NameValueArgs.Settings (1,:) SimulinkModelSetting = SimulinkModelSetting.empty(1,0)
             end
+
+            obj.Parameters = NameValueArgs.Parameters;
             obj.Settings = NameValueArgs.Settings;
         end
 

@@ -14,4 +14,5 @@ classdef RigidBodyMechanics < ModelBase
                         angular_velocity_BI_B__rad_per_s)
                         
     end
+
 end
