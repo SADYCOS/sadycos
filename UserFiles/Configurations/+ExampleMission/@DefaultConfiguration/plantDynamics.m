@@ -29,14 +29,14 @@ magnetic_dipole_moment_B__A_m2 = ActuatorsOutputs.MagneticTorquers.magnetic_dipo
 rw_torque_commands__N_m = ActuatorsOutputs.ReactionWheels.torque_commands__N_m;
 
 % Parameters
-mass__kg = ParametersPlant.mass_kg;
+mass__kg = ParametersPlant.mass__kg;
 inertia_B_B__kg_m2 = ParametersPlant.inertia_B_B__kg_m2;
 
 %% Forces and Torques
 
 % Gravity
-gravitational_force_I__N = PointMassGravity.execute(gravitational_acceleration_I__m_per_s2, ...
-                                                                ParametersPlant.PointMassGravity);
+gravitational_force_I__N = PointMassGravity.execute(mass__kg, ...
+                        gravitational_acceleration_I__m_per_s2);
 
 % Aerodynamics
 [aerodynamic_force_B__N, aerodynamic_torque_B__Nm] ...
