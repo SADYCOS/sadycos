@@ -29,7 +29,7 @@ magnetic_dipole_moment_B__A_m2 = ActuatorsOutputs.MagneticTorquers.magnetic_dipo
 rw_torque_commands__N_m = ActuatorsOutputs.ReactionWheels.torque_commands__N_m;
 
 % Parameters
-mass_kg = ParametersPlant.mass_kg;
+mass__kg = ParametersPlant.mass_kg;
 inertia_B_B__kg_m2 = ParametersPlant.inertia_B_B__kg_m2;
 
 %% Forces and Torques
