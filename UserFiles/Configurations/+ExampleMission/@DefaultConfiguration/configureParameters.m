@@ -13,7 +13,7 @@ enable_pacing = false;
 pacing_rate = 1;
 
 % Send Simulation Data
-enable_send_sim_data = false;
+enable_send_sim_data = true;
 
 % Stop Criterion
 enable_stop_criterion = false;
