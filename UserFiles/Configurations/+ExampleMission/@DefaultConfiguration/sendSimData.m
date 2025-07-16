@@ -1,4 +1,4 @@
-function [udp_data_vector, LogSendSimData] ...
+function LogSendSimData ...
             = sendSimData(LogSendSimData, ...
                             simulation_time__s, ...
                             LogEnvironment, ...
@@ -9,11 +9,20 @@ function [udp_data_vector, LogSendSimData] ...
                             LogGncAlgorithms, ...
                             Parameters)
 
-udp_data_vector = [simulation_time__s; ...
-                    LogPlantOutput.PlantOutputs.RigidBody.position_BI_I__m;...
-                    LogPlantOutput.PlantOutputs.RigidBody.velocity_BI_I__m_per_s];
+persistent udp_interf
 
-%% Log relevant data
-LogSendSimData.udp_data_vector = udp_data_vector;
+if isempty(udp_interf)
+    % Create a new instance of the VisualizationUdpInterface class
+    udp_interf = VisualizationUdpInterface(27017, 4, 0, 0, 0);
+end
+
+udp_interf.updateTime(simulation_time__s);
+udp_interf.updatePosition(LogPlantOutput.PlantOutputs.RigidBody.position_BI_I__m);
+udp_interf.updateAttitude(LogPlantOutput.PlantOutputs.RigidBody.attitude_quaternion_BI);
+udp_interf.updateAttitudeCentralBody(LogEnvironment.EnvironmentConditions.EarthRotation.earth_quaternion_EI);
+udp_interf.updateSunDirection([1;0;0]);
+udp_interf.updateControlSurfaceAngles(ones(1,4) * pi/8);
+
+udp_interf.send();
 
 end
