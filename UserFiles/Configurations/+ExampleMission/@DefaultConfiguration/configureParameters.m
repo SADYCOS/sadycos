@@ -9,7 +9,7 @@ simulation_duration__s = 1000;
 simulation_mode = "normal";
 
 % Pacing
-enable_pacing = false;
+enable_pacing = true;
 pacing_rate = 1;
 
 % Send Simulation Data
