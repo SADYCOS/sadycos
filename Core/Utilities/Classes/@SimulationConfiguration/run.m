@@ -17,4 +17,7 @@ end
 
 obj.simulation_outputs = SimulationConfiguration.codeWrapper(the_function, "Running Simulations");
 
+%% Save simulation results
+obj.saveSimulationResults();
+
 end
