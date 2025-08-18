@@ -44,7 +44,7 @@ magnetic_dipole_moment_commands__A_m2 = pinv(torquers_directions) * desired_magn
                                                 angular_velocity_BI_B__rad_per_s);
 
 reference_angular_velocity_RI_B__rad_per_s = angular_velocity_B__rad_per_s.reference_RI;
-angular_velocity_error_RB_B__rad_per_s = angular_velocity_B__rad_per_s.error_RB_B;
+angular_velocity_error_RB_B__rad_per_s = angular_velocity_B__rad_per_s.error_RB;
 
 desired_torque_B__N_m = QuaternionFeedbackControl.execute(error_quaternion_RB, ...
                                             angular_velocity_error_RB_B__rad_per_s, ...
