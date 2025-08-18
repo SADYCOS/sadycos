@@ -25,8 +25,9 @@ angular_velocity_BI_B__rad_per_s = SensorsOutputs.PerfectRotationalMotionSensor.
 
 %% Guidance
 reference_frame_attitude_quaternion_RI = smu.frames.rotationInertialToTangential(position_BI_I__m, velocity_BI_I__m_per_s);
+
 reference_angular_velocity_RI_I__rad_per_s = cross(position_BI_I__m, velocity_BI_I__m_per_s) / norm(position_BI_I__m)^2;
-reference_angular_velocity_RI_B__rad_per_s = smu.unitQuat.att.transformVector(attitude_quaternion_BI, reference_angular_velocity_RI_I__rad_per_s);
+reference_angular_velocity_RI_R__rad_per_s = smu.unitQuat.att.transformVector(reference_frame_attitude_quaternion_RI, reference_angular_velocity_RI_I__rad_per_s);
 
 %% Control
 % Reaction Wheel Desaturation
@@ -36,12 +37,17 @@ desired_magnetic_dipole_moment__A_m2 = - gain_desat * cross(magnetic_field_B__T,
 magnetic_dipole_moment_commands__A_m2 = pinv(torquers_directions) * desired_magnetic_dipole_moment__A_m2;
 
 % Attitude
-error_quaternion_RB = ErrorQuaternion.execute(reference_frame_attitude_quaternion_RI, ...
-                                                attitude_quaternion_BI);
-angular_velocity_error_RB_B = reference_angular_velocity_RI_B__rad_per_s - angular_velocity_BI_B__rad_per_s;
+[error_quaternion_RB, ...
+    angular_velocity_B__rad_per_s] = AttitudeError.execute(reference_frame_attitude_quaternion_RI, ...
+                                                attitude_quaternion_BI, ...
+                                                reference_angular_velocity_RI_R__rad_per_s, ...
+                                                angular_velocity_BI_B__rad_per_s);
+
+reference_angular_velocity_RI_B__rad_per_s = angular_velocity_B__rad_per_s.reference_RI;
+angular_velocity_error_RB_B__rad_per_s = angular_velocity_B__rad_per_s.error_RB_B;
 
 desired_torque_B__N_m = QuaternionFeedbackControl.execute(error_quaternion_RB, ...
-                                            angular_velocity_error_RB_B, ...
+                                            angular_velocity_error_RB_B__rad_per_s, ...
                                             ParametersGncAlgorithms.QuaternionFeedbackControl);
                                             
 rw_torque_commands__N_m = - pinv(rw_spin_directions) * desired_torque_B__N_m;
@@ -60,6 +66,6 @@ LogGncAlgorithms.GncAlgorithmsStatesUpdateInput = GncAlgorithmsStatesUpdateInput
 LogGncAlgorithms.reference_frame_attitude_quaternion_RI = reference_frame_attitude_quaternion_RI;
 LogGncAlgorithms.reference_angular_velocity_RI_B__rad_per_s = reference_angular_velocity_RI_B__rad_per_s;
 LogGncAlgorithms.error_quaternion_RB = error_quaternion_RB;
-LogGncAlgorithms.angular_velocity_error_RB_B = angular_velocity_error_RB_B;
+LogGncAlgorithms.angular_velocity_error_RB_B__rad_per_s = angular_velocity_error_RB_B__rad_per_s;
 
 end
