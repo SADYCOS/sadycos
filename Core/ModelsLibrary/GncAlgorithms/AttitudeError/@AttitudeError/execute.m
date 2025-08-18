@@ -38,7 +38,7 @@ function [error_quaternion_RB, ...
 %       error_quaternion_RB - 4x1 vector representing the attitude of the R frame relative to the B frame
 %       angular_velocity_B__rad_per_s - struct containing angular velocity data in B frame [rad/s]
 %           .reference_RI - 3x1 vector of reference angular velocity transformed to B frame
-%           .error_RB_B - 3x1 vector of angular velocity error in B frame
+%           .error_RB - 3x1 vector of angular velocity error in B frame
 %       angular_acceleration_B__rad_per_s2 - struct containing angular acceleration data in B frame [rad/s²]
 %           .reference_RI - 3x1 vector of reference angular acceleration transformed to B frame
 %           .error_RB - 3x1 vector of angular acceleration error in B frame
@@ -75,7 +75,7 @@ angular_velocity_error_RB_B__rad_per_s = reference_angular_velocity_RI_B__rad_pe
                                             - body_angular_velocity_BI_B__rad_per_s;
 
 angular_velocity_B__rad_per_s.reference_RI = reference_angular_velocity_RI_B__rad_per_s;
-angular_velocity_B__rad_per_s.error_RB_B = angular_velocity_error_RB_B__rad_per_s;
+angular_velocity_B__rad_per_s.error_RB = angular_velocity_error_RB_B__rad_per_s;
 
 % Early return if acceleration is not needed
 if nargout <= 2
