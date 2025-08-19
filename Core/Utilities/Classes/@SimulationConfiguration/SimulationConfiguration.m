@@ -50,6 +50,7 @@ classdef (Abstract) SimulationConfiguration < handle
 
     methods (Access = private, Sealed)
         createSimulinkInterfaceFiles(obj)
+        saveSimulationResults(obj, file_path)
     end
     
 
