@@ -24,8 +24,8 @@ function [position_derivative_BI_I__m_per_s, ...
 %                   angular_velocity_BI_B__rad_per_s)
 %
 %   Inputs:
-%   mass__kg: Satellite mass in kg
-%   inertia_B_B__kg_m2: moment of inertia about axis B in the body frame
+%   mass__kg: Mass of the rigid body in kg
+%   inertia_B_B__kg_m2: Inertia of the rigid body relative to its center of mass in the body frame in kg m^2
 %   net_force_I__N: Net force in the inertial frame
 %   net_torque_B__N_m: Net torque in the body frame
 %   velocity_BI_I__m_per_s: Velocity in the inertial frame
