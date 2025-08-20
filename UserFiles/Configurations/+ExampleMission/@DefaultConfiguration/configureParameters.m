@@ -117,7 +117,7 @@ parameter_creator.addModel("Plant", SimplifiedVleoAerodynamics(obj_files, ...
                                                     1));
 
 % Gravity
-parameter_creator.addModel("Plant", PointMassGravity(mass__kg));
+parameter_creator.addModel("Plant", ForceFromAcceleration(mass__kg));
 
 % Reaction Wheels
 reaction_wheels_spin_directions_B = eye(3);
