@@ -4,14 +4,17 @@ classdef Visualization < ExampleMission.DefaultConfiguration
         
         function parameters_cells = configureParameters()
 
+            % Get parameters from the parent class
             parameters_cells = configureParameters@ExampleMission.DefaultConfiguration();
 
-            % Pacing
-            parameters_cells{1}.enable_pacing = true;
-            parameters_cells{1}.pacing_rate = 1;
+            % Adjust parameters in the Settings array
+            parameters_cells{1}.Settings(3) = SimulinkModelSetting("EnablePacing", "on");
+            parameters_cells{1}.Settings(4) = SimulinkModelSetting("PacingRate", "1");
 
-            % Send Simulation Data
-            parameters_cells{1}.enable_send_sim_data = true;
+            % Adjust parameter directly in the struct
+            parameters_cells{1}.General.enable_send_sim_data = true;
+
+
         end
 
         LogSendSimData ...
