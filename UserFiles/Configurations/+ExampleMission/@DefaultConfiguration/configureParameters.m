@@ -9,11 +9,11 @@ simulation_duration__s = 1000;
 simulation_mode = "normal";
 
 % Pacing
-enable_pacing = true;
+enable_pacing = false;
 pacing_rate = 1;
 
 % Send Simulation Data
-enable_send_sim_data = true;
+enable_send_sim_data = false;
 
 % Stop Criterion
 enable_stop_criterion = false;

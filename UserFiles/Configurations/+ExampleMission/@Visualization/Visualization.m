@@ -1,0 +1,29 @@
+classdef Visualization < ExampleMission.DefaultConfiguration
+
+    methods (Static)
+        
+        function parameters_cells = configureParameters()
+
+            parameters_cells = configureParameters@ExampleMission.DefaultConfiguration();
+
+            % Pacing
+            parameters_cells{1}.enable_pacing = true;
+            parameters_cells{1}.pacing_rate = 1;
+
+            % Send Simulation Data
+            parameters_cells{1}.enable_send_sim_data = true;
+        end
+
+        LogSendSimData ...
+            = sendSimData(LogSendSimData, ...
+                            simulation_time__s, ...
+                            LogEnvironment, ...
+                            LogSensors, ...
+                            LogActuators, ...
+                            LogPlantDynamics, ...
+                            LogPlantOutput,...
+                            LogGncAlgorithms, ...
+                            Parameters)
+
+    end
+end
