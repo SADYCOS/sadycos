@@ -140,16 +140,17 @@ parameter_creator.addModel("GncAlgorithms", QuaternionFeedbackControl(qfr_propor
 Parameters = parameter_creator.getParameters();
 
 %% Add Non-Model Parameters
-Parameters.GncAlgorithms.reaction_wheels_spin_directions_B = reaction_wheels_spin_directions_B;
-Parameters.GncAlgorithms.magnetic_torquers_directions_B = magnetic_torquers_directions;
-Parameters.GncAlgorithms.reaction_wheels_desaturation_gain__1_per_s = 1E-2;
-Parameters.GncAlgorithms.reaction_wheels_inertias__kg_m2 = reaction_wheels_inertias__kg_m2;
 
 mass__kg = 2;
 inertia_B_B__kg_m2 = 1*diag([1,1,1]);
 
 Parameters.Plant.mass__kg = mass__kg;
 Parameters.Plant.inertia_B_B__kg_m2 = inertia_B_B__kg_m2;
+
+Parameters.GncAlgorithms.reaction_wheels_spin_directions_B = reaction_wheels_spin_directions_B;
+Parameters.GncAlgorithms.magnetic_torquers_directions_B = magnetic_torquers_directions;
+Parameters.GncAlgorithms.reaction_wheels_desaturation_gain__1_per_s = 1E-2;
+Parameters.GncAlgorithms.reaction_wheels_inertias__kg_m2 = reaction_wheels_inertias__kg_m2;
 
 %% Write Structure to Cell for Output
 parameters_cells = {Parameters};
