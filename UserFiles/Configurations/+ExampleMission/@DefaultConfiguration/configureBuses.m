@@ -97,9 +97,15 @@ elems = [simpleBusElement('acceleration_BI_I__m_per_s2', 3), ...
 
 busesInfoCreator.setBusByElements('RigidBodyAccelerations', elems);
 
+% Reaction Wheels
+elems = [simpleBusElement("motor_torques__N_m", 3)];
+
+busesInfoCreator.setBusByElements('ReactionWheelsFeedthrough', elems);
+
 % Top-Level Bus
 
-elems = simpleBusElement('RigidBodyAccelerations', 1, 'Bus: RigidBodyAccelerations');
+elems = [simpleBusElement('RigidBodyAccelerations', 1, 'Bus: RigidBodyAccelerations'), ...
+            simpleBusElement('ReactionWheels', 1, 'Bus: ReactionWheelsFeedthrough')];
 
 busesInfoCreator.setBusByElements('PlantFeedthrough', elems);
 
