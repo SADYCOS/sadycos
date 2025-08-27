@@ -25,6 +25,7 @@ To effectively work with SADYCOS, you need the following software installed on y
         - Aerospace Toolbox
         - Mapping Toolbox
         - Parallel Computing Toolbox
+        - DSP System Toolbox
 
 Older versions of MATLAB might work, but are not tested.
 
