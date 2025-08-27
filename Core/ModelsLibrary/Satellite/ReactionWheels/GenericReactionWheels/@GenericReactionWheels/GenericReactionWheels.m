@@ -14,24 +14,28 @@ classdef GenericReactionWheels < ModelBase
 
         function obj = GenericReactionWheels(inertias__kg_m2, ...
                                                 spin_directions_B, ...
-                                                friction_coefficients__N_m_s_per_rad)
-        % GenericReactionWheels
+                                                friction_coefficients__N_m_s_per_rad, ...
+                                                maximum_torques__N_m)
+
+        % GenericReactionWheels Constructor
         %
         %   Inputs:
         %   inertias__kg_m2: Inertias of the reaction wheels in kg m^2
         %   spin_directions_B: Spin directions of the reaction wheels in the body frame
         %   friction_coefficients__N_m_s_per_rad: Friction coefficients in N m s per rad
-        %
+        %   maximum_torques__N_m: Maximum torques that can be applied by the reaction wheels in N m
 
             arguments
                 inertias__kg_m2 (:,1) {mustBePositive}
                 spin_directions_B (3,:) {mustBeNumeric, mustBeReal, smu.argumentValidation.mustBeEqualLength(spin_directions_B, inertias__kg_m2, 2, 1), mustBeUnitColumns}
                 friction_coefficients__N_m_s_per_rad (:,1) {mustBeNonnegative, smu.argumentValidation.mustBeEqualLength(friction_coefficients__N_m_s_per_rad, inertias__kg_m2, 1, 1)}
+                maximum_torques__N_m (:,1) {mustBeNonnegative, smu.argumentValidation.mustBeEqualLength(maximum_torques__N_m, inertias__kg_m2, 1, 1)}
             end
 
             Parameters.inertias__kg_m2 = inertias__kg_m2;
             Parameters.spin_directions_B = spin_directions_B;
             Parameters.friction_coefficients__N_m_s_per_rad = friction_coefficients__N_m_s_per_rad;
+            Parameters.maximum_torques__N_m = maximum_torques__N_m;
 
             %% Set Parameters in ModelBase Constructor
             obj = obj@ModelBase("Parameters", Parameters);

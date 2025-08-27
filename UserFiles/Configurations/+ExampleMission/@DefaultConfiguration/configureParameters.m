@@ -82,11 +82,6 @@ parameter_creator.addModel("Environment", Igrf(mjd0, simulation_duration__s, mag
 
 % Plant Models
 
-% Mechanics
-mass__kg = 2;
-inertia_B_B__kg_m2 = 1*diag([1,1,1]);
-parameter_creator.addModel("Plant", RigidBodyMechanics(mass__kg, inertia_B_B__kg_m2));
-
 % Aerodynamics
 % Get absolute path of this file's folder
 [this_folder,~,~] = fileparts(mfilename("fullpath"));
@@ -116,18 +111,17 @@ parameter_creator.addModel("Plant", SimplifiedVleoAerodynamics(obj_files, ...
                                                     false, ...
                                                     1));
 
-% Gravity
-parameter_creator.addModel("Plant", PointMassGravity(mass__kg));
-
 % Reaction Wheels
 reaction_wheels_spin_directions_B = eye(3);
 reaction_wheels_inertias__kg_m2 = 1E-4 * ones(3,1);
 reaction_wheels_friction_coefficients__N_m_s_per_rad = zeros(3,1);
+reaction_wheels_maximum_torques__N_m = 1e-3 * ones(3,1);
 reaction_wheels_maximum_frequencies__rad_per_s = 500 * ones(3,1);
 
 parameter_creator.addModel("Plant", RateLimitedReactionWheels(reaction_wheels_inertias__kg_m2, ...
                                                                 reaction_wheels_spin_directions_B, ...
                                                                 reaction_wheels_friction_coefficients__N_m_s_per_rad, ...
+                                                                reaction_wheels_maximum_torques__N_m, ...
                                                                 reaction_wheels_maximum_frequencies__rad_per_s));
 
 % Actuator Models
@@ -148,6 +142,13 @@ parameter_creator.addModel("GncAlgorithms", QuaternionFeedbackControl(qfr_propor
 Parameters = parameter_creator.getParameters();
 
 %% Add Non-Model Parameters
+
+mass__kg = 2;
+inertia_B_B__kg_m2 = 1*diag([1,1,1]);
+
+Parameters.Plant.mass__kg = mass__kg;
+Parameters.Plant.inertia_B_B__kg_m2 = inertia_B_B__kg_m2;
+
 Parameters.GncAlgorithms.reaction_wheels_spin_directions_B = reaction_wheels_spin_directions_B;
 Parameters.GncAlgorithms.magnetic_torquers_directions_B = magnetic_torquers_directions;
 Parameters.GncAlgorithms.reaction_wheels_desaturation_gain__1_per_s = 1E-2;
