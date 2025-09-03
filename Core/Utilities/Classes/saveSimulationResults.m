@@ -10,7 +10,7 @@ function saveSimulationResults(obj)
     end
 
       % Create a timestamp string: YYYYMMDD_HHMMSS
-    timestamp = datetime('now', 'Format', 'yyyyMMdd_HHmmss');
+    timestamp = datestr(now, 'yyyymmdd_HHMMSS');
     
     % Define the full file path with timestamp
     filename = fullfile(folder, ['simOut_' timestamp '.mat']);
