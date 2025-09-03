@@ -1,4 +1,4 @@
-function saveSimulationResults(obj)
+function saveSimulationResults(o)
 
     % Ask user for folder
     folder = uigetdir(pwd, 'Select folder to save simulation results');
@@ -17,7 +17,7 @@ function saveSimulationResults(obj)
     
     % Save the simOut variable
     try
-        simOut = obj.simulation_outputs;
+        simOut = o.simulation_outputs;
         save(filename, 'simOut');
         fprintf('Simulation results successfully saved to %s\n', filename);
     catch ME
