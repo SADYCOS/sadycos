@@ -66,7 +66,6 @@ end
 
         % Close figure
         delete(fig);
-    end
 end
 
 %% Build tree nodes recursively
@@ -111,7 +110,12 @@ end
 
 for k = 1:numel(fields)
     fname = fields{k};
+    try
     value = data.(fname);
+    catch
+        warning('Could not access field/property %s', fname);
+        continue; % skip inaccessible properties
+    end
 
     % Check if field is empty
     if isempty(checkedNodes) || isa(checkedNodes,'matlab.graphics.GraphicsPlaceholder')
