@@ -24,18 +24,25 @@ end
 
 
 %% ================= TREE SELECTION UI =================
-    function selectedStruct = treeSelectionUI(data)
-        % Create UI figure
-        fig = uifigure('Name','Select Fields to Save','Position',[100 100 500 500]);
+function selectedStruct = treeSelectionUI(data)
+% Create UI figure
+fig = uifigure('Name','Select Fields to Save','Position',[100 100 500 500]);
 
-        % Create tree with checkboxes
-        t = uitree(fig,'checkbox','Position',[20 50 460 440]);
-        buildTree(t, data, 'simOut');
+% Create tree with checkboxes
+t = uitree(fig,'checkbox','Position',[20 50 460 440]);
+buildTree(t, data, 'simOut');
 
-        % Add Save button
-        btn = uibutton(fig,'Text','Confirm Selection','Position',[200 10 120 30], ...
-            'ButtonPushedFcn', @(~,~) uiresume(fig));
-    end
+% Add Save button
+btn = uibutton(fig,'Text','Confirm Selection','Position',[200 10 120 30], ...
+    'ButtonPushedFcn', @(~,~) uiresume(fig));
+end
+
+% Wait for user input
+uiwait(fig);
+
+% Collect selected nodes
+checkedNodes = findobj(t,'Checked','on');
+
 end
 
 
