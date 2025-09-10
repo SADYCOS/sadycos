@@ -29,6 +29,19 @@ if isequal(folder, 0)
     return;
 end
 
+% Create timestamp string
+timestamp = datestr(now, 'yyyymmdd_HHMMSS');
+filename = fullfile(folder, ['simOut_' timestamp '.mat']);
+
+% Save
+try
+    save(filename, 'simOut');
+    fprintf('Simulation results successfully saved to %s\n', filename);
+catch ME
+    warning('Failed to save simulation results: %s', ME.message);
+end
+end
+
 
 %% ================= TREE SELECTION UI =================
 function selectedStruct = treeSelectionUI(data)
