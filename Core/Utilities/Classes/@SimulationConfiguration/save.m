@@ -76,3 +76,12 @@ end
 function selectedStruct = buildStructFromNodes(data, checkedNodes)
 % Initialize empty struct    
 selectedStruct = struct();
+
+% Determine if data is struct or object
+if isstruct(data)
+    fields = fieldnames(data);
+elseif isobject(data)
+    fields = properties(data);
+else
+    return;
+end
