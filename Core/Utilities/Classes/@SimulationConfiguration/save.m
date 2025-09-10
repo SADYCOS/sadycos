@@ -40,31 +40,34 @@ try
 catch ME
     warning('Failed to save simulation results: %s', ME.message);
 end
-end
 
 
 %% ================= TREE SELECTION UI =================
-function selectedStruct = treeSelectionUI(data)
-% Create UI figure
-fig = uifigure('Name','Select Fields to Save','Position',[100 100 500 500]);
+    function selectedStruct = treeSelectionUI(data)
+        % Create UI figure
+        fig = uifigure('Name','Select Fields to Save','Position',[100 100 500 500]);
 
-% Create tree with checkboxes
-t = uitree(fig,'checkbox','Position',[20 50 460 440]);
-buildTree(t, data, 'simOut');
+        % Create tree with checkboxes
+        t = uitree(fig,'checkbox','Position',[20 50 460 440]);
+        buildTree(t, data, 'simOut');
 
-% Add Save button
-btn = uibutton(fig,'Text','Confirm Selection','Position',[200 10 120 30], ...
-    'ButtonPushedFcn', @(~,~) uiresume(fig));
+        % Add Save button
+        btn = uibutton(fig,'Text','Confirm Selection','Position',[200 10 120 30], ...
+            'ButtonPushedFcn', @(~,~) uiresume(fig));
+
+        % Wait for user input
+        uiwait(fig);
+
+        % Collect selected nodes
+        checkedNodes = findobj(t,'Checked','on');
+
+        % Convert tree selection back into structure
+        selectedStruct = buildStructFromNodes(data, checkedNodes);
+
+        % Close figure
+        delete(fig);
+    end
 end
-
-% Wait for user input
-uiwait(fig);
-
-% Collect selected nodes
-checkedNodes = findobj(t,'Checked','on');
-
-end
-
 
 %% Build tree nodes recursively
 function buildTree(parentNode, data, name)
@@ -94,7 +97,7 @@ end
 
 %% Convert selected nodes back into struct
 function selectedStruct = buildStructFromNodes(data, checkedNodes)
-% Initialize empty struct    
+% Initialize empty struct
 selectedStruct = struct();
 
 % Determine if data is struct or object
@@ -111,14 +114,14 @@ for k = 1:numel(fields)
     value = data.(fname);
 
     % Check if field is empty
-    if isempty(checkedNodes) || isa(checkedNodes,'matlab.graphics.GraphicsPlaceholder') 
-        isSelected = false; 
+    if isempty(checkedNodes) || isa(checkedNodes,'matlab.graphics.GraphicsPlaceholder')
+        isSelected = false;
     else
-        isSelected = any(strcmp({checkedNodes.Text}, fname)); 
+        isSelected = any(strcmp({checkedNodes.Text}, fname));
     end
 
     % If field is struct or object, recurse
-    if isstruct(value) || isobject(value) 
+    if isstruct(value) || isobject(value)
         % recursive call
         subStruct = buildStructFromNodes(value, checkedNodes);
         if ~isempty(fieldnames(subStruct))
@@ -133,4 +136,5 @@ for k = 1:numel(fields)
         end
     end
 end
-    
+end
+end
