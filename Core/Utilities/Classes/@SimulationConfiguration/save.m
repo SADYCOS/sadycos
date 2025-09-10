@@ -85,3 +85,16 @@ elseif isobject(data)
 else
     return;
 end
+
+
+for k = 1:numel(fields)
+    fname = fields{k};
+    value = data.(fname);
+
+    % Check if this field is selected
+    if isempty(checkedNodes) || isa(checkedNodes,'matlab.graphics.GraphicsPlaceholder') 
+        isSelected = false; 
+    else
+        isSelected = any(strcmp({checkedNodes.Text}, fname)); 
+    end
+    
