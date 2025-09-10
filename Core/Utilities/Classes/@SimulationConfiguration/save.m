@@ -29,11 +29,11 @@ end
         fig = uifigure('Name','Select Fields to Save','Position',[100 100 500 500]);
 
         % Create tree with checkboxes
-        t = uitree(fig,'checkbox','Position',[20 20 460 430]);
+        t = uitree(fig,'checkbox','Position',[20 50 460 440]);
         buildTree(t, data, 'simOut');
 
         % Add Save button
-        btn = uibutton(fig,'Text','Confirm Selection','Position',[200 460 120 30], ...
+        btn = uibutton(fig,'Text','Confirm Selection','Position',[200 10 120 30], ...
             'ButtonPushedFcn', @(~,~) uiresume(fig));
     end
 end
