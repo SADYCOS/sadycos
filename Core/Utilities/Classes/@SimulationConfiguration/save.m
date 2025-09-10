@@ -22,6 +22,13 @@ if strcmp(choice, 'Selected')
     end
 end
 
+% Ask user for folder
+folder = uigetdir(pwd, 'Select folder to save simulation results');
+if isequal(folder, 0)
+    disp('User canceled saving.');
+    return;
+end
+
 
 %% ================= TREE SELECTION UI =================
 function selectedStruct = treeSelectionUI(data)
