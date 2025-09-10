@@ -24,6 +24,22 @@ end
 
 
 %% ================= TREE SELECTION UI =================
-function selectedStruct = treeSelectionUI(data)
-% Create UI figure
-fig = uifigure('Name','Select Fields to Save','Position',[100 100 500 500]);
+    function selectedStruct = treeSelectionUI(data)
+        % Create UI figure
+        fig = uifigure('Name','Select Fields to Save','Position',[100 100 500 500]);
+
+        % Create tree with checkboxes
+        t = uitree(fig,'checkbox','Position',[20 20 460 430]);
+        buildTree(t, data, 'simOut');
+
+        % Add Save button
+        btn = uibutton(fig,'Text','Confirm Selection','Position',[200 460 120 30], ...
+            'ButtonPushedFcn', @(~,~) uiresume(fig));
+    end
+end
+
+
+%% Build tree nodes recursively
+    function buildTree(parentNode, data, name)
+        node = uitreenode(parentNode,'Text',name);
+    end
