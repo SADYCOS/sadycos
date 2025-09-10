@@ -21,3 +21,9 @@ if strcmp(choice, 'Selected')
         return;
     end
 end
+
+
+%% ================= TREE SELECTION UI =================
+function selectedStruct = treeSelectionUI(data)
+% Create UI figure
+fig = uifigure('Name','Select Fields to Save','Position',[100 100 500 500]);
