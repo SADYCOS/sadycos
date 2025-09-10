@@ -40,6 +40,27 @@ end
 
 
 %% Build tree nodes recursively
-    function buildTree(parentNode, data, name)
-        node = uitreenode(parentNode,'Text',name);
+function buildTree(parentNode, data, name)
+node = uitreenode(parentNode,'Text',name);
+
+% Determine if data is struct or object
+if isstruct(data)
+    fields = fieldnames(data);
+elseif isobject(data)
+    fields = properties(data);
+else
+    return; % leaf node
+end
+
+
+for k = 1:numel(fields)
+    fname = fields{k};
+    try
+        value = data.(fname);
+    catch
+        continue; % skip inaccessible properties
     end
+    % recursive call
+    buildTree(node, value, fname);
+end
+end
