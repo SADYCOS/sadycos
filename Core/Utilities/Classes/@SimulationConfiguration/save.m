@@ -71,3 +71,8 @@ for k = 1:numel(fields)
     buildTree(node, value, fname);
 end
 end
+
+%% Convert selected nodes back into struct
+function selectedStruct = buildStructFromNodes(data, checkedNodes)
+% Initialize empty struct    
+selectedStruct = struct();
