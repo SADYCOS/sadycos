@@ -86,15 +86,31 @@ else
     return;
 end
 
-
 for k = 1:numel(fields)
     fname = fields{k};
     value = data.(fname);
 
-    % Check if this field is selected
+    % Check if field is empty
     if isempty(checkedNodes) || isa(checkedNodes,'matlab.graphics.GraphicsPlaceholder') 
         isSelected = false; 
     else
         isSelected = any(strcmp({checkedNodes.Text}, fname)); 
     end
+
+    % If field is struct or object, recurse
+    if isstruct(value) || isobject(value) 
+        % recursive call
+        subStruct = buildStructFromNodes(value, checkedNodes);
+        if ~isempty(fieldnames(subStruct))
+            selectedStruct.(fname) = subStruct;
+        elseif isSelected
+            % User only selected the parent node, include entire sub-struct
+            selectedStruct.(fname) = value;
+        end
+    else % Leaf node
+        if isSelected
+            selectedStruct.(fname) = value;
+        end
+    end
+end
     
