@@ -7,8 +7,8 @@ simOut = o.simulation_outputs;
 % Ask user whether to save all or selected
 choice = questdlg('Do you want to save all results or only selected fields?', ...
     'Save Options', ...
-    'All','Selected','All');
-if isempty(choice)
+    'All','Selected', 'Cancel','All');
+if isempty(choice) || strcmp(choice, 'Cancel')
     disp('User canceled saving.');
     return;
 end
@@ -52,8 +52,12 @@ end
         buildTree(t, data, 'simOut');
 
         % Add Save button
-        btn = uibutton(fig,'Text','Confirm Selection','Position',[200 10 120 30], ...
+        confirmbtn = uibutton(fig,'Text','Confirm Selection','Position',[200 10 120 30], ...
             'ButtonPushedFcn', @(~,~) uiresume(fig));
+
+        % Add Cancel button
+        cancelBtn = uibutton(fig,'Text','Cancel','Position',[350 10 100 30], ...
+            'ButtonPushedFcn', @(~,~) delete(fig));
 
         % Wait for user input
         uiwait(fig);
