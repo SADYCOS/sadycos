@@ -49,10 +49,10 @@ end
 
 %% ================= TREE SELECTION UI =================
     function selectedStruct = treeSelectionUI(data)
-         % Initialize return value
+        % Initialize return value
         selectedStruct = [];
 
-        % Initialize flag for user cancellation 
+        % Initialize flag for user cancellation
         userCanceled = false;
 
         % Create UI figure
@@ -60,6 +60,10 @@ end
 
         % Create tree with checkboxes
         t = uitree(fig,'checkbox','Position',[20 50 460 440]);
+
+        % Set up tree event listener for checkbox changes
+        t.CheckedNodesChangedFcn = @(src,event) treeCheckCallback(src,event);
+
         buildTree(t, data, 'simOut');
 
         % Add Save button
@@ -69,7 +73,7 @@ end
         % Add Cancel button
         cancelBtn = uibutton(fig,'Text','Cancel','Position',[350 10 100 30], ...
             'ButtonPushedFcn', @cancelCallback);
-        
+
         % Add close request function to handle X button
         fig.CloseRequestFcn = @cancelCallback;
 
@@ -89,91 +93,121 @@ end
         % Convert tree selection back into structure
         selectedStruct = buildStructFromNodes(data, checkedNodes);
 
-        % Nested callback functions
-        function confirmCallback(~,~)
+        % Nested callback function for confirm button
+        function confirmCallback(src, event)
+            fprintf('=== CONFIRM CALLBACK TRIGGERED ===\n');
+
+            % Use MATLAB's built-in CheckedNodes property
+            if ~isempty(t.CheckedNodes)
+                selectedNodes = t.CheckedNodes;
+                fprintf('Using t.CheckedNodes: %d nodes\n', length(selectedNodes));
+                for i = 1:length(selectedNodes)
+                    fprintf('  - "%s"\n', selectedNodes(i).Text);
+                end
+            else
+                fprintf('t.CheckedNodes is empty, using manual tracking\n');
+                fprintf('Manual tracking has %d nodes\n', length(checkedNodeTexts));
+                selectedNodes = [];
+            end
+
+            fprintf('==================================\n');
+
             userCanceled = false;
             uiresume(fig);
         end
-        
+
+        % Nested callback function for cancel button
         function cancelCallback(~,~)
             userCanceled = true;
             uiresume(fig);
         end
         % Close figure
         delete(fig);
-end
+    end
 
 %% Build tree nodes recursively
-function buildTree(parentNode, data, name)
-node = uitreenode(parentNode,'Text',name);
+    function buildTree(parentNode, data, name)
+        node = uitreenode(parentNode,'Text',name);
 
-% Determine if data is struct or object
-if isstruct(data)
-    fields = fieldnames(data);
-elseif isobject(data)
-    fields = properties(data);
-else
-    return; % leaf node
-end
+        % Determine if data is struct or object
+        if isstruct(data)
+            fields = fieldnames(data);
+        elseif isobject(data)
+            fields = properties(data);
+        else
+            return; % leaf node
+        end
 
 
-for k = 1:numel(fields)
-    fname = fields{k};
-    try
-        value = data.(fname);
-    catch
-        continue; % skip inaccessible properties
+        for k = 1:numel(fields)
+            fname = fields{k};
+            try
+                value = data.(fname);
+            catch
+                continue; % skip inaccessible properties
+            end
+            % recursive call
+            buildTree(node, value, fname);
+        end
     end
-    % recursive call
-    buildTree(node, value, fname);
-end
-end
 
 %% Convert selected nodes back into struct
-function selectedStruct = buildStructFromNodes(data, checkedNodes)
-% Initialize empty struct
-selectedStruct = struct();
+    function selectedStruct = buildStructFromNodes(data, checkedNodes)
+        % Initialize empty struct
+        selectedStruct = struct();
 
-% Determine if data is struct or object
-if isstruct(data)
-    fields = fieldnames(data);
-elseif isobject(data)
-    fields = properties(data);
-else
-    return;
-end
-
-for k = 1:numel(fields)
-    fname = fields{k};
-    try
-    value = data.(fname);
-    catch
-        warning('Could not access field/property %s', fname);
-        continue; % skip inaccessible properties
-    end
-
-    % Check if field is empty
-    if isempty(checkedNodes) || isa(checkedNodes,'matlab.graphics.GraphicsPlaceholder')
-        isSelected = false;
-    else
-        isSelected = any(strcmp({checkedNodes.Text}, fname));
-    end
-
-    % If field is struct or object, recurse
-    if isstruct(value) || isobject(value)
-        % recursive call
-        subStruct = buildStructFromNodes(value, checkedNodes);
-        if ~isempty(fieldnames(subStruct))
-            selectedStruct.(fname) = subStruct;
-        elseif isSelected
-            % User only selected the parent node, include entire sub-struct
-            selectedStruct.(fname) = value;
+        % DEBUG: Zeigen Sie an, was ausgewählt wurde
+        fprintf('=== DEBUG buildStructFromNodes ===\n');
+        if ~isempty(checkedNodes)
+            fprintf('Selected nodes:\n');
+            for i = 1:length(checkedNodes)
+                fprintf('  %d: "%s"\n', i, checkedNodes(i).Text);
+            end
+        else
+            fprintf('No nodes selected!\n');
         end
-    else % Leaf node
-        if isSelected
-            selectedStruct.(fname) = value;
+        fprintf('==================================\n');
+
+        % Determine if data is struct or object
+        if isstruct(data)
+            fields = fieldnames(data);
+        elseif isobject(data)
+            fields = properties(data);
+        else
+            return;
+        end
+
+        for k = 1:numel(fields)
+            fname = fields{k};
+            try
+                value = data.(fname);
+            catch
+                warning('Could not access field/property %s', fname);
+                continue; % skip inaccessible properties
+            end
+
+            % Check if field is empty
+            if isempty(checkedNodes) || isa(checkedNodes,'matlab.graphics.GraphicsPlaceholder')
+                isSelected = false;
+            else
+                isSelected = any(strcmp({checkedNodes.Text}, fname));
+            end
+
+            % If field is struct or object, recurse
+            if isstruct(value) || isobject(value)
+                % recursive call
+                subStruct = buildStructFromNodes(value, checkedNodes);
+                if ~isempty(fieldnames(subStruct))
+                    selectedStruct.(fname) = subStruct;
+                elseif isSelected
+                    % User only selected the parent node, include entire sub-struct
+                    selectedStruct.(fname) = value;
+                end
+            else % Leaf node
+                if isSelected
+                    selectedStruct.(fname) = value;
+                end
+            end
         end
     end
-end
-end
 end
