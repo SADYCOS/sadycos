@@ -17,7 +17,7 @@ end
 if strcmp(choice, 'Selected')
     simOut = treeSelectionUI(simOut);
     if isempty(simOut)
-        disp('No fields selected. Aborting save.');
+        disp('No fields selected or operation canceled. Aborting save.');
         return;
     end
 end
@@ -44,6 +44,12 @@ end
 
 %% ================= TREE SELECTION UI =================
     function selectedStruct = treeSelectionUI(data)
+         % Initialize return value
+        selectedStruct = [];
+
+        % Initialize flag for user cancellation 
+        userCanceled = false;
+
         % Create UI figure
         fig = uifigure('Name','Select Fields to Save','Position',[100 100 500 500]);
 
@@ -53,14 +59,24 @@ end
 
         % Add Save button
         confirmbtn = uibutton(fig,'Text','Confirm Selection','Position',[200 10 120 30], ...
-            'ButtonPushedFcn', @(~,~) uiresume(fig));
+            'ButtonPushedFcn', @confirmCallback);
 
         % Add Cancel button
         cancelBtn = uibutton(fig,'Text','Cancel','Position',[350 10 100 30], ...
-            'ButtonPushedFcn', @(~,~) delete(fig));
+            'ButtonPushedFcn', @cancelCallback);
+        
+        % Add close request function to handle X button
+        fig.CloseRequestFcn = @cancelCallback;
 
         % Wait for user input
         uiwait(fig);
+
+        % Check if user canceled
+        if userCanceled
+            selectedStruct = [];
+            delete(fig);
+            return;
+        end
 
         % Collect selected nodes
         checkedNodes = findobj(t,'Checked','on');
@@ -68,6 +84,16 @@ end
         % Convert tree selection back into structure
         selectedStruct = buildStructFromNodes(data, checkedNodes);
 
+        % Nested callback functions
+        function confirmCallback(~,~)
+            userCanceled = false;
+            uiresume(fig);
+        end
+        
+        function cancelCallback(~,~)
+            userCanceled = true;
+            uiresume(fig);
+        end
         % Close figure
         delete(fig);
 end
