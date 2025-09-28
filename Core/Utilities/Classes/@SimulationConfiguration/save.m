@@ -1,4 +1,4 @@
-function save(o)
+function save(obj, o)
 
 % SAVE SIMULATION RESULTS with tree-based selection
 

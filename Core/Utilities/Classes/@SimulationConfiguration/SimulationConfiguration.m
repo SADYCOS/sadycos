@@ -45,7 +45,9 @@ classdef (Abstract) SimulationConfiguration < handle
 
         % Execute Simulations
         run(obj, use_parsim)
-    
+
+        % Save selected elements to .mat file
+        save(obj, o)
     end
 
     methods (Access = private, Sealed)
@@ -144,7 +146,7 @@ classdef (Abstract) SimulationConfiguration < handle
                             LogPlantDynamics, ...
                             LogPlantOutput,...
                             LogGncAlgorithms, ...
-                            Parameters)
+                            Parameters)              
     end
 
     % Defined in this class but can be overwritten
