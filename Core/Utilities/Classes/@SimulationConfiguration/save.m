@@ -2,6 +2,11 @@ function save(obj, o)
 
 % SAVE SIMULATION RESULTS with tree-based selection
 
+arguments
+    obj (1,1) SimulationConfiguration  
+    o (1,1)                            
+end
+
 simOut = o.simulation_outputs;
 
 % Ask user whether to save all or selected
