@@ -3,11 +3,12 @@ function save(obj, o)
 % SAVE SIMULATION RESULTS with tree-based selection
 
 arguments
-    obj (1,1) SimulationConfiguration  % Must be single SimulationConfiguration object
-    o (1,1)                           % Must be single element (struct or object)
+    obj (1,1) SimulationConfiguration  
+    o (1,1)                           
 end
 
 simOut = o.simulation_outputs;
+o_struct = struct(o); % Convert to struct for saving
 
 % Ask user whether to save all or selected
 choice = questdlg('Do you want to save all results or only selected fields?', ...
@@ -40,16 +41,20 @@ filename = fullfile(folder, ['simOut_' timestamp '.mat']);
 
 % Save
 try
-    save(filename, 'simOut');
-    fprintf('Simulation results successfully saved to %s\n', filename);
+    if strcmp(choice, 'All')
+        save(filename, 'o_struct');
+    else
+        save(filename, 'simOut');
+    end
+    fprintf('Simulation data successfully saved to %s\n', filename);
 catch ME
-    warning('Failed to save simulation results: %s', ME.message);
+    warning('Failed to save simulation data: %s', ME.message);
 end
 
 
 %% ================= TREE SELECTION UI =================
     function selectedStruct = treeSelectionUI(data)
-        
+
         selectedStruct = []; % Initialize return value
         userCanceled = false; % Flag to track if user canceled
         selectedNodes = [];  % Store selected nodes
@@ -181,189 +186,13 @@ end
 
 %% Convert selected nodes back into struct using node texts
     function selectedStruct = buildStructFromNodeTexts(data, checkedNodeTexts)
-        % Initialize return value
-        selectedStruct = [];
+        % Initialize empty struct
+        selectedStruct = struct();
 
         % Return empty if no selection
         if isempty(checkedNodeTexts)
             return;
         end
-
-        % Handle different data types
-        if isstruct(data)
-            % Initialize empty struct
-            selectedStruct = struct();
-            fields = fieldnames(data);
-
-            for k = 1:numel(fields)
-                fname = fields{k};
-                try
-                    value = data.(fname);
-                catch
-                    continue; % skip inaccessible properties
-                end
-
-                % Check if field is selected
-                isSelected = checkIfSelected(fname, checkedNodeTexts);
-
-                % Process field based on its type
-                if iscell(value)
-                    % Handle cell array
-                    cellResult = processCellArray(value, fname, checkedNodeTexts, isSelected);
-                    if ~isempty(cellResult)
-                        selectedStruct.(fname) = cellResult;
-                    end
-                elseif isstruct(value) || isobject(value)
-                    % Handle struct/object recursively
-                    subStruct = buildStructFromNodeTexts(value, checkedNodeTexts);
-                    if ~isempty(subStruct) && ((isstruct(subStruct) && ~isempty(fieldnames(subStruct))) || (~isstruct(subStruct)))
-                        selectedStruct.(fname) = subStruct;
-                    elseif isSelected
-                        % User selected the parent node, include entire sub-struct/object
-                        selectedStruct.(fname) = value;
-                    end
-                else % Leaf node
-                    if isSelected
-                        selectedStruct.(fname) = value;
-                    end
-                end
-            end
-
-        elseif isobject(data)
-            % Handle object similar to struct
-            selectedStruct = struct();
-            fields = properties(data);
-
-            for k = 1:numel(fields)
-                fname = fields{k};
-                try
-                    value = data.(fname);
-                catch
-                    continue; % skip inaccessible properties
-                end
-
-                % Check if field is selected
-                isSelected = checkIfSelected(fname, checkedNodeTexts);
-
-                % Process field based on its type
-                if iscell(value)
-                    % Handle cell array
-                    cellResult = processCellArray(value, fname, checkedNodeTexts, isSelected);
-                    if ~isempty(cellResult)
-                        selectedStruct.(fname) = cellResult;
-                    end
-                elseif isstruct(value) || isobject(value)
-                    % Handle struct/object recursively
-                    subStruct = buildStructFromNodeTexts(value, checkedNodeTexts);
-                    if ~isempty(subStruct) && ((isstruct(subStruct) && ~isempty(fieldnames(subStruct))) || (~isstruct(subStruct)))
-                        selectedStruct.(fname) = subStruct;
-                    elseif isSelected
-                        % User selected the parent node, include entire sub-struct/object
-                        selectedStruct.(fname) = value;
-                    end
-                else % Leaf node
-                    if isSelected
-                        selectedStruct.(fname) = value;
-                    end
-                end
-            end
-
-        elseif iscell(data)
-            % If the root is a cell array, return selected elements
-            selectedStruct = {};
-            for k = 1:numel(data)
-                cellName = sprintf('{%d}', k);
-                if checkIfSelected(cellName, checkedNodeTexts)
-                    selectedStruct{k} = data{k};
-                else
-                    % Check if any sub-elements are selected
-                    subResult = buildStructFromNodeTexts(data{k}, checkedNodeTexts);
-                    if ~isempty(subResult)
-                        selectedStruct{k} = subResult;
-                    end
-                end
-            end
-            % Remove empty cells
-            selectedStruct = selectedStruct(~cellfun(@isempty, selectedStruct));
-
-        else
-            % Leaf data - check if selected
-            if any(contains(checkedNodeTexts, 'root')) % or other appropriate check
-                selectedStruct = data;
-            end
-        end
-
-        % Helper function to check if a field is selected
-        function isSelected = checkIfSelected(fieldName, nodeTexts)
-            isSelected = false;
-
-            % Strategy 1: Exact name match
-            if any(strcmp(nodeTexts, fieldName))
-                isSelected = true;
-                return;
-            end
-
-            % Strategy 2: Check if any node text ends with this field name
-            for nodeIdx = 1:length(nodeTexts)
-                nodeText = nodeTexts{nodeIdx};
-                if endsWith(nodeText, fieldName) || endsWith(nodeText, ['.' fieldName])
-                    isSelected = true;
-                    return;
-                end
-            end
-        end
-
-        % Helper function to process cell arrays
-        function cellResult = processCellArray(cellData, baseName, nodeTexts, parentSelected)
-            cellResult = {};
-            hasSelectedElements = false;
-
-            for cellIdx = 1:numel(cellData)
-                cellName = sprintf('%s{%d}', baseName, cellIdx);
-
-                % Check if this specific cell element is selected
-                if checkIfSelected(cellName, nodeTexts)
-                    cellResult{cellIdx} = cellData{cellIdx};
-                    hasSelectedElements = true;
-                else
-                    % Check if any sub-elements of this cell are selected
-                    if isstruct(cellData{cellIdx}) || isobject(cellData{cellIdx})
-                        subResult = buildStructFromNodeTexts(cellData{cellIdx}, nodeTexts);
-                        if ~isempty(subResult) && ((isstruct(subResult) && ~isempty(fieldnames(subResult))) || (~isstruct(subResult)))
-                            cellResult{cellIdx} = subResult;
-                            hasSelectedElements = true;
-                        end
-                    end
-                end
-            end
-
-            % If parent was selected but no individual elements, include all
-            if parentSelected && ~hasSelectedElements
-                cellResult = cellData;
-            elseif ~hasSelectedElements
-                cellResult = {};
-            end
-        end
-    end
-
-
-%% Convert selected nodes back into struct
-    function selectedStruct = buildStructFromNodes(data, checkedNodes)
-        % Initialize empty struct
-        selectedStruct = struct();
-
-        % DEBUG: Show what was selected
-        fprintf('=== DEBUG buildStructFromNodes ===\n');
-        if ~isempty(checkedNodes)
-            fprintf('Selected nodes (%d total):\n', length(checkedNodes));
-            for i = 1:length(checkedNodes)
-                fprintf('  %d: "%s"\n', i, checkedNodes(i).Text);
-            end
-        else
-            fprintf('No nodes selected!\n');
-            return;
-        end
-        fprintf('==================================\n');
 
         % Determine if data is struct or object
         if isstruct(data)
@@ -371,37 +200,31 @@ end
         elseif isobject(data)
             fields = properties(data);
         else
-            fprintf('Data is neither struct nor object, returning empty\n');
             return;
         end
-
-        fprintf('Processing %d fields from data\n', length(fields));
 
         for k = 1:numel(fields)
             fname = fields{k};
             try
                 value = data.(fname);
             catch
-                warning('Could not access field/property %s', fname);
                 continue; % skip inaccessible properties
             end
 
-            % Check if field is selected - try multiple matching strategies
+            % Check if field is selected by matching node texts
             isSelected = false;
 
             % Strategy 1: Exact name match
-            if any(strcmp({checkedNodes.Text}, fname))
+            if any(strcmp(checkedNodeTexts, fname))
                 isSelected = true;
-                fprintf('Field "%s" selected (exact match)\n', fname);
             end
 
             % Strategy 2: Check if any node text ends with this field name
             if ~isSelected
-                for nodeIdx = 1:length(checkedNodes)
-                    nodeText = checkedNodes(nodeIdx).Text;
+                for nodeIdx = 1:length(checkedNodeTexts)
+                    nodeText = checkedNodeTexts{nodeIdx};
                     if endsWith(nodeText, fname) || endsWith(nodeText, ['.' fname])
                         isSelected = true;
-                        fprintf('Field "%s" selected (partial match with "%s")\n', fname, nodeText);
                         break;
                     end
                 end
@@ -409,26 +232,19 @@ end
 
             % If field is struct or object, recurse
             if isstruct(value) || isobject(value)
-                fprintf('Recursing into field "%s"\n', fname);
                 % recursive call
-                subStruct = buildStructFromNodes(value, checkedNodes);
+                subStruct = buildStructFromNodeTexts(value, checkedNodeTexts);
                 if ~isempty(fieldnames(subStruct))
                     selectedStruct.(fname) = subStruct;
-                    fprintf('Added subStruct for field "%s"\n', fname);
                 elseif isSelected
                     % User selected the parent node, include entire sub-struct
                     selectedStruct.(fname) = value;
-                    fprintf('Added entire substruct for selected parent "%s"\n', fname);
                 end
             else % Leaf node
                 if isSelected
                     selectedStruct.(fname) = value;
-                    fprintf('Added leaf field "%s"\n', fname);
                 end
             end
         end
-
-        fprintf('Final selectedStruct has %d fields\n', length(fieldnames(selectedStruct)));
     end
-
 end
