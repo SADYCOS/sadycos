@@ -45,6 +45,9 @@ classdef (Abstract) SimulationConfiguration < handle
 
         % Execute Simulations
         run(obj, use_parsim)
+
+        % Save Simulation
+        saveSimulation(o)
     
     end
 
