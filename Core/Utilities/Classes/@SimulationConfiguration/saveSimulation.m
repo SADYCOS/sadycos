@@ -1,5 +1,5 @@
 function saveSimulation(o)
-    
+
 % Save the entire SimulationConfiguration object 'o'
 % to a .mat file in the current working directory
 
@@ -24,5 +24,5 @@ try
     save(filename, 'o');
     fprintf('Simulation data successfully saved to %s\n', filename);
 catch ME
-    warning('Failed to save simulation data: %s', ME.message);
+    warning(ME.identifier, 'Failed to save simulation data: %s', ME.message);
 end
