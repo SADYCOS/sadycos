@@ -19,7 +19,7 @@ if ~exist(save_path, 'dir')
 end
 
 % Create timestamp string and filename
-timestamp = datestr(now, 'ddmmyyyy_HHMMSS');
+timestamp = char(datetime('now', 'Format', 'yyyy-MM-dd_HHmmss'));
 filename = fullfile(save_path, ['o_' timestamp '.mat']);
 
 % Save selected file to the specified location
