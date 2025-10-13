@@ -30,7 +30,7 @@ if userChoosePath
         end
 
     else
-        warning('Save operation cancelled by user.');
+        fprintf('Save operation cancelled by user.');
     end
 
 else
