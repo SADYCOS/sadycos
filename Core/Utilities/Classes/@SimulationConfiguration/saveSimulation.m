@@ -12,45 +12,32 @@ end
 save_path = fullfile(pwd, 'saved_simulations');
 
 if userChoosePath
-    % Open a dialog for the user to select a directory
+    % Open dialog for user to select directory
     selected_path = uigetdir(pwd, 'Select Directory to Save Simulation Data');
-    if selected_path ~= 0  % Check if the user did not cancel
-        save_path = selected_path;
 
-        % Create timestamp string and filename
-        timestamp = char(datetime('now', 'Format', 'yyyy-MM-dd_HHmmss'));
-        filename = fullfile(save_path, ['sadycos_' timestamp '.mat']);
-
-        % Save file to selected path
-        try
-            save(filename, 'obj');
-            fprintf('Simulation data successfully saved to %s\n', filename);
-        catch ME
-            warning(ME.identifier, 'Failed to save simulation data: %s', ME.message);
-        end
-
-    else
-        fprintf('Save operation cancelled by user.');
+    if selected_path == 0  % User cancelled
+        fprintf('Save operation cancelled by user.\n');
+        return;
     end
 
+    save_path = selected_path;
 else
-    % Create directory if it doesn't exist
+    % Create default directory if it doesn't exist
     if ~exist(save_path, 'dir')
         mkdir(save_path);
     end
-
-    % Create timestamp string and filename
-    timestamp = char(datetime('now', 'Format', 'yyyy-MM-dd_HHmmss'));
-    filename = fullfile(save_path, ['sadycos_' timestamp '.mat']);
-
-    % Save file to  default path
-    try
-        save(filename, 'obj');
-        fprintf('Simulation data successfully saved to %s\n', filename);
-    catch ME
-        warning(ME.identifier, 'Failed to save simulation data: %s', ME.message);
-    end
-
-end
 end
 
+% Create timestamp and filename
+timestamp = char(datetime('now', 'Format', 'yyyy-MM-dd_HHmmss'));
+filename = fullfile(save_path, ['sadycos_' timestamp '.mat']);
+
+% Save file
+try
+    save(filename, 'obj');
+    fprintf('Simulation data successfully saved to:\n  %s\n', filename);
+catch ME
+    warning(ME.identifier, 'Failed to save simulation data: %s', ME.message);
+end
+
+end
