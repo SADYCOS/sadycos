@@ -1,11 +1,14 @@
-function saveSimulation(o)
+function saveSimulation(obj)
 
 % Save the entire SimulationConfiguration object 'o'
 % to a .mat file in the current working directory
 
 arguments
-    o SimulationConfiguration  % Ensure the input is of type SimulationConfiguration
+    obj (1,1) SimulationConfiguration  % Ensure the input is of type SimulationConfiguration
 end
+
+% Assign the object to variable 'o' for saving 
+o = obj;
 
 % Define the save path
 save_path = fullfile(pwd, 'saved_simulations');
