@@ -8,6 +8,9 @@ arguments
     userChoosePath (1,1) logical = false % Optional argument to let user choose path
 end
 
+% Rename obj
+simulationConfiguration = obj;
+
 % Define default save path
 save_path = fullfile(pwd, 'saved_simulations');
 
@@ -34,7 +37,7 @@ filename = fullfile(save_path, ['sadycos_' timestamp '.mat']);
 
 % Save file
 try
-    save(filename, 'obj');
+    save(filename, 'simulationConfiguration');
     fprintf('Simulation data successfully saved to:\n  %s\n', filename);
 catch ME
     warning(ME.identifier, 'Failed to save simulation data: %s', ME.message);
