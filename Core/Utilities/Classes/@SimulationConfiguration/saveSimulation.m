@@ -38,9 +38,9 @@ filename = fullfile(save_path, ['sadycos_' timestamp '.mat']);
 % Save file
 try
     save(filename, 'simulationConfiguration');
-    fprintf('Simulation data successfully saved to:\n  %s\n', filename);
+    fprintf('Simulation configuration successfully saved to:\n  %s\n', filename);
 catch ME
-    warning(ME.identifier, 'Failed to save simulation data: %s', ME.message);
+    warning(ME.identifier, 'Failed to save simulation configuration: %s', ME.message);
 end
 
 end
