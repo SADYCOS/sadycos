@@ -9,3 +9,6 @@
 [submodule "Core/ModelsLibrary/Environment/EarthAtmosphere/Nrlmsise00/c_code/nrlmsise-00"]
 	path = Core/ModelsLibrary/Environment/EarthAtmosphere/Nrlmsise00/c_code/nrlmsise-00
 	url = https://git.linta.de/~brodo/nrlmsise-00.git/
+[submodule "Core/ModelsLibrary/Environment/EarthAtmosphere/hwm14/hwm14_lgpedersen"]
+	path = Core/ModelsLibrary/Environment/EarthAtmosphere/hwm14/hwm14_lgpedersen
+	url = https://github.com/lgpedersen/hwm14
