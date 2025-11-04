@@ -12,3 +12,6 @@
 [submodule "Core/ModelsLibrary/Environment/EarthAtmosphere/hwm14/hwm14_lgpedersen"]
 	path = Core/ModelsLibrary/Environment/EarthAtmosphere/hwm14/hwm14_lgpedersen
 	url = https://github.com/lgpedersen/hwm14
+[submodule "Core/ModelsLibrary/Environment/EarthAtmosphere/hwm14/hwm14_gemini3d"]
+	path = Core/ModelsLibrary/Environment/EarthAtmosphere/hwm14/hwm14_gemini3d
+	url = https://github.com/gemini3d/hwm14
