@@ -41,6 +41,7 @@ classdef ParameterCreator < handle
                 NameValueArgs.enable_pacing (1,1) logical = false
                 NameValueArgs.pacing_rate (1,1) double {mustBePositive, mustBeFinite} = 1
                 NameValueArgs.enable_send_sim_data (1,1) logical = false
+                NameValueArgs.send_sim_data_sample_time_parameter__s (1,2) double {mustBeValidSampleTimeParameter} = [0.1, 0]
                 NameValueArgs.enable_stop_criterion (1,1) logical = false 
             end
 
@@ -57,6 +58,8 @@ classdef ParameterCreator < handle
             obj.SampleTimeParameters__s.GncAlgorithms = NameValueArgs.gnc_algorithms_sample_time_parameter__s;
             obj.is_discrete.GncAlgorithms = ParameterCreator.isDiscreteSampleTimeParameter(obj.SampleTimeParameters__s.GncAlgorithms);   
 
+            obj.SampleTimeParameters__s.SendSimData = NameValueArgs.send_sim_data_sample_time_parameter__s;
+            
             obj.simulation_duration__s = NameValueArgs.simulation_duration__s;
             obj.simulation_mode = NameValueArgs.simulation_mode;
             obj.enable_pacing = NameValueArgs.enable_pacing;
