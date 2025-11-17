@@ -9,12 +9,9 @@ subroutine mexFunction(nlhs, plhs, nrhs, prhs)
   mwPointer            :: plhs(*), prhs(*)
 
 ! function declarations out of the MEX_API
-  mwPointer            :: mxGetPr
-  mwPointer            :: mxCreateDoubleMatrix
-  mwPointer            :: mxGetNumberOfElements
-  real*8               :: mxGetScalar
-  external             :: mxGetPr, mxCreateDoubleMatrix
-  external             :: mxGetNumberOfElements, mxGetScalar
+  mwPointer :: mxGetPr, mxCreateDoubleMatrix
+  double precision :: mxGetScalar
+  external :: mxGetPr, mxCreateDoubleMatrix, mxGetScalar
 
 ! local variables
   integer          :: dayOfYear
