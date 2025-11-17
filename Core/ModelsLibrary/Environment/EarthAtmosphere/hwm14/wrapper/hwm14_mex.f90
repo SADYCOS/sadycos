@@ -54,3 +54,15 @@ tmp       = mxGetScalar(prhs(6));  Ap        = tmp
 
 ! --- Call HWM14 via the interface module ---
   call hwm_14(dayOfYear, UTsec, alt_km, glat, glon, Ap, Wmer, Wzon)
+
+
+! --- Prepare MATLAB output ---
+w_out(1) = Wmer
+w_out(2) = Wzon
+
+plhs(1) = mxCreateDoubleMatrix(1, 2, 0)   ! 1x2 real*8 (double)
+out_ptr = mxGetPr(plhs(1))
+call mxCopyReal8ToPtr(w_out, out_ptr, 2)
+
+return
+end subroutine mexFunction
