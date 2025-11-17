@@ -50,3 +50,7 @@ tmp       = mxGetScalar(prhs(3));  alt_km    = tmp
 tmp       = mxGetScalar(prhs(4));  glat      = tmp
 tmp       = mxGetScalar(prhs(5));  glon      = tmp
 tmp       = mxGetScalar(prhs(6));  Ap        = tmp
+
+
+! --- Call HWM14 via the interface module ---
+  call hwm_14(dayOfYear, UTsec, alt_km, glat, glon, Ap, Wmer, Wzon)
