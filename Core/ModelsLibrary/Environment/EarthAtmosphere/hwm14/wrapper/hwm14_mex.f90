@@ -15,3 +15,11 @@ subroutine mexFunction(nlhs, plhs, nrhs, prhs)
   real*8               :: mxGetScalar
   external             :: mxGetPr, mxCreateDoubleMatrix
   external             :: mxGetNumberOfElements, mxGetScalar
+
+! local variables
+  integer          :: dayOfYear
+  real(real64)     :: UTsec, alt_km, glat, glon, Ap
+  real(real64)     :: Wmer, Wzon
+  double precision :: tmp
+  mwPointer        :: out_ptr
+  double precision :: w_out(2)
