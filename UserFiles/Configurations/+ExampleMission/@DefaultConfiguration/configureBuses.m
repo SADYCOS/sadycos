@@ -98,9 +98,15 @@ elems = [simpleBusElement('acceleration_BI_I__m_per_s2', 3), ...
 
 busesInfoCreator.setBusByElements('RigidBodyAccelerations', elems);
 
+% Reaction Wheels
+elems = [simpleBusElement("motor_torques__N_m", 3)];
+
+busesInfoCreator.setBusByElements('ReactionWheelsFeedthrough', elems);
+
 % Top-Level Bus
 
-elems = simpleBusElement('RigidBodyAccelerations', 1, 'Bus: RigidBodyAccelerations');
+elems = [simpleBusElement('RigidBodyAccelerations', 1, 'Bus: RigidBodyAccelerations'), ...
+            simpleBusElement('ReactionWheels', 1, 'Bus: ReactionWheelsFeedthrough')];
 
 busesInfoCreator.setBusByElements('PlantFeedthrough', elems);
 
@@ -248,7 +254,7 @@ elems = [simpleBusElement('ActuatorsCommands', 1, 'Bus: ActuatorsCommands'), ...
             simpleBusElement('reference_frame_attitude_quaternion_RI', 4, 'double'), ...
             simpleBusElement('reference_angular_velocity_RI_B__rad_per_s', 3, 'double'), ...
             simpleBusElement('error_quaternion_RB', 4, 'double'), ...
-            simpleBusElement('angular_velocity_error_RB_B', 3, 'double')];
+            simpleBusElement('angular_velocity_error_RB_B__rad_per_s', 3, 'double')];
 
 busesInfoCreator.setBusByElements('LogGncAlgorithms', elems);
 

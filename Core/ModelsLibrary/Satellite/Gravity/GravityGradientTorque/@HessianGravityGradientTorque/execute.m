@@ -1,7 +1,7 @@
 function gravity_gradient_torque_BI_B__Nm...
                 = execute(attitude_quaternion_BI,...
                             gravity_hessian_I__1_per_s2, ...
-                            paramsHessianGravityTorque)
+                            inertia_B__kg_m2)
 %% HessianGravityGradient - Calculate gravity gradient torque in body
 %  frame using a given hessian of the gravity potential
 %
@@ -15,8 +15,7 @@ function gravity_gradient_torque_BI_B__Nm...
 %       body frame
 %   gravity_hessian_I__1_per_s2: 3x3 hessian of the gravity potential 
 %       at body position in inertial frame
-%   paramsHessianGravityTorque: Structure containing parameters for general
-%       gravity gradient model
+%   inertia_B__kg_m2: 3x3 inertia matrix of the spacecraft in body frame
 %
 %   Outputs:
 %   gravity_gradient_torque_BI_B__Nm: 3x1 vector of gravity gradient torque
@@ -26,7 +25,7 @@ function gravity_gradient_torque_BI_B__Nm...
 arguments
     attitude_quaternion_BI (4,1) {mustBeNumeric, mustBeReal, smu.argumentValidation.mustBeUnitQuaternion}
     gravity_hessian_I__1_per_s2 (3,3) {mustBeNumeric, mustBeReal} 
-    paramsHessianGravityTorque
+    inertia_B__kg_m2 (3,3) {mustBeNumeric, mustBeReal}
 end
 
 %% References
@@ -35,8 +34,7 @@ end
 % Gravity Gradient Torque and Magnetic Field: Derivation, Code and Data,” 
 % 1993, pp. 21–23.
 
-inertia_B = paramsHessianGravityTorque.inertia_B__kg_m2;
-I = inertia_B;
+I = inertia_B__kg_m2;
 
 dcm_BI = smu.unitQuat.att.toDcm(attitude_quaternion_BI);
 
