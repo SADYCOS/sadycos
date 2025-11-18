@@ -84,7 +84,7 @@ parameter_creator.addModel("Environment", Igrf(mjd0, simulation_duration__s, mag
 
 % Mechanics
 mass__kg = 2;
-inertia_B_B__kg_m2 = 1*diag([1,1,1]);
+inertia_B_B__kg_m2 = 1*diag([1,2,3]);
 parameter_creator.addModel("Plant", RigidBodyMechanics(mass__kg, inertia_B_B__kg_m2));
 
 % Aerodynamics
@@ -118,6 +118,7 @@ parameter_creator.addModel("Plant", SimplifiedVleoAerodynamics(obj_files, ...
 
 % Gravity
 parameter_creator.addModel("Plant", ForceFromAcceleration(mass__kg));
+parameter_creator.addModel("Plant", HessianGravityGradientTorque(inertia_B_B__kg_m2));
 
 % Reaction Wheels
 reaction_wheels_spin_directions_B = eye(3);

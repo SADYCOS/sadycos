@@ -19,6 +19,7 @@ rw_angular_velocities__rad_per_s = PlantStates.ReactionWheels.angular_velocities
 
 % Environment Conditions
 gravitational_acceleration_I__m_per_s2 = EnvironmentConditions.EarthGravitationalField.gravitational_acceleration_I__m_per_s2;
+gravitational_hessian_I__1_per_s2 = EnvironmentConditions.EarthGravitationalField.gravitational_hessian_I__1_per_s2;
 atmosphere_mass_density__kg_per_m3 = EnvironmentConditions.EarthAtmosphere.mass_density__kg_per_m3;
 atmosphere_number_density__1_per_m3 = EnvironmentConditions.EarthAtmosphere.number_density__1_per_m3;
 atmosphere_temperature__K = EnvironmentConditions.EarthAtmosphere.temperature__K;
@@ -33,6 +34,10 @@ rw_torque_commands__N_m = ActuatorsOutputs.ReactionWheels.torque_commands__N_m;
 % Gravity
 gravitational_force_I__N = ForceFromAcceleration.execute(gravitational_acceleration_I__m_per_s2, ...
                                                             ParametersPlant.ForceFromAcceleration);
+
+gravity_gradient_torque_BI_B__Nm = HessianGravityGradientTorque.execute(attitude_quaternion_BI,...
+                                                                        gravitational_hessian_I__1_per_s2, ...
+                                                                        ParametersPlant.HessianGravityGradientTorque);
 
 % Aerodynamics
 [aerodynamic_force_B__N, aerodynamic_torque_B__Nm] ...
@@ -63,7 +68,7 @@ magnetic_torque_B__N_m = MagneticDipoleTorque.execute(magnetic_dipole_moment_B__
 
 %% Sum forces and torques
 net_force_I__N = gravitational_force_I__N + aerodynamic_force_I__N;
-net_torque_B__N_m = aerodynamic_torque_B__Nm + magnetic_torque_B__N_m + reaction_torque_B__N_m + gyroscopic_torque_B__N_m;
+net_torque_B__N_m = gravity_gradient_torque_BI_B__Nm + aerodynamic_torque_B__Nm + magnetic_torque_B__N_m + reaction_torque_B__N_m + gyroscopic_torque_B__N_m;
 
 %% Mechanics
 % Rigid Body
@@ -96,6 +101,7 @@ LogPlantDynamics.PlantStates = PlantStates;
 LogPlantDynamics.Forces.net_force_I__N = net_force_I__N;
 LogPlantDynamics.Forces.gravitational_force_I__N = gravitational_force_I__N;
 LogPlantDynamics.Forces.aerodynamic_force_B__N = aerodynamic_force_B__N;
+LogPlantDynamics.Torques.gravity_gradient_torque_BI_B__Nm = gravity_gradient_torque_BI_B__Nm;
 LogPlantDynamics.Torques.net_torque_B__N_m = net_torque_B__N_m;
 LogPlantDynamics.Torques.aerodynamic_torque_B__Nm = aerodynamic_torque_B__Nm;
 LogPlantDynamics.Torques.magnetic_torque_B__N_m = magnetic_torque_B__N_m;

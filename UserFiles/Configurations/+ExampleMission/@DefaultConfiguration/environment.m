@@ -52,6 +52,8 @@ EnvironmentConditions.EarthAtmosphere.number_density__1_per_m3 = number_density_
 % Set output
 EnvironmentConditions.EarthGravitationalField.gravitational_acceleration_I__m_per_s2 ...
     = gravitational_acceleration_I__m_per_s2;
+EnvironmentConditions.EarthGravitationalField.gravitational_hessian_I__1_per_s2 ...
+    = gravitational_hessian_I__1_per_s2;
 
 %% Magnetic Field
 % Call model
