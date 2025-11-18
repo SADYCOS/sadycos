@@ -8,7 +8,7 @@ srcDir = fullfile('Core', 'ModelsLibrary', 'Environment' ,'EarthAtmosphere', 'hw
 wrapperDir = fullfile('Core', 'ModelsLibrary', 'Environment' ,'EarthAtmosphere', 'hwm14', 'wrapper');
 
 % Paths to source files
-ifaceSrc   = fullfile(srcDir,    'hwm14_interface.f90');
+ifaceSrc   = fullfile(srcDir,    'hwm_interface.f90');
 hwmSrc     = fullfile(srcDir,    'hwm14.f90');
 wrapperSrc = fullfile(wrapperDir, 'hwm14_mex.F90');
 
