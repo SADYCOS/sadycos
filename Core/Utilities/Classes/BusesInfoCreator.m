@@ -255,7 +255,7 @@ classdef BusesInfoCreator < handle
 
                         % if dimensions is scalar, convert it to a 1x2 array
                         if isscalar(the_dimensions)
-                            fixed_dimensions = [the_dimensions, 1];
+                            fixed_dimensions = [the_dimensions; 1];
                         else
                             fixed_dimensions = the_dimensions;
                         end
@@ -266,7 +266,7 @@ classdef BusesInfoCreator < handle
                             fixed_data_type = the_data_type;
                         end
 
-                        current_template.(element.Name) = createArray(fixed_dimensions, fixed_data_type);
+                        current_template.(element.Name) = createArray(fixed_dimensions.', fixed_data_type);
                     end
                 end
     
