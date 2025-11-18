@@ -1,0 +1,9 @@
+classdef HessianGravityGradientTorque < ModelBase
+    methods (Static)
+        gravity_gradient_torque_BI_B__Nm...
+                        = execute(attitude_quaternion_BI,...
+                                    gravitational_hessian_I__1_per_s2, ...
+                                    inertia_B__kg_m2)
+
+    end
+end

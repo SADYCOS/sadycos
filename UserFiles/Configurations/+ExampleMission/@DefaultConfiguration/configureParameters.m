@@ -144,7 +144,7 @@ Parameters = parameter_creator.getParameters();
 %% Add Non-Model Parameters
 
 mass__kg = 2;
-inertia_B_B__kg_m2 = 1*diag([1,1,1]);
+inertia_B_B__kg_m2 = 1*diag([1,2,3]);
 
 Parameters.Plant.mass__kg = mass__kg;
 Parameters.Plant.inertia_B_B__kg_m2 = inertia_B_B__kg_m2;
