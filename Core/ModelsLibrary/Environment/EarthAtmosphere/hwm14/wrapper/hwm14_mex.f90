@@ -16,7 +16,7 @@ use hwm_interface, only : hwm_14
 ! function declarations out of the MEX_API
   mwPointer :: mxGetPr, mxCreateDoubleMatrix
   double precision :: mxGetScalar
-  external :: mxGetPr, mxCreateDoubleMatrix, mxGetScalar
+  external :: mxGetPr, mxCreateDoubleMatrix, mxGetScalar, mxCopyReal8ToPtr
   
 
 ! local variables
