@@ -2,8 +2,7 @@ function [gravity_acceleration_I__m_per_s2, ...
           gravity_hessian_I__1_per_s2] ...
                 = execute(position_BI_I__m, ...
                             attitude_quaternion_EI, ...
-                            parametersSphericalHarmonicsGeopotential,...
-                            calcHessian)
+                            parametersSphericalHarmonicsGeopotential)
 % execute - Calculate gravity acceleration and the hessian of the potential 
 % in inertial frame using the spherical harmonics geopotential model
 %
@@ -20,7 +19,6 @@ function [gravity_acceleration_I__m_per_s2, ...
 %       Earth frame
 %   parametersSphericalHarmonicsGeopotential: Structure containing
 %       parameters for spherical harmonics geopotential model
-%   calcHessian: true/false selection of whether the Hessian should be calculated
 %
 %   Outputs:
 %   gravity_acceleration_I__m_per_s2: 3x1 vector of gravity
@@ -32,8 +30,7 @@ function [gravity_acceleration_I__m_per_s2, ...
 arguments
     position_BI_I__m (3,1) {mustBeNumeric, mustBeReal}
     attitude_quaternion_EI (4,1) {mustBeNumeric, mustBeReal, smu.argumentValidation.mustBeUnitQuaternion}
-    parametersSphericalHarmonicsGeopotential 
-    calcHessian (1,1) {boolean}
+    parametersSphericalHarmonicsGeopotential
 end
 %% References
 % [1] O. Montenbruck and G. Eberhard, 
@@ -147,7 +144,7 @@ for n = 0:n_max
 end
 
 %% Calculate the hessian of the gravity potential
-if calcHessian
+if nargout > 1
     for n = 0:n_max
         for m = 0:n
             H_incr = zeros(3,3);
