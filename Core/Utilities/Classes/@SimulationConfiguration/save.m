@@ -1,7 +1,6 @@
-function saveSimulation(obj, userChoosePath)
+function save(obj, userChoosePath)
 
-% Save the entire SimulationConfiguration object
-% to a .mat file in the current working directory
+% Save the entire SimulationConfiguration object to a .mat file
 
 arguments
     obj (1,1) SimulationConfiguration  % Ensure the input is of type SimulationConfiguration

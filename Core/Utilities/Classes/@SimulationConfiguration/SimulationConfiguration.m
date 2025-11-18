@@ -47,7 +47,7 @@ classdef (Abstract) SimulationConfiguration < handle
         run(obj, use_parsim)
 
         % Save Simulation
-        saveSimulation(obj,userChoosePath)
+        save(obj,userChoosePath)
     
     end
 
