@@ -26,7 +26,7 @@ function gravity_gradient_torque_BI_B__Nm = execute(position_BI_I__m,...
 % doi: 10.1007/978-1-4939-0802-8.
 
 % constants
-mu = ParamsSphericalGG.gravitational_parameter_Earth__m3_per_s2;
+mu = ParamsSphericalGG.gravitational_parameter_central_body__m3_per_s2;
 inertia_B = ParamsSphericalGG.inertia_B__kg_m2;
 
 
@@ -36,7 +36,7 @@ position_BI_B__m = smu.unitQuat.att.transformVector(attitude_quaternion_BI,    .
 % Nadir unit vector
 nadir_B = -position_BI_B__m/norm(position_BI_B__m);
 
-% Gravity gradient torque in body frame for spherical Earth
+% Gravity gradient torque in body frame for spherical gravity field of central body
 gravity_gradient_torque_BI_B__Nm = 3 * mu/ norm(position_BI_B__m)^3 ...
                         * cross(nadir_B, inertia_B * nadir_B);
 
