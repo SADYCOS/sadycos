@@ -2,16 +2,22 @@
 
 subroutine mexFunction(nlhs, plhs, nrhs, prhs)
 
+use, intrinsic :: iso_fortran_env, only : real64
+use hwm_interface, only : hwm_14
+
   implicit none
+
 
 ! MEX arguments
   integer              :: nlhs, nrhs
   mwPointer            :: plhs(*), prhs(*)
 
+
 ! function declarations out of the MEX_API
   mwPointer :: mxGetPr, mxCreateDoubleMatrix
   double precision :: mxGetScalar
   external :: mxGetPr, mxCreateDoubleMatrix, mxGetScalar
+  
 
 ! local variables
   integer          :: dayOfYear
