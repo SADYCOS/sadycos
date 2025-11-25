@@ -45,6 +45,26 @@ subroutine mexFunction(nlhs, plhs, nrhs, prhs)
  real*4    :: ap(2), w(2) 
 
 
+! ------------------------------------------------------------
+! Check number of input and output arguments
+! ------------------------------------------------------------
+ ! loop condition syntax:
+ ! .ne.	not equal	
+ ! .eq.	equal	
+ ! .gt.	greater than	
+ ! .lt.	less than	
+ ! .ge.	greater or equal	
+ ! .le.	less or equal 
+ 
+  if (nrhs .ne. 9) then
+   call mexErrMsgTxt('hwm14_mex: Exactly 9 input arguments are required.')
+  endif
+
+  if (nlhs .gt. 1) then
+   call mexErrMsgTxt('hwm14_mex: Only one output argument is allowed.')
+  endif
+
+
 !
 ! MATLAB call signature:
 !   w = hwm14_mex(dayOfYear, UTsec, altitude_km, glat, glon, Ap)
