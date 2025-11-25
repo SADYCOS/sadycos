@@ -15,6 +15,10 @@ subroutine mexFunction(nlhs, plhs, nrhs, prhs)
   external  mxCopyPtrToReal8, mxCopyReal8ToPtr, mexErrMsgTxt
   
 
+! HWM14 routine (defined in hwm14.f90) declaration as external subroutine
+  external  hwm14  
+  
+
 ! local variables
   integer          :: dayOfYear
   real(real64)     :: UTsec, alt_km, glat, glon, Ap
