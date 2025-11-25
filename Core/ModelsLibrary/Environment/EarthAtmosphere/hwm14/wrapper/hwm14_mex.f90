@@ -65,24 +65,61 @@ subroutine mexFunction(nlhs, plhs, nrhs, prhs)
   endif
 
 
-!
-! MATLAB call signature:
-!   w = hwm14_mex(dayOfYear, UTsec, altitude_km, glat, glon, Ap)
-!
-! Returns:
-!   w(1) = meridional wind [m/s]
-!   w(2) = zonal wind [m/s]
-!
+! ------------------------------------------------------------
+! Get input arguments from MATLAB and convert types
+! ------------------------------------------------------------
+! Syntax:
+! prsh(n) pointer to the n-th MATLAB input 
+! mxGetPr(...) delivers pointer to the double data
+! 1. p_xyz points to the location in MATLAB memory where the input data is located 
+! 2. call mxCopyPtrToReal8(source, target variable, number of values) copy the double-values from matlab to fortran
+! 3. xyz = real(d_xyz) for real*4 or xyz = int(d_xyz) for integer*4 convert Fortran double to hwm14 expected data typ
 
+  ! iyd (INTEGER*4)
+   p_iyd = mxGetPr(prhs(1))
+   call mxCopyPtrToReal8(p_iyd, d_iyd, 1)
+   iyd = int(d_iyd)
 
+  ! sec
+   p_sec = mxGetPr(prhs(2))
+   call mxCopyPtrToReal8(p_sec, d_sec, 1)
+   sec = real(d_sec)
 
-! --- Read MATLAB scalars (double -> Fortran) ---
-tmp       = mxGetScalar(prhs(1));  dayOfYear = int(tmp)
-tmp       = mxGetScalar(prhs(2));  UTsec     = tmp
-tmp       = mxGetScalar(prhs(3));  alt_km    = tmp
-tmp       = mxGetScalar(prhs(4));  glat      = tmp
-tmp       = mxGetScalar(prhs(5));  glon      = tmp
-tmp       = mxGetScalar(prhs(6));  Ap        = tmp
+  ! alt
+   p_alt = mxGetPr(prhs(3))
+   call mxCopyPtrToReal8(p_alt, d_alt, 1)
+   alt = real(d_alt)
+
+  ! glat
+   p_glat = mxGetPr(prhs(4))
+   call mxCopyPtrToReal8(p_glat, d_glat, 1)
+   glat = real(d_glat)
+
+  ! glon
+   p_glon = mxGetPr(prhs(5))
+   call mxCopyPtrToReal8(p_glon, d_glon, 1)
+   glon = real(d_glon)
+
+  ! stl
+   p_stl = mxGetPr(prhs(6))
+   call mxCopyPtrToReal8(p_stl, d_stl, 1)
+   stl = real(d_stl)
+
+  ! f107a
+   p_f107a = mxGetPr(prhs(7))
+   call mxCopyPtrToReal8(p_f107a, d_f107a, 1)
+   f107a = real(d_f107a)
+
+  ! f107
+   p_f107 = mxGetPr(prhs(8))
+   call mxCopyPtrToReal8(p_f107, d_f107, 1)
+   f107  = real(d_f107)
+
+  ! ap(2) – 2-element vector
+   p_ap = mxGetPr(prhs(9))
+   call mxCopyPtrToReal8(p_ap, d_ap, 2)
+   ap(1) = real(d_ap(1))
+   ap(2) = real(d_ap(2))
 
 
 ! --- Call HWM14 via the interface module ---
