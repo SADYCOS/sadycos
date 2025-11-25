@@ -128,13 +128,23 @@ subroutine mexFunction(nlhs, plhs, nrhs, prhs)
   call hwm14(iyd, sec, alt, glat, glon, stl, f107a, f107, ap, w)
 
 
-! --- Prepare MATLAB output ---
-w_out(1) = Wmer
-w_out(2) = Wzon
+! ------------------------------------------------------------
+! Prepare output for MATLAB: 2x1 double vector
+! ------------------------------------------------------------
+! plhs() declaration of 2x1 double-array for w
+! p_wout gets pointer to output array plhs(1)
+! d_w(i) = dble(w(i)) converts real*4 to double precision
+!
+! mxCopyReal8ToPtr(d_w, p_wout, 2) copies two double values ​​from d_w(1:2) 
+! into the MATLAB array pointed to by p_wout
 
-plhs(1) = mxCreateDoubleMatrix(1, 2, 0)   ! 1x2 real*8 (double)
-out_ptr = mxGetPr(plhs(1))
-call mxCopyReal8ToPtr(w_out, out_ptr, 2)
+ plhs(1) = mxCreateDoubleMatrix(2, 1, 0)   ! 0 = mxREAL
+ p_wout  = mxGetPr(plhs(1))
+
+ d_w(1) = dble(w(1))
+ d_w(2) = dble(w(2))
+
+ call mxCopyReal8ToPtr(d_w, p_wout, 2)
 
 return
 end subroutine mexFunction
