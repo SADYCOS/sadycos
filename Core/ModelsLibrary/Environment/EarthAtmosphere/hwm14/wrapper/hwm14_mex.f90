@@ -1,22 +1,18 @@
 #include "fintrf.h"
 
 subroutine mexFunction(nlhs, plhs, nrhs, prhs)
-
-use, intrinsic :: iso_fortran_env, only : real64
-use hwm_interface, only : hwm_14
-
   implicit none
 
 
-! MEX arguments
-  integer              :: nlhs, nrhs
-  mwPointer            :: plhs(*), prhs(*)
+! MEX arguments declarations
+  integer*4 nlhs, nrhs
+  mwPointer plhs(*), prhs(*)
 
 
 ! function declarations out of the MEX_API
-  mwPointer :: mxGetPr, mxCreateDoubleMatrix
-  double precision :: mxGetScalar
-  external :: mxGetPr, mxCreateDoubleMatrix, mxGetScalar, mxCopyReal8ToPtr
+  mwPointer mxGetPr, mxCreateDoubleMatrix
+  external  mxGetPr, mxCreateDoubleMatrix
+  external  mxCopyPtrToReal8, mxCopyReal8ToPtr, mexErrMsgTxt
   
 
 ! local variables
