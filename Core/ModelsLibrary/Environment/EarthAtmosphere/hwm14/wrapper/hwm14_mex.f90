@@ -122,8 +122,10 @@ subroutine mexFunction(nlhs, plhs, nrhs, prhs)
    ap(2) = real(d_ap(2))
 
 
-! --- Call HWM14 via the interface module ---
-  call hwm_14(dayOfYear, UTsec, alt_km, glat, glon, Ap, Wmer, Wzon)
+! ------------------------------------------------------------
+! Call HWM14
+! ------------------------------------------------------------
+  call hwm14(iyd, sec, alt, glat, glon, stl, f107a, f107, ap, w)
 
 
 ! --- Prepare MATLAB output ---
