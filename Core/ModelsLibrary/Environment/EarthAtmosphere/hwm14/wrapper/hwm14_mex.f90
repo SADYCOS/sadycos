@@ -131,6 +131,7 @@ subroutine mexFunction(nlhs, plhs, nrhs, prhs)
 ! ------------------------------------------------------------
 ! Prepare output for MATLAB: 2x1 double vector
 ! ------------------------------------------------------------
+! if loop to check if hwm14_mex() is called without output allocation
 ! plhs() declaration of 2x1 double-array for w
 ! p_wout gets pointer to output array plhs(1)
 ! d_w(i) = dble(w(i)) converts real*4 to double precision
@@ -138,13 +139,20 @@ subroutine mexFunction(nlhs, plhs, nrhs, prhs)
 ! mxCopyReal8ToPtr(d_w, p_wout, 2) copies two double values ​​from d_w(1:2) 
 ! into the MATLAB array pointed to by p_wout
 
- plhs(1) = mxCreateDoubleMatrix(2, 1, 0)   ! 0 = mxREAL
- p_wout  = mxGetPr(plhs(1))
+if (nlhs .eq. 1) then
 
- d_w(1) = dble(w(1))
- d_w(2) = dble(w(2))
+   plhs(1) = mxCreateDoubleMatrix(2, 1, 0)   ! 0 = mxREAL
+   p_wout  = mxGetPr(plhs(1))
 
- call mxCopyReal8ToPtr(d_w, p_wout, 2)
+   d_w(1) = dble(w(1))
+   d_w(2) = dble(w(2))
+
+   call mxCopyReal8ToPtr(d_w, p_wout, 2)
+
+ else
+
+   call mexErrMsgTxt('hwm14_mex: Exactly 1 output argument is required. Usage: w = hwm14_mex(...)')
+endif
 
 return
 end subroutine mexFunction
