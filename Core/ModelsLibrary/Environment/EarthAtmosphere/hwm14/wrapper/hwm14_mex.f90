@@ -60,7 +60,7 @@ subroutine mexFunction(nlhs, plhs, nrhs, prhs)
    call mexErrMsgTxt('hwm14_mex: Exactly 9 input arguments are required.')
   endif
 
-  if (nlhs .gt. 1) then
+  if (nlhs .ne. 1) then
    call mexErrMsgTxt('hwm14_mex: Only one output argument is allowed.')
   endif
 
@@ -69,7 +69,7 @@ subroutine mexFunction(nlhs, plhs, nrhs, prhs)
 ! Get input arguments from MATLAB and convert types
 ! ------------------------------------------------------------
 ! Syntax:
-! prsh(n) pointer to the n-th MATLAB input 
+! prhs(n) pointer to the n-th MATLAB input 
 ! mxGetPr(...) delivers pointer to the double data
 ! 1. p_xyz points to the location in MATLAB memory where the input data is located 
 ! 2. call mxCopyPtrToReal8(source, target variable, number of values) copy the double-values from matlab to fortran
