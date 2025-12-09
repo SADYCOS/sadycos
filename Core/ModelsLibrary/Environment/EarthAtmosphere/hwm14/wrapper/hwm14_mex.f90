@@ -75,7 +75,7 @@ subroutine mexFunction(nlhs, plhs, nrhs, prhs)
 ! 2. call mxCopyPtrToReal8(source, target variable, number of values) copy the double-values from matlab to fortran
 ! 3. xyz = real(d_xyz) for real*4 or xyz = int(d_xyz) for integer*4 convert Fortran double to hwm14 expected data typ
 
-  ! iyd (INTEGER*4)
+  ! iyd (INTEGER*4) HWM does not use the year in iyd. Just give the day of year.
    p_iyd = mxGetPr(prhs(1))
    call mxCopyPtrToReal8(p_iyd, d_iyd, 1)
    iyd = int(d_iyd)
