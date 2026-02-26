@@ -1,5 +1,7 @@
 #include "fintrf.h"
 
+! Gateway for mex file creation
+
 subroutine mexFunction(nlhs, plhs, nrhs, prhs)
   implicit none
 
