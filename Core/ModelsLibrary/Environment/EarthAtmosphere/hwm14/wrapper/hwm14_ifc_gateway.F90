@@ -33,7 +33,7 @@ implicit none
   real(real64) :: d_doy, d_utsec, d_alt, d_glat, d_glon, d_ap
   real(real64) :: d_w(2)
 
-! ---- HWM interface inputs ----
+! ---- HWM interface inputs / outputs ----
 ! Variables passed to HWM interface
   integer :: dayOfYear
   real(real64) :: UTsec, alt_km, glat, glon, Ap
@@ -45,7 +45,7 @@ implicit none
     call mexErrMsgTxt('hwm14_mex: Exactly 6 input arguments required: dayOfYear, UTsec, alt_km, glat, glon, Ap.')
   endif
 
-  if (nlhs .gt. 1) then
+  if (nlhs .ne. 1) then
     call mexErrMsgTxt('hwm14_mex: Exactly 1 output argument required. Usage: w = hwm14_mex(...)')
   endif
 
@@ -114,8 +114,6 @@ implicit none
 
   ! Copy back to MATLAB memory
   call mxCopyReal8ToPtr(d_w, p_wout, 2)
-
- call mexErrMsgTxt('hwm14_mex: Exactly 1 output argument is required. Usage: w = hwm14_mex(...)')
 
 
 return
