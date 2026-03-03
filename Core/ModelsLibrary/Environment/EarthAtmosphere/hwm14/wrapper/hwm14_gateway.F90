@@ -1,14 +1,14 @@
 #include "fintrf.h"
 
-! Gateway for mex file creation
+! Gateway for mex file creation with libhwm14.a
 
 subroutine mexFunction(nlhs, plhs, nrhs, prhs)
   implicit none
 
 
 ! MEX arguments declarations
-  integer*4 nlhs, nrhs
-  mwPointer plhs(*), prhs(*)
+  integer*4 nlhs, nrhs            ! number of outputs and inputs
+  mwPointer plhs(*), prhs(*)      ! pointers to MATLAB output and input arrays
 
 
 ! function declarations out of the MEX_API
