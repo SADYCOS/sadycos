@@ -7,14 +7,54 @@ function createHWMmexFunction()
 % Get the full path of the current file and the project root directory
 this_file = mfilename('fullpath');
 project_root = fileparts(this_file);
+
 hwm_dir = fullfile(project_root, 'Core','ModelsLibrary','Environment','EarthAtmosphere','hwm14','hwm14_gemini3d');
 
-
 % Check if the build directory exists, if so, delete it
-folder = 'Core\ModelsLibrary\Environment\EarthAtmosphere\hwm14\hwm14_gemini3d\build';
+
+%{
+ folder = 'Core\ModelsLibrary\Environment\EarthAtmosphere\hwm14\hwm14_gemini3d\build';
 
 if exist(folder,'dir')
     rmdir(folder,'s')
+end 
+%}
+
+% switch to the hwm14_gemini3d directory
+cd(hwm_dir);
+
+% Set environment variables for MinGW
+% locate relative path to mingw_w64.instrset
+% set environment variable MW_MINGW64_LOC to this path 
+matlab_root = matlabroot;
+
+mingw_dir = fullfile(matlab_root,...
+    'SupportPackages','R2024b','3P.instrset','mingw_w64.instrset');
+
+setenv('MW_MINGW64_LOC', mingw_dir);
+
+% Add mingw bin directory to PATH environment variable
+setenv('PATH',[fullfile(mingw_dir,'bin') pathsep getenv('PATH')]);
+
+% build the library using cmake and mingw
+% set the Fortran compiler to gfortran to ensure that the same compiler 
+% is used for both the library and the MEX function
+% add the flag -fdefault-integer-8 to use 64 bit integers by default
+cmd = ['cmake -S . -B build -G "MinGW Makefiles" ' ...
+       '-DCMAKE_Fortran_COMPILER=gfortran ' ...
+       '-DCMAKE_Fortran_FLAGS="-fdefault-integer-8"'];
+status = system(cmd);
+
+if status ~= 0
+    error('CMake configuration failed')
+end
+
+fprintf('CMake configuration successful.\n')
+
+
+%% Create the MEX function
+
+
 end
 
 
