@@ -4,36 +4,35 @@ function createHWMmexFunction()
 
 %% Build the hwm14_gemini3d library
 
-% Get the full path of the current file and the project root directory
-this_file = mfilename('fullpath');
-project_root = fileparts(this_file);
+% Get the full path of the current file
+[this_folder,~,~] = fileparts(mfilename('fullpath'));
+% Go one folder up (to hwm14)
+[parent_folder,~,~] = fileparts(this_folder);
+% Build the path to the hwm14_gemini3d directory
+hwm_dir = fullfile(parent_folder, 'hwm14_gemini3d');
 
-hwm_dir = fullfile(project_root, 'Core','ModelsLibrary','Environment','EarthAtmosphere','hwm14','hwm14_gemini3d');
-
-% Check if the build directory exists, if so, delete it
-
+% Check if the build folder exists, if so, delete it
 %{
- folder = 'Core\ModelsLibrary\Environment\EarthAtmosphere\hwm14\hwm14_gemini3d\build';
+ build_folder = fullfile(hwm_dir, 'build');
 
-if exist(folder,'dir')
-    rmdir(folder,'s')
+if exist(build_folder,'dir')
+    rmdir(build_folder,'s')
 end 
 %}
 
 % switch to the hwm14_gemini3d directory
 cd(hwm_dir);
 
-% Set environment variables for MinGW
-% locate relative path to mingw_w64.instrset
-% set environment variable MW_MINGW64_LOC to this path 
+% In the following the 
+% locate the installation directory of MATLAB and safe it in a variable
 matlab_root = matlabroot;
-
+% build the path to the mingw_w64.instrset directory
 mingw_dir = fullfile(matlab_root,...
     'SupportPackages','R2024b','3P.instrset','mingw_w64.instrset');
-
+% Set the environment variable MW_MINGW64_LOC to the path of the mingw_w64.instrset directory
 setenv('MW_MINGW64_LOC', mingw_dir);
 
-% Add mingw bin directory to PATH environment variable
+% Add mingw bin directory temporarily to PATH environment variable
 setenv('PATH',[fullfile(mingw_dir,'bin') pathsep getenv('PATH')]);
 
 % build the library using cmake and mingw
