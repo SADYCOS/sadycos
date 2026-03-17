@@ -4,5 +4,7 @@ classdef AtmosphericVelocity < ModelBase
         atmospheric_velocity_BI_I__m_per_s ...
             = execute(position_BI_I__m)
 
+        createHWMmexFunction()
+
     end
 end
