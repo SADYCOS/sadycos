@@ -14,17 +14,23 @@ function createHWMmexFunction()
 % Current working directory is saved to be able to switch back to it at the end of the function
 old_dir = pwd;
 
-% Build the path to the hwm14_gemini3d directory
-hwm_dir = fullfile(hwm14_dir, 'hwm14_gemini3d');
+% Build the path to the hwm14_gemini3d submodule directory
+hwm14submodule_dir = fullfile(hwm14_dir, 'fortran_code', 'hwm14_gemini3d');
 
-% Buld the path to the AtmosphericVelocity class directory
-atmospheric_velocity_dir = fullfile(hwm14_dir, '@AtmosphericVelocity');
+% Build the path to the hwm14 class directory
+hwm14class_dir = fullfile(hwm14_dir, '@hwm14');
+
+% Build the path to the AtmosphericVelocity class directory
+% atmospheric_velocity_dir = fullfile(hwm14_dir, '@AtmosphericVelocity');
 
 % Build the path to the wrapper directory
-wrapper_dir = fullfile(atmospheric_velocity_dir, 'wrapper');
+wrapper_dir = fullfile(hwm14_dir, 'fortran_code', 'wrapper');
 
 % Build the path to the desired build directory for the hwm14 library
-build_dir = fullfile(this_folder,'externalBuild');
+build_dir = fullfile(hwm14submodule_dir,'build');
+
+% Build the path to the desired installation directory for the hwm14 library
+install_dir = fullfile(this_folder,'externalInstall');
 
 % Check if the build folder exists, if so, delete it
 if exist(build_dir,'dir')
@@ -34,7 +40,7 @@ end
 % Reset the working directory to the original one at the end of the function, even if an error occurs
 cleanupObj = onCleanup(@() cd(old_dir));
 % switch to the hwm14_gemini3d directory
-cd(hwm_dir);
+cd(hwm14submodule_dir);
 
 % locate the installation directory of MATLAB and safe it in a variable
 % matlab_root = matlabroot;
@@ -105,7 +111,7 @@ libhwmifc_path = fullfile(build_dir,'libhwm_ifc.a');
 libhwm14_path = fullfile(build_dir,'libhwm14.a');
 
 % Build the path to the output directory for the hwm14 MEX function
-out_path = fullfile(atmospheric_velocity_dir,'hwm14ifc_mex');
+out_path = fullfile(hwm14class_dir,'hwm14ifc_mex');
 
 % Determine the extension of the MEX function for the current platform
 mex_ext = ['.' mexext];
