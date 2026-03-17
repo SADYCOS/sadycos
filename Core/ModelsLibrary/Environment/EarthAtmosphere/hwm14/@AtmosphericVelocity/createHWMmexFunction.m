@@ -27,11 +27,9 @@ wrapper_dir = fullfile(atmospheric_velocity_dir, 'wrapper');
 build_dir = fullfile(this_folder,'externalBuild');
 
 % Check if the build folder exists, if so, delete it
-%{
 if exist(build_dir,'dir')
     rmdir(build_dir,'s')
 end 
-%}
 
 % Reset the working directory to the original one at the end of the function, even if an error occurs
 cleanupObj = onCleanup(@() cd(old_dir));
@@ -39,11 +37,14 @@ cleanupObj = onCleanup(@() cd(old_dir));
 cd(hwm_dir);
 
 % locate the installation directory of MATLAB and safe it in a variable
-matlab_root = matlabroot;
+% matlab_root = matlabroot;
 
 % build the path to the mingw_w64.instrset directory
-mingw_dir = fullfile(matlab_root,...
-    'SupportPackages','R2024b','3P.instrset','mingw_w64.instrset');
+sp_root = fullfile(getenv('PROGRAMDATA'),'MATLAB','SupportPackages');
+release_name =  ['R' version('-release')];
+mingw_dir = fullfile(sp_root, release_name, '3P.instrset', 'mingw_w64.instrset');
+%mingw_dir = fullfile(matlab_root,...
+    %'SupportPackages','R2024b','3P.instrset','mingw_w64.instrset');
 
 % Check if the mingw directory exists, if not, throw an error
 if ~exist(mingw_dir,'dir')
@@ -65,7 +66,7 @@ setenv('PATH',[fullfile(mingw_dir,'bin') pathsep getenv('PATH')]);
 % is used for both the library build and the MEX function build
 % add the flag -fdefault-integer-8 to use 64 bit integers by default
 cmd = sprintf(['cmake -S . -B "%s" -G "MinGW Makefiles" ' ...
-               %'-DCMAKE_Fortran_COMPILER=gfortran ' ...
+               '-DCMAKE_Fortran_COMPILER=gfortran ' ...
                '-DCMAKE_Fortran_FLAGS="-fdefault-integer-8"'], ...
                build_dir);
 status = system(cmd);
@@ -104,16 +105,12 @@ libhwmifc_path = fullfile(build_dir,'libhwm_ifc.a');
 libhwm14_path = fullfile(build_dir,'libhwm14.a');
 
 % Build the path to the output directory for the hwm14 MEX function
-out_path = fullfile(atmospheric_velocity_dir,'hwm14');
+out_path = fullfile(atmospheric_velocity_dir,'hwm14ifc_mex');
 
 % Determine the extension of the MEX function for the current platform
 mex_ext = ['.' mexext];
 % Build the full path to the MEX function
 mex_file = [out_path mex_ext];
-% Check if the MEX function already exists, if so, delete it
-if exist(mex_file,'file')
-    delete(mex_file)
-end
 
 % Check if all relevant files and directories exist, if not, throw an error
 assert(exist(mod_dir,'dir') == 7, 'mod_dir not found')
@@ -121,8 +118,13 @@ assert(exist(gateway_path,'file') == 2, 'gateway source not found')
 assert(exist(libhwmifc_path,'file') == 2, 'libhwm_ifc.a not found')
 assert(exist(libhwm14_path,'file') == 2, 'libhwm14.a not found')
 
+% Check if the MEX function already exists, if so, delete it
+if exist(mex_file,'file')
+    delete(mex_file)
+end
+
 % Call the MATLAB mex function to build the hwm14 MEX function
-mex('-v', '-R2018a', ... 
+mex('-R2018a', ... 
 ['-I' mod_dir], ...
 gateway_path, ...
 libhwmifc_path, ...
