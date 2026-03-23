@@ -27,15 +27,20 @@ hwm14class_dir = fullfile(hwm14_dir, '@hwm14');
 wrapper_dir = fullfile(hwm14_dir, 'fortran_code', 'wrapper');
 
 % Build the path to the desired build directory for the hwm14 library
-build_dir = fullfile(hwm14submodule_dir,'build');
+build_dir = fullfile(hwm14_dir, 'bin', 'build');
 
 % Build the path to the desired installation directory for the hwm14 library
-install_dir = fullfile(this_folder,'externalInstall');
+install_dir = fullfile(hwm14_dir, 'bin', 'install');
 
 % Check if the build folder exists, if so, delete it
 if exist(build_dir,'dir')
     rmdir(build_dir,'s')
 end 
+
+% Check if the install folder exists, if so, delete it
+if exist(install_dir,'dir')
+    rmdir(install_dir,'s')
+end
 
 % Reset the working directory to the original one at the end of the function, even if an error occurs
 cleanupObj = onCleanup(@() cd(old_dir));
@@ -66,16 +71,18 @@ setenv('MW_MINGW64_LOC', mingw_dir);
 setenv('PATH',[fullfile(mingw_dir,'bin') pathsep getenv('PATH')]);
 
 
-% build the library using cmake and mingw
-
+% configure the build using cmake
+% -S specifies the source directory (current directory), 
+% -B specifies the build directory (build_dir),
+% -G specifies the generator (MinGW Makefiles)
 % set the Fortran compiler to gfortran to ensure that the same compiler 
 % is used for both the library build and the MEX function build
 % add the flag -fdefault-integer-8 to use 64 bit integers by default
-cmd = sprintf(['cmake -S . -B "%s" -G "MinGW Makefiles" ' ...
-               '-DCMAKE_Fortran_COMPILER=gfortran ' ...
+cmd_build = sprintf(['cmake -S . -B "%s" -G "MinGW Makefiles" ' ...
+               '-DCMAKE_Fortran_COMPILER=gfortran ' ... 
                '-DCMAKE_Fortran_FLAGS="-fdefault-integer-8"'], ...
                build_dir);
-status = system(cmd);
+status = system(cmd_build);
 
 % Check if the command was successful
 if status ~= 0
@@ -91,27 +98,40 @@ end
 fprintf('CMake configuration successful.\n')
 
 
+% install the library to a specific directory (install_dir) using cmake, 
+% this will copy the relevant library files and mod files to the install_dir
+cmd_install = sprintf('cmake --install "%s" --prefix "%s"', build_dir, install_dir);
+status = system(cmd_install);
+
+% Check if the command was successful
+if status ~= 0
+    error('Hwm14 installation failed')
+end
+
+fprintf('Hwm14 installation successful.\n')
+
+
 %% Create the MEX function
 
 % Build the MEX function using the gateway, the libraries and the mod files
 
 % Build the path to the mod files directory 
 % (the mod files are needed for the compilation of the gateway)
-mod_dir = fullfile(build_dir,'include');
+mod_dir = fullfile(install_dir,'include');
 
 % Build the path to the gateway source file
 gateway_path = fullfile(wrapper_dir,'hwm14_ifc_gateway.F90');
 
 % Build the paths to the relevant hwm interface library file "libhwm_ifc.a"
-libhwmifc_path = fullfile(build_dir,'libhwm_ifc.a');
+libhwmifc_path = fullfile(install_dir, 'lib', 'libhwm_ifc.a');
 
 % Build the paths to the hwm14 library file "libhwm14.a"
 % Note that the hwm14 library also needs to be linked to ensure that all
 % symbols that are used in the hwm interface library are defined
-libhwm14_path = fullfile(build_dir,'libhwm14.a');
+libhwm14_path = fullfile(install_dir, 'lib', 'libhwm14.a');
 
 % Build the path to the output directory for the hwm14 MEX function
-out_path = fullfile(hwm14class_dir,'hwm14ifc_mex');
+out_path = fullfile(hwm14_dir,'hwm14ifc_mex');
 
 % Determine the extension of the MEX function for the current platform
 mex_ext = ['.' mexext];
@@ -123,6 +143,16 @@ assert(exist(mod_dir,'dir') == 7, 'mod_dir not found')
 assert(exist(gateway_path,'file') == 2, 'gateway source not found')
 assert(exist(libhwmifc_path,'file') == 2, 'libhwm_ifc.a not found')
 assert(exist(libhwm14_path,'file') == 2, 'libhwm14.a not found')
+
+% Set the environment variable HWMPATH to the path of the hwm14 data directory,
+% this is needed for the hwm14 library to be able to find the data files that it needs on runtime 
+data_dir = fullfile(hwm14_dir,'bin','install','share','data','hwm14');
+assert(exist(data_dir,'dir') == 7, 'HWM14 data directory not found: %s', data_dir);
+setenv('HWMPATH', data_dir);
+% getenv('HWMPATH')
+% exist(fullfile(getenv('HWMPATH'),'dwm07b104i.dat'),'file')
+% exist(fullfile(getenv('HWMPATH'),'gd2qd.dat'),'file')
+% exist(fullfile(getenv('HWMPATH'),'hwm123114.bin'),'file')
 
 % Check if the MEX function already exists, if so, delete it
 if exist(mex_file,'file')
