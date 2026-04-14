@@ -18,7 +18,7 @@ old_dir = pwd;
 hwm14submodule_dir = fullfile(hwm14_dir, 'fortran_code', 'hwm14_gemini3d');
 
 % Build the path to the hwm14 class directory
-hwm14class_dir = fullfile(hwm14_dir, '@hwm14');
+% hwm14class_dir = fullfile(hwm14_dir, '@hwm14');
 
 % Build the path to the AtmosphericVelocity class directory
 % atmospheric_velocity_dir = fullfile(hwm14_dir, '@AtmosphericVelocity');
@@ -146,9 +146,9 @@ assert(exist(libhwm14_path,'file') == 2, 'libhwm14.a not found')
 
 % Set the environment variable HWMPATH to the path of the hwm14 data directory,
 % this is needed for the hwm14 library to be able to find the data files that it needs on runtime 
-data_dir = fullfile(hwm14_dir,'bin','install','share','data','hwm14');
-assert(exist(data_dir,'dir') == 7, 'HWM14 data directory not found: %s', data_dir);
-setenv('HWMPATH', data_dir);
+% data_dir = fullfile(hwm14_dir,'bin','install','share','data','hwm14');
+% assert(exist(data_dir,'dir') == 7, 'HWM14 data directory not found: %s', data_dir);
+% setenv('HWMPATH', data_dir);
 % getenv('HWMPATH')
 % exist(fullfile(getenv('HWMPATH'),'dwm07b104i.dat'),'file')
 % exist(fullfile(getenv('HWMPATH'),'gd2qd.dat'),'file')
