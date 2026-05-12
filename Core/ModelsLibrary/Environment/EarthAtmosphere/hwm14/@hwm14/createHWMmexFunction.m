@@ -1,8 +1,8 @@
 function createHWMmexFunction()
 % Function to create the MEX function for the AtmosphericVelocity class
-% by first buildung the hwm14_gemini3d library and then creating the MEX function
+% by first buildung the hwm14_patch library and then creating the MEX function
 
-%% Build the hwm14_gemini3d library
+%% Build the hwm14_patch library
 
 % Get the full path of the current file for independent path building
 [this_folder,~,~] = fileparts(mfilename('fullpath'));
@@ -14,11 +14,11 @@ function createHWMmexFunction()
 % Current working directory is saved to be able to switch back to it at the end of the function
 old_dir = pwd;
 
-% Build the path to the hwm14_gemini3d submodule directory
-hwm14submodule_dir = fullfile(hwm14_dir, 'fortran_code', 'hwm14_gemini3d');
+% Build the path to the hwm14_patch submodule directory
+hwm14submodule_dir = fullfile(hwm14_dir, 'fortran_code', 'hwm14_patch');
 
 % Build the path to the hwm14 class directory
-hwm14class_dir = fullfile(hwm14_dir, '@hwm14');
+% hwm14class_dir = fullfile(hwm14_dir, '@hwm14');
 
 % Build the path to the AtmosphericVelocity class directory
 % atmospheric_velocity_dir = fullfile(hwm14_dir, '@AtmosphericVelocity');
@@ -44,7 +44,7 @@ end
 
 % Reset the working directory to the original one at the end of the function, even if an error occurs
 cleanupObj = onCleanup(@() cd(old_dir));
-% switch to the hwm14_gemini3d directory
+% switch to the hwm14_patch directory
 cd(hwm14submodule_dir);
 
 % locate the installation directory of MATLAB and safe it in a variable
@@ -149,7 +149,8 @@ assert(exist(libhwm14_path,'file') == 2, 'libhwm14.a not found')
 data_dir = fullfile(hwm14_dir,'bin','install','share','data','hwm14');
 assert(exist(data_dir,'dir') == 7, 'HWM14 data directory not found: %s', data_dir);
 setenv('HWMPATH', data_dir);
-% getenv('HWMPATH')
+% check if the environment variable is correctly set
+disp(['Path for data folder set to: ' getenv('HWMPATH')])
 % exist(fullfile(getenv('HWMPATH'),'dwm07b104i.dat'),'file')
 % exist(fullfile(getenv('HWMPATH'),'gd2qd.dat'),'file')
 % exist(fullfile(getenv('HWMPATH'),'hwm123114.bin'),'file')
