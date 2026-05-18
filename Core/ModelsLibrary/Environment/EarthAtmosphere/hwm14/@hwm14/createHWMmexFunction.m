@@ -146,11 +146,11 @@ assert(exist(libhwm14_path,'file') == 2, 'libhwm14.a not found')
 
 % Set the environment variable HWMPATH to the path of the hwm14 data directory,
 % this is needed for the hwm14 library to be able to find the data files that it needs on runtime 
-data_dir = fullfile(hwm14_dir,'bin','install','share','data','hwm14');
-assert(exist(data_dir,'dir') == 7, 'HWM14 data directory not found: %s', data_dir);
-setenv('HWMPATH', data_dir);
+% data_dir = fullfile(hwm14_dir,'bin','install','share','data','hwm14');
+% assert(exist(data_dir,'dir') == 7, 'HWM14 data directory not found: %s', data_dir);
+% setenv('HWMPATH', data_dir);
 % check if the environment variable is correctly set
-disp(['Path for data folder set to: ' getenv('HWMPATH')])
+% disp(['Path for data folder set to: ' getenv('HWMPATH')])
 % exist(fullfile(getenv('HWMPATH'),'dwm07b104i.dat'),'file')
 % exist(fullfile(getenv('HWMPATH'),'gd2qd.dat'),'file')
 % exist(fullfile(getenv('HWMPATH'),'hwm123114.bin'),'file')

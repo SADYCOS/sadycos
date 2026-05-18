@@ -6,5 +6,7 @@ classdef hwm14 < ModelBase
 
         createHWMmexFunction()
 
+        computeWind(dayOfYear, UTsec, alt_km, glat, glon, Ap)
+
     end
 end
