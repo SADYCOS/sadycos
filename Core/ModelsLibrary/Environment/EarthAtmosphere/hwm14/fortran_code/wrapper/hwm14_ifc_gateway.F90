@@ -18,10 +18,14 @@ implicit none
   mwPointer plhs(*), prhs(*)        ! pointers to MATLAB output and input arrays
 
 
-! function declarations out of the MEX_API
+! Function declarations out of the MEX_API
   mwPointer mxGetDoubles, mxCreateDoubleMatrix
   external  mxGetDoubles, mxCreateDoubleMatrix
   external  mxCopyPtrToReal8, mxCopyReal8ToPtr, mexErrMsgTxt
+  external  mxGetString
+
+! Status return value (0 for succes, 1 for failure)
+  integer*4 mxGetString
 
 
 ! Pointers to MATLAB memory location
@@ -38,11 +42,13 @@ implicit none
   integer :: dayOfYear
   real(real64) :: UTsec, alt_km, glat, glon, Ap
   real(real64) :: Wmeridional, Wzonal
+  character(1024) :: path
+  logical      :: have_path
 
 
 ! Check correct number of input and output arguments
-  if (nrhs .ne. 6) then
-    call mexErrMsgTxt('hwm14_mex: Exactly 6 input arguments required: dayOfYear, UTsec, alt_km, glat, glon, Ap.')
+  if (nrhs .ne. 6 .and. nrhs .ne. 7) then
+    call mexErrMsgTxt('hwm14_mex: Expected 6 or 7 input arguments: dayOfYear, UTsec, alt_km, glat, glon, Ap, path (optional).')
   endif
 
   if (nlhs .ne. 1) then
@@ -90,11 +96,23 @@ implicit none
   call mxCopyPtrToReal8(p_ap, d_ap, 1)
   Ap = d_ap
 
+  ! optional argument "path"
+  have_path = .false.   !default: path is not set
+  if (nrhs .eq. 7) then
+    if (mxGetString(prhs(7), path, len(path)) == 0) then    !writes input argument 7 directly in variable path
+      have_path = .true.    !path is set
+    endif
+  endif
+
 
 !---------------------------------------------------------------------
 ! Call the HWM interface
 !---------------------------------------------------------------------
- call hwm_14(dayOfYear, UTsec, alt_km, glat, glon, Ap, Wmeridional, Wzonal)
+  if (have_path) then
+    call hwm_14(dayOfYear, UTsec, alt_km, glat, glon, Ap, Wmeridional, Wzonal, trim(path))
+  else 
+    call hwm_14(dayOfYear, UTsec, alt_km, glat, glon, Ap, Wmeridional, Wzonal)
+  endif
 
 
 !---------------------------------------------------------------------
