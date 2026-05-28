@@ -109,7 +109,7 @@ implicit none
 ! Call the HWM interface
 !---------------------------------------------------------------------
   if (have_path) then
-    call hwm_14(dayOfYear, UTsec, alt_km, glat, glon, Ap, Wmeridional, Wzonal, trim(path))
+    call hwm_14(dayOfYear, UTsec, alt_km, glat, glon, Ap, Wmeridional, Wzonal, path=trim(path))
   else 
     call hwm_14(dayOfYear, UTsec, alt_km, glat, glon, Ap, Wmeridional, Wzonal)
   endif
