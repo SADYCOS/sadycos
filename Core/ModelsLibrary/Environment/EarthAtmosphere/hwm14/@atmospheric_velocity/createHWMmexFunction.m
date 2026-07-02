@@ -1,8 +1,8 @@
 function createHWMmexFunction()
 % Function to create the MEX function for the AtmosphericVelocity class
-% by first buildung the hwm14_patch library and then creating the MEX function
+% by first buildung the hwm14 library and then creating the MEX function
 
-%% Build the hwm14_patch library
+%% Build the hwm14 library
 
 % Get the full path of the current file for independent path building
 [this_folder,~,~] = fileparts(mfilename('fullpath'));
@@ -15,7 +15,7 @@ function createHWMmexFunction()
 old_dir = pwd;
 
 % Build the path to the hwm14_patch submodule directory
-hwm14submodule_dir = fullfile(hwm14_dir, 'fortran_code', 'hwm14_patch');
+hwm14submodule_dir = fullfile(hwm14_dir, 'fortran_code', 'hwm14');
 
 % Build the path to the hwm14 class directory
 % hwm14class_dir = fullfile(hwm14_dir, '@hwm14');
@@ -44,7 +44,7 @@ end
 
 % Reset the working directory to the original one at the end of the function, even if an error occurs
 cleanupObj = onCleanup(@() cd(old_dir));
-% switch to the hwm14_patch directory
+% switch to the hwm14 directory
 cd(hwm14submodule_dir);
 
 % locate the installation directory of MATLAB and safe it in a variable

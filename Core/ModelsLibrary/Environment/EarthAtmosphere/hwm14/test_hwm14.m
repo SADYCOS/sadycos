@@ -1,10 +1,12 @@
-% Test script for hwm14.m
+function test_hwm14()
+% Test function for hwm14.m
 
 alts = [200, 225, 250, 275, 300, 325, 350, 375, 400];
 C = zeros(2, length(alts));
+dataPath = fullfile('Core', 'ModelsLibrary', 'Environment', 'EarthAtmosphere', 'hwm14', 'bin', 'install', 'share', 'data', 'hwm14');
 
 for i = 1:length(alts)
-    C(:,i) = hwm14.computeWind(150, 12*3600, alts(i), -45, -85, 80);
+    C(:,i) = hwm14ifc_mex(150, 12*3600, alts(i), -45, -85, 80, dataPath);
 end
 
 C = round(C, 3);   % Round to 3 decimal places
@@ -51,3 +53,5 @@ xlabel('altitude [km]')
 grid on;
 title('Deviation from Reference');
 yline(0, 'k--');
+
+end
