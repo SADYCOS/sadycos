@@ -71,6 +71,7 @@ parameter_creator.addModel("Environment", ModifiedJulianDate(mjd0))
 
 % Atmosphere
 parameter_creator.addModel("Environment", Nrlmsise00(mjd0, simulation_duration__s, true(24,1), 1e-2));
+parameter_creator.addModel("Environment", atmospheric_velocity(mjd0, simulation_duration__s, 1e-2));
 
 % Gravitational Field
 gravitationalField_max_Degree = 3;

@@ -24,7 +24,8 @@ busesInfoCreator.setBusByElements('Time', elems);
 % Earth Atmosphere
 elems = [simpleBusElement('mass_density__kg_per_m3', 1), ...
             simpleBusElement('number_density__1_per_m3', 1), ...
-            simpleBusElement('temperature__K', 1)];
+            simpleBusElement('temperature__K', 1), ...
+            simpleBusElement('atmospheric_wind_I_I__m_per_s', 3)];
 
 busesInfoCreator.setBusByElements('EarthAtmosphere', elems);
 
