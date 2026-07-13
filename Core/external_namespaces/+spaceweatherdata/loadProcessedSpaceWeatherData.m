@@ -1,4 +1,4 @@
-function Parameters = loadProcessedSpaceWeatherData(mjd0, simulation_duration__s)
+function ProcessedSpaceWeatherData = loadProcessedSpaceWeatherData(mjd0, simulation_duration__s)
 
   %% Load space weather data
   [folder_name, ~, ~] = fileparts(mfilename('fullpath'));
@@ -28,6 +28,6 @@ function Parameters = loadProcessedSpaceWeatherData(mjd0, simulation_duration__s
   idx2 = find(greater_logIdxs, 1, 'first');
   idx2 = max([idx2, 2]);
 
-  Parameters = SpaceWeatherData(idx1:idx2);
+  ProcessedSpaceWeatherData = SpaceWeatherData(idx1:idx2);
 
 end
