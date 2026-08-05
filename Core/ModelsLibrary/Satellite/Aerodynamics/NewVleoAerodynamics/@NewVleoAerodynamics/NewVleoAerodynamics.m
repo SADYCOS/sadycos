@@ -20,76 +20,72 @@ classdef NewVleoAerodynamics < ModelBase
 
     methods (Access = public)
 
-        function obj = NewVleoAerodynamics(temperature_ratio_method)
+        function obj = NewVleoAerodynamics(obj_files, ...
+                                                    rotation_hinge_points_CAD, ...
+                                                    rotation_directions_CAD, ...
+                                                    surface_temperatures__K, ...
+                                                    surface_energy_accommodation_coefficients, ...
+                                                    DCM_B_from_CAD, ...
+                                                    center_of_mass_CAD, ...
+                                                    show_body_flag, ...
+                                                    temperature_ratio_method)
                                                     
         % NewVleoAerodynamics
         %
         %   Inputs:
-        %   atmosphere_mass_density__kg_per_m3: Atmospheric mass density in kg/m^3
-        %   atmosphere_number_density__1_per_m3: Atmospheric number density in 1/m^3
-        %   atmosphere_temperature__K: Atmospheric temperature in K
+        %   obj_files: Cell array of file paths to .obj files
+        %   rotation_hinge_points_CAD: 3xN matrix of hinge points in CAD frame
+        %   rotation_directions_CAD: 3xN matrix of rotation directions in CAD frame
         %   surface_temperatures__K: 1xN vector of surface temperatures in K
         %   surface_energy_accommodation_coefficients: 1xN vector of surface energy accommodation coefficients
+        %   DCM_B_from_CAD: 3x3xN matrix of DCMs from CAD to body frame
+        %   center_of_mass_CAD: 3x1 vector of center of mass in CAD frame
+        %   show_body_flag: Flag to show body in 3D viewer
         %   temperature_ratio_method: Method to calculate temperature ratio
         %
             arguments
-                temperature_ratio_method (1,1) {mustBeInteger, mustBePositive}
+                obj_files % will be validated in importMultipleBodies
+                rotation_hinge_points_CAD % will be validated in importMultipleBodies
+                rotation_directions_CAD % will be validated in importMultipleBodies
+                surface_temperatures__K % will be validated in importMultipleBodies
+                surface_energy_accommodation_coefficients % will be validated in importMultipleBodies
+                DCM_B_from_CAD % will be validated in importMultipleBodies
+                center_of_mass_CAD % will be validated in importMultipleBodies
+                show_body_flag (1,1) logical = false
+                temperature_ratio_method (1,1) {mustBeInteger, mustBePositive} = 1
             end
             
 
-            %% Create Sentman object
+            %% Save bodie, temperature ratio method and body flag in Parameters
+            bodies = vleo_aerodynamics_core.importMultipleBodies(obj_files, ...
+                                rotation_hinge_points_CAD, ...
+                                rotation_directions_CAD, ...
+                                surface_temperatures__K, ...
+                                surface_energy_accommodation_coefficients, ...
+                                DCM_B_from_CAD, ...
+                                center_of_mass_CAD);
+
+            Parameters.bodies = bodies;
+
+            Parameters.temperature_ratio_method = temperature_ratio_method;
+
+            satelliteObj = new_vleo_aerodynamics_core.RotatableMeshSatellite(obj_files);
+
+            if show_body_flag
+                vleo_aerodynamics_core.showBodies(bodies, zeros(size(obj_files)));
+            end
+
+
+            %% Create sentman object
             sentman = new_vleo_aerodynamics_core.Sentman(temperature_ratio_method);
 
-            % Save Sentman object in Parameters
+            % Save sentman object in Parameters
             Parameters.sentman = sentman;
-
-
-            %% Load Satellite Geometry
-            %this_folder = fileparts(mfilename('fullpath'));
-            %target_folder = fullfile('Core', 'external_namespaces', 'new-vleo-aerodynamics-core', '+new_vleo_aerodynamics_core');
-            %mesh_file_path = fullfile(this_folder, target_folder, 'International Space Station.obj');
-            
-            sentman_file_path = which( ...
-                "new_vleo_aerodynamics_core.Sentman");
-
-            assert(~isempty(sentman_file_path), ...
-                "The package new_vleo_aerodynamics_core is not on the MATLAB path.");
-
-            package_folder = fileparts(sentman_file_path);
-
-            mesh_file_path = fullfile( ...
-                package_folder, ...
-                "International Space Station.obj");
-
-            assert(isfile(mesh_file_path), ...
-                "Satellite geometry was not found: %s", ...
-                mesh_file_path);
-
-            % Check if the mesh file exists (debugging)
-            % disp(mesh_file_path)
-            % disp(isfile(mesh_file_path))
-            % file_info = dir(mesh_file_path);
-            % disp(file_info)
-
-            satellite =  new_vleo_aerodynamics_core.RotatableMeshSatellite(mesh_file_path);
-
-            % Debugging: Display the number of surfaces in the satellite
-            num_triangles = satellite.get_num_triangles();
-            fprintf("Loaded triangles: %d\n", num_triangles);
-
-            % Rotate a specific surface/panel of the satellite 90 degrees around the Y-axis
-            % rotation_angle_rad = pi / 2;
-            % rotation_center = [0, 0, 0];
-            % rotation_axis = [0, 1, 0];
-            % iss_satellite.turn_surface_around_axis(1, rotation_angle_rad, rotation_center, rotation_axis);
-
-            % Save ISS satellite object in Parameters
-            Parameters.satellite = satellite;
 
 
             %% Create shading pipeline object with a resolution/grid size of 800
             shading_pipeline = new_vleo_aerodynamics_core.ShadingPipeline(...
-                satellite, ...  % satellite object
+                satelliteObj, ...  % satellite .obj file
                 1, ...              % shading algorithm (0 = binary, 1 = CoP)
                 800);               % number of pixels
 
@@ -99,7 +95,7 @@ classdef NewVleoAerodynamics < ModelBase
 
             %% Create HybridAeroLoadCalculator object
             load_calculator = new_vleo_aerodynamics_core.HybridAeroLoadCalculator(...
-            satellite, ...      % satellite object
+            satelliteObj, ...      % satellite .obj file
             shading_pipeline, ...   % shading pipeline object
             sentman);               % sentman model object
 
@@ -108,8 +104,8 @@ classdef NewVleoAerodynamics < ModelBase
 
 
             % Save other important parameters in Parameters
-            Parameters.temperature_ratio_method = temperature_ratio_method;
-            Parameters.mesh_file_path = mesh_file_path;
+            % Parameters.temperature_ratio_method = temperature_ratio_method;
+            % Parameters.mesh_file_path = obj_files;
             
 
             %% Set Parameters in ModelBase Constructor

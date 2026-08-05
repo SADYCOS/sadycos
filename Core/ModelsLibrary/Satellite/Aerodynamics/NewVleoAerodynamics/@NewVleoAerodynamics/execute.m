@@ -49,6 +49,10 @@ alpha_e = surface_energy_accommodation_coefficients;
 % Calculate mean particle mass in kg
 mean_particle_mass__kg = rho / n;
 
+% aero conditions in parameter anlegen und dann mit jedem call der shading pipeline die 
+% neuen variablen überschreiben 
+% Param.aero_conditions.rho = x
+% ...
 aero_conditions = new_vleo_aerodynamics_core.AeroConditions(...
                 rho,...
                 atmos_temp__K,...
@@ -56,7 +60,7 @@ aero_conditions = new_vleo_aerodynamics_core.AeroConditions(...
                 alpha_e);
 
 % Delete handle to AeroConditions object when function exits
-cleanup_aero_conditions = onCleanup(@() delete(aero_conditions)); 
+% cleanup_aero_conditions = onCleanup(@() delete(aero_conditions)); 
 
 
 %% Prepare surface temperature
@@ -76,9 +80,9 @@ relative_velocity_B__m_per_s = ...
 
 
 % Panel visibility check (optional)
-%panel_visibility = ...
-%    Param.shading_pipeline.shade( ...
-%        relative_velocity_B__m_per_s);
+panel_visibility = ...
+    Param.shading_pipeline.shade( ...
+        relative_velocity_B__m_per_s);
 %
 %fprintf("Number of triangles: %d\n", ...
 %    Param.satellite.get_num_triangles());
@@ -99,7 +103,7 @@ relative_velocity_B__m_per_s = ...
 %    nnz(panel_visibility > 0));
 
 %% visualize shading result
-% new_vleo_aerodynamics_core.show_mesh(Param.satellite, panel_visibility, relative_velocity_B__m_per_s);
+new_vleo_aerodynamics_core.show_mesh(Param.satellite, panel_visibility, relative_velocity_B__m_per_s);
 
 
 %% Call HybridAeroLoadCalculator to compute total aerodynamic load
