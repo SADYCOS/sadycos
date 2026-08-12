@@ -3,6 +3,7 @@ function createHWMmexFunction()
 % by first buildung the hwm14 library and then creating the MEX function
 
 %% Build the hwm14 library
+% Build relevant paths for easier access later on
 
 % Get the full path of the current file for independent path building
 [this_folder,~,~] = fileparts(mfilename('fullpath'));
@@ -10,18 +11,11 @@ function createHWMmexFunction()
 % Go one folder up (to hwm14)
 [hwm14_dir,~,~] = fileparts(this_folder);
 
-% Build relevant paths for easier access later on
 % Current working directory is saved to be able to switch back to it at the end of the function
 old_dir = pwd;
 
 % Build the path to the hwm14_patch submodule directory
 hwm14submodule_dir = fullfile(hwm14_dir, 'fortran_code', 'hwm14');
-
-% Build the path to the hwm14 class directory
-% hwm14class_dir = fullfile(hwm14_dir, '@hwm14');
-
-% Build the path to the AtmosphericVelocity class directory
-% atmospheric_velocity_dir = fullfile(hwm14_dir, '@AtmosphericVelocity');
 
 % Build the path to the wrapper directory
 wrapper_dir = fullfile(hwm14_dir, 'fortran_code', 'wrapper');
@@ -47,15 +41,10 @@ cleanupObj = onCleanup(@() cd(old_dir));
 % switch to the hwm14 directory
 cd(hwm14submodule_dir);
 
-% locate the installation directory of MATLAB and safe it in a variable
-% matlab_root = matlabroot;
-
 % build the path to the mingw_w64.instrset directory
 sp_root = fullfile(getenv('PROGRAMDATA'),'MATLAB','SupportPackages');
 release_name =  ['R' version('-release')];
 mingw_dir = fullfile(sp_root, release_name, '3P.instrset', 'mingw_w64.instrset');
-%mingw_dir = fullfile(matlab_root,...
-    %'SupportPackages','R2024b','3P.instrset','mingw_w64.instrset');
 
 % Check if the mingw directory exists, if not, throw an error
 if ~exist(mingw_dir,'dir')
@@ -143,17 +132,6 @@ assert(exist(mod_dir,'dir') == 7, 'mod_dir not found')
 assert(exist(gateway_path,'file') == 2, 'gateway source not found')
 assert(exist(libhwmifc_path,'file') == 2, 'libhwm_ifc.a not found')
 assert(exist(libhwm14_path,'file') == 2, 'libhwm14.a not found')
-
-% Set the environment variable HWMPATH to the path of the hwm14 data directory,
-% this is needed for the hwm14 library to be able to find the data files that it needs on runtime 
-% data_dir = fullfile(hwm14_dir,'bin','install','share','data','hwm14');
-% assert(exist(data_dir,'dir') == 7, 'HWM14 data directory not found: %s', data_dir);
-% setenv('HWMPATH', data_dir);
-% check if the environment variable is correctly set
-% disp(['Path for data folder set to: ' getenv('HWMPATH')])
-% exist(fullfile(getenv('HWMPATH'),'dwm07b104i.dat'),'file')
-% exist(fullfile(getenv('HWMPATH'),'gd2qd.dat'),'file')
-% exist(fullfile(getenv('HWMPATH'),'hwm123114.bin'),'file')
 
 % Check if the MEX function already exists, if so, delete it
 if exist(mex_file,'file')
