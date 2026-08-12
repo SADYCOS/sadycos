@@ -1,4 +1,4 @@
-function Nrlmsise00Data = processSpaceWeatherData(saveFileFlag)
+function SpaceWeatherData = processSpaceWeatherData(saveFileFlag)
 
 arguments
     saveFileFlag (1,1) logical = false
@@ -6,7 +6,7 @@ end
 
 %% Space Weather Data File
 [folder_name, ~, ~] = fileparts(mfilename('fullpath'));
-external_data_folder_name = fullfile(folder_name, "..", "ExternalData");
+external_data_folder_name = fullfile(folder_name, "ExternalData");
 csv_filename = fullfile(external_data_folder_name, "SW-All.csv");
 
 %% Read values from CSV file and save them in an intermediate MAT file
@@ -21,8 +21,8 @@ numdays = days(datetime(enddate(1), 1, enddate(2)) - datetime(startdate(1),1,sta
 disp("Calculating space weather data for every date in csv file.");
 disp("This may take a few minutes...");
 % Prepare struct array
-Nrlmsise00Data(numdays * 8) = struct();
-the_years = nan(size(Nrlmsise00Data));
+SpaceWeatherData(numdays * 8) = struct();
+the_years = nan(size(SpaceWeatherData));
 the_days = the_years;
 the_seconds = the_years;
 
@@ -33,8 +33,8 @@ for i = 1:numdays
         
         y = year(date);
         m = month(date);
-        d = day(day) + timeofday(date) / days(1);
-        Nrlmsise00Data(ind).mjd = smu.time.modifiedJulianDateFromCalDat(y, m, d);
+        d = day(date) + timeofday(date) / days(1);
+        SpaceWeatherData(ind).mjd = smu.time.modifiedJulianDateFromCalDat(y, m, d);
 
         the_years(ind) = year(date);
         the_days(ind) = day(date, 'dayofyear');
@@ -43,8 +43,8 @@ for i = 1:numdays
 end
 
 % Calculate space weather data in intervals of up to 1000 (to reduce memory load)
-start_indices = 1:1000:length(Nrlmsise00Data);
-end_indices = [start_indices(2:end)-1, length(Nrlmsise00Data)];
+start_indices = 1:1000:length(SpaceWeatherData);
+end_indices = [start_indices(2:end)-1, length(SpaceWeatherData)];
 for i = 1:length(start_indices)
     start_index = start_indices(i);
     end_index = end_indices(i);
@@ -54,9 +54,9 @@ for i = 1:length(start_indices)
         = fluxSolarAndGeomagnetic(the_years(indices), the_days(indices), the_seconds(indices) , intermediate_matfile);
     
     for ii = 1:length(indices)
-        Nrlmsise00Data(indices(ii)).f107average = f107average(ii);
-        Nrlmsise00Data(indices(ii)).f107daily = f107daily(ii);
-        Nrlmsise00Data(indices(ii)).magneticindex = magneticindex(ii,:);
+        SpaceWeatherData(indices(ii)).f107average = f107average(ii);
+        SpaceWeatherData(indices(ii)).f107daily = f107daily(ii);
+        SpaceWeatherData(indices(ii)).magneticindex = magneticindex(ii,:);
     end
 
 end
@@ -68,7 +68,13 @@ delete(intermediate_matfile)
 
 %% Save in file
 if(saveFileFlag)
-    processed_data_file_name = fullfile(folder_name, "ProcessedSpaceWeatherData", "Nrlmsise00Data.mat");
+    processed_folder_name = fullfile(folder_name, "ProcessedSpaceWeatherData");
+    % check if folder exists, if not create it
+    if ~isfolder(processed_folder_name)
+        mkdir(processed_folder_name);
+    end
+
+    processed_data_file_name = fullfile(processed_folder_name, "ProcessedSpaceWeatherData.mat");
     fprintf("Saving processed space weather data in file %s...\n", processed_data_file_name);
     % check if file already exists
     if isfile(processed_data_file_name)
@@ -87,7 +93,7 @@ if(saveFileFlag)
         end
     end
 
-    SaveData.Nrlmsise00Data = Nrlmsise00Data;
+    SaveData.SpaceWeatherData = SpaceWeatherData;
     save(processed_data_file_name, "-struct", "SaveData");
 
 end

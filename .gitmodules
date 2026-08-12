@@ -9,3 +9,9 @@
 [submodule "Core/ModelsLibrary/Environment/EarthAtmosphere/Nrlmsise00/c_code/nrlmsise-00"]
 	path = Core/ModelsLibrary/Environment/EarthAtmosphere/Nrlmsise00/c_code/nrlmsise-00
 	url = https://git.linta.de/~brodo/nrlmsise-00.git/
+[submodule "Core/ModelsLibrary/Environment/EarthAtmosphere/hwm14/fortran_code/hwm14_patch"]
+	path = Core/ModelsLibrary/Environment/EarthAtmosphere/hwm14/fortran_code/hwm14_patch
+	url = https://github.com/niklasbirkle/hwm14.git
+[submodule "Core/ModelsLibrary/Environment/EarthAtmosphere/hwm14/fortran_code/hwm14"]
+	path = Core/ModelsLibrary/Environment/EarthAtmosphere/hwm14/fortran_code/hwm14
+	url = https://github.com/SADYCOS/hwm14.git

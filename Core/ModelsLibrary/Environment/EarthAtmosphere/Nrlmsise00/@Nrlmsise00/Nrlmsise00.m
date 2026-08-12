@@ -34,31 +34,8 @@ classdef Nrlmsise00 < ModelBase
         end
 
             %% Load data for NRLMSISE00
-            Nrlmsise00Data = Nrlmsise00.loadProcessedSpaceWeatherData();
 
-            % Calculate final modified julian date
-            mjd_fin = mjd0 + simulation_duration__s/86400;
-
-            % Display error if no atmospheric data is available
-            if (mjd0 < min([Nrlmsise00Data.mjd])) || (mjd_fin > max([Nrlmsise00Data.mjd]))
-                error('Atmospheric data not available for entire duration of simulation!');
-            end
-
-            % Find indices of relevant mjds for simulation
-
-            % Find all mjds smaller than mjd0
-            smaller_logIdxs = ([Nrlmsise00Data.mjd] < mjd0);
-
-            idx1 = find(smaller_logIdxs, 1, 'last');
-            idx1 = min([idx1, length(Nrlmsise00Data) - 1]);
-
-            % Find all mjds greater than mjd_fin
-            greater_logIdxs = ([Nrlmsise00Data.mjd] > mjd_fin);
-
-            idx2 = find(greater_logIdxs, 1, 'first');
-            idx2 = max([idx2, 2]);
-
-            Parameters.Nrlmsise00Data = Nrlmsise00Data(idx1:idx2);
+            Parameters.Nrlmsise00Data = spaceweatherdata.loadProcessedSpaceWeatherData(mjd0, simulation_duration__s);
 
             %% Copy switches into Parameters
 

@@ -38,3 +38,6 @@ codegen/
 
 # Octave session info
 octave-workspace
+
+# Debug files
+hwm14_debug.txt
