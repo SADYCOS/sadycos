@@ -15,6 +15,13 @@
 # Compiled MEX binaries (all platforms)
 *.mex*
 
+# hwm14 install folder
+Core/ModelsLibrary/Environment/EarthAtmosphere/hwm14/bin/install/
+
+# new vleo external namespace binaries and resources
+Core/external_namespaces/new-vleo-aerodynamics-core/+new_vleo_aerodynamics_core/bin/
+Core/external_namespaces/new-vleo-aerodynamics-core/+new_vleo_aerodynamics_core/resources/
+
 # Packaged app and toolbox files
 *.mlappinstall
 *.mltbx

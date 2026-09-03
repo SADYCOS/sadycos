@@ -3,7 +3,7 @@ function parameters_cells = configureParameters()
 %% General Parameters
 
 % Simulation Duration
-simulation_duration__s = 1000;
+simulation_duration__s = 1;
 
 % Simulation Mode
 simulation_mode = "normal";
@@ -83,12 +83,16 @@ parameter_creator.addModel("Environment", Igrf(mjd0, simulation_duration__s, mag
 % Plant Models
 
 % New Aerodynamics Model
+% Get absolute path of this file's folder
+[this_folder,~,~] = fileparts(mfilename("fullpath"));
+obj_file_path = {fullfile(this_folder, "obj_files", "ISS.obj")};
 surface_temperature__K = 300;
 surface_energy_accommodation_coefficient = 0.9;
 temperature_ratio_method = 1;
 shading_algorithm = 1;
 shading_resolution = 800;
-parameter_creator.addModel("Plant", NewVleoAerodynamics(surface_temperature__K, ...
+parameter_creator.addModel("Plant", NewVleoAerodynamics(obj_file_path, ...
+                                                    surface_temperature__K, ...
                                                     surface_energy_accommodation_coefficient, ...
                                                     temperature_ratio_method, ...
                                                     shading_algorithm, ...
