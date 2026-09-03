@@ -11,10 +11,10 @@ disp("Created Sentman model.");
 
 % Initialize atmospheric conditions
 % Parameters: density, temperature, molecular mass, accommodation coefficient
-iss_orbit_altitude = 934.0; 
+T_inf = 934.0; 
 atomic_oxygen_mass = 16 * 1.6605390689252e-27;
 accommodation_coeff = 0.9;
-aero_conditions = AeroConditions(1.2482e-11, iss_orbit_altitude, atomic_oxygen_mass, accommodation_coeff);
+aero_conditions = AeroConditions(1.2482e-11, T_inf, atomic_oxygen_mass, accommodation_coeff);
 disp("Created aerodynamic conditions.");
 
 % Run a single test calculation for the Sentman model
@@ -23,7 +23,7 @@ sentman_model.calc_aero_force_torque(1, [0; 0; 1], [0; 0; 0], [7800; 0; 0], 288,
 
 %% Load Satellite Geometry
 current_folder = fileparts(mfilename('fullpath'));
-mesh_file_path = fullfile(current_folder, 'soar_satellite.obj');
+mesh_file_path = fullfile(current_folder, 'International Space Station.obj');
 
 iss_satellite = RotatableMeshSatellite(mesh_file_path);
 
@@ -37,10 +37,9 @@ satellite_vertices = iss_satellite.get_vertices();
 fprintf("loaded satellite geometry with %d triangles",iss_satellite.get_num_triangles())
 %% Benchmark Shading Pipeline
 % Initialize shading pipeline with a resolution/grid size of 800
-% Algorithm: 0 = Binary shader, 1 = CoP shader
-shading_pipeline = ShadingPipeline(iss_satellite, 0, 800);
+shading_pipeline = ShadingPipeline(iss_satellite,1, 800);
 num_iterations = 100;
-relative_velocity_m_s = [0.0; 7800.0; 0.0];
+relative_velocity_m_s = [7800.0; 0.0; 0.0];
 
 disp("Benchmarking shading pipeline...");
 tic;

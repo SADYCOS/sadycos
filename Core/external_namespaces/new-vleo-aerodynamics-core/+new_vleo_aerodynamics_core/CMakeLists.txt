@@ -21,6 +21,21 @@ if (Matlab_FOUND)
         RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/matlab/bin"
     )
 
+    # Windows-only (guarded by CONDA_PREFIX, i.e. a pixi-provided environment). MATLAB
+    # loads MexGateway.mexw64 with no knowledge that the pixi environment exists, so
+    # its runtime DLL dependencies (spdlog, VTK, assimp, GLEW, GLFW, ...) need to be
+    # copied next to it -- see cmake/copy_runtime_deps.cmake.
+    if (WIN32 AND DEFINED ENV{CONDA_PREFIX})
+        add_custom_command(TARGET MexGateway POST_BUILD
+            COMMAND ${CMAKE_COMMAND}
+                "-DTARGET_FILE=$<TARGET_FILE:MexGateway>"
+                "-DDEST_DIR=${PROJECT_SOURCE_DIR}/matlab/bin"
+                "-DSEARCH_DIR=$ENV{CONDA_PREFIX}/Library/bin"
+                -P "${PROJECT_SOURCE_DIR}/cmake/copy_runtime_deps.cmake"
+            COMMENT "Copying MexGateway's runtime DLL dependencies into matlab/bin"
+        )
+    endif ()
+
     message(STATUS "Mex file can be found in ${PROJECT_SOURCE_DIR}/bin")
 else ()
     message(FATAL_ERROR "MATLAB root directory not found. Failed to build MATLAB bindings.")

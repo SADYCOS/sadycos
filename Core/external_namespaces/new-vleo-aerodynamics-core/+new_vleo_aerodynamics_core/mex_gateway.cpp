@@ -4,6 +4,7 @@
 #include "mex.hpp"
 #include "mexAdapter.hpp"
 
+#include <cstdlib>
 #include <exception>
 #include <memory>
 #include <stdexcept>
@@ -25,8 +26,18 @@
 #define LEVEL_ERROR 2
 #define LEVEL_WARN 1
 #define LEVEL_INFO 0
-#define LOG_LEVEL LEVEL_INFO
-#define LOG(level, msg) do { if ((level) >= LOG_LEVEL) { log((level), std::string(msg), __LINE__); } } while (0)
+
+// INFO logs route through the (slow) MATLAB Engine API on every call, so they're off
+// by default. Runtime (not compile-time) so a single build serves both cases: set
+// MEX_GATEWAY_LOG_LEVEL=INFO in the environment before starting MATLAB to enable them.
+int log_level() {
+    static const int level = []() {
+        const char* env = std::getenv("MEX_GATEWAY_LOG_LEVEL");
+        return (env && std::string(env) == "INFO") ? LEVEL_INFO : LEVEL_WARN;
+    }();
+    return level;
+}
+#define LOG(level, msg) do { if ((level) >= log_level()) { log((level), std::string(msg), __LINE__); } } while (0)
 
 class MatlabLogger : public matlab::mex::Function {
 public:
@@ -241,10 +252,10 @@ public:
                     const int shading_key = inputs[2][0];
                     ShadingAlgorithmType algorithm_type;
                     switch (shading_key) {
-                        case 0:
+                        case 1:
                             algorithm_type = ShadingAlgorithmType::Binary;
                             break;
-                        case 1:
+                        case 2:
                             algorithm_type = ShadingAlgorithmType::CoP;
                             break;
                         default:
@@ -346,9 +357,9 @@ public:
 
                     const int satellite_id = inputs[1][0];
                     RotatableMeshSatellite& satellite = *satellite_map.at(satellite_id);
-                    validate_argument(inputs, 2, "double", satellite.get_num_triangles());
+                    validate_argument(inputs, 2, "float", satellite.get_num_triangles());
 
-                    matlab::data::TypedArray<double> const typed_array = inputs[2];
+                    matlab::data::TypedArray<float> const typed_array = inputs[2];
                     std::vector<float> triangle_visibility(typed_array.begin(), typed_array.end());
                     glm::vec3 velocity__m_per_s(inputs[3][0], inputs[3][1], inputs[3][2]);
 
@@ -380,6 +391,11 @@ private:
         inputs[idx].getType() != matlab::data::ArrayType::COMPLEX_DOUBLE);
     };
 
+    static bool is_float(matlab::mex::ArgumentList& inputs, int idx) {
+        return (inputs[idx].getType() == matlab::data::ArrayType::SINGLE &&
+        inputs[idx].getType() != matlab::data::ArrayType::COMPLEX_SINGLE);
+    };
+
     static bool is_uint(matlab::mex::ArgumentList& inputs, int idx) {
         const matlab::data::ArrayType type = inputs[idx].getType();
         return (type == matlab::data::ArrayType::UINT8 ||
@@ -404,6 +420,10 @@ private:
         if (expected_type == "double" && !is_double(inputs, idx)) {
             LOG(LEVEL_ERROR, std::format("Expected argument at index {} to be a double.", idx));
             throw std::invalid_argument("Argument type mismatch: expected double.");
+        }
+        if (expected_type == "float" && !is_float(inputs, idx)) {
+            LOG(LEVEL_ERROR, std::format("Expected argument at index {} to be a float.", idx));
+            throw std::invalid_argument("Argument type mismatch: expected float.");
         }
         if (expected_type == "uint" && !is_uint(inputs, idx)) {
             LOG(LEVEL_ERROR, std::format("Expected argument at index {} to be an unsigned integer.", idx));
