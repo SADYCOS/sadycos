@@ -9,3 +9,6 @@
 [submodule "Core/ModelsLibrary/Environment/EarthAtmosphere/Nrlmsise00/c_code/nrlmsise-00"]
 	path = Core/ModelsLibrary/Environment/EarthAtmosphere/Nrlmsise00/c_code/nrlmsise-00
 	url = https://git.linta.de/~brodo/nrlmsise-00.git/
+[submodule "Core/external_namespaces/new-vleo-aerodynamics-core-submodule/+new-vleo-aerodynamics-core"]
+	path = Core/external_namespaces/new-vleo-aerodynamics-core-submodule/+new-vleo-aerodynamics-core
+	url = https://github.com/ifrunistuttgart/vleo-aerodynamics-tool.git
