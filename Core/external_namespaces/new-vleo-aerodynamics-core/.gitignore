@@ -1,0 +1,18 @@
+# Mex files (all platforms)
+*.mex*
+
+# Dll files
+*.dll
+
+# Xml files
+*.xml
+
+# lib files
+*.lib
+
+*.exp
+*.pdb
+*.ilk
+
+
+
