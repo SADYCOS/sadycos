@@ -12,3 +12,4 @@
 [submodule "Core/ModelsLibrary/Satellite/Aerodynamics/NewVleoAerodynamics/vleo-aerodynamics-tool"]
 	path = Core/ModelsLibrary/Satellite/Aerodynamics/NewVleoAerodynamics/vleo-aerodynamics-tool
 	url = https://github.com/niklasbirkle/vleo-aerodynamics-tool.git
+	branch = pixi-build-for-sadycos
