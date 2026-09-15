@@ -49,8 +49,8 @@ relative_velocity_B__m_per_s = ...
 relative_velocity_B__m_per_s = relative_velocity_B__m_per_s';
 
 % Initialize type and size of output variables
-total_force_B__N = zeros(3,1);
-total_torque_B__Nm = zeros(3,1);
+total_force_B__N = zeros(3,1); %#ok<PREALL>
+total_torque_B__Nm = zeros(3,1); %#ok<PREALL>
 
 % Call the MATLAB runtime function to compute the aerodynamic force and torque
 [total_force_B__N, total_torque_B__Nm] ...
