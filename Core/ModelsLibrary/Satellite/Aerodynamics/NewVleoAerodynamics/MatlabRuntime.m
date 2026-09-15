@@ -82,8 +82,13 @@ if isempty(conditions)
             mass_density__kg_per_m3, ...
             atmosphere_temperature__K, ...
             particle_mass__kg);
+else
+% Update the conditions object with the current atmospheric conditions
+particle_mass__kg = mass_density__kg_per_m3 / number_density__1_per_m3;
+conditions.setDensity(mass_density__kg_per_m3);
+conditions.setTatmospheric(atmosphere_temperature__K);  
+conditions.setParticleMass(particle_mass__kg);
 end
-
 
 %% Compute the aerodynamic force and torque using the HybridAeroLoadCalculator
 [force_B__N, torque_B__Nm] = calculator.calc_aero_load( ...
