@@ -57,6 +57,9 @@ relative_velocity_B__m_per_s = ...
         attitude_quaternion_BI, ...
         relative_velocity_I__m_per_s);
 
+% Change relative velocity to row vector for vat compatibility
+relative_velocity_B__m_per_s = relative_velocity_B__m_per_s(:)';
+
 [total_force_B__N, total_torque_B__Nm] = calculator.calc_aero_load( ...
     relative_velocity_B__m_per_s, surface_temp__K, conditions);
 
