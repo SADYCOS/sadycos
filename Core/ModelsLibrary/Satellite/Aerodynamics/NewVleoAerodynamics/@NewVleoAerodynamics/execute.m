@@ -45,6 +45,9 @@ relative_velocity_B__m_per_s = ...
         attitude_quaternion_BI, ...
         relative_velocity_I__m_per_s);
 
+% Change relative velocity to row vector
+relative_velocity_B__m_per_s = relative_velocity_B__m_per_s';
+
 % Initialize type and size of output variables
 total_force_B__N = zeros(3,1);
 total_torque_B__Nm = zeros(3,1);

@@ -43,7 +43,7 @@ alpha_e = Param.surface_energy_accommodation_coefficient;
 temperature_ratio_method = Param.temperature_ratio_method;
 shading_algorithm = Param.shading_algorithm;
 shading_resolution = Param.shading_resolution;
-mesh_file_path = Param.obj_file_path;
+mesh_file_path = Param.obj_file_path{1};
 
 
 %% Initialize persistent aerodynamic objects if they are empty
