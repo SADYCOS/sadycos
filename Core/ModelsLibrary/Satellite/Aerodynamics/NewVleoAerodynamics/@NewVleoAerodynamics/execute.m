@@ -31,11 +31,23 @@ function [total_force_B__N, total_torque_B__Nm] ...
 %   total_torque_B__Nm: 3x1 vector of aerodynamic torque in body frame
 %
 
-%% Aerodynamics Calculation
-% Call the MatlabRuntime function extrinsic to run 
-% the non-code-generatable MEX wrapper classes in the MATLAB runtime
-coder.extrinsic('MatlabRuntime');
+%% Abreviations
+Param = ParametersNewVleoAerodynamics;
 
+%% Load parameters from the ParametersNewVleoAerodynamics structure
+surface_temp__K = Param.surface_temperature__K;
+conditions = Param.aero_conditions{1};
+calculator = Param.calculator{1};
+
+%% Update the atmospheric conditions with the current values
+particle_mass__kg = atmosphere_mass_density__kg_per_m3 / atmosphere_number_density__1_per_m3;
+
+conditions.setDensity(atmosphere_mass_density__kg_per_m3);
+conditions.setTemperature(atmosphere_temperature__K);
+conditions.setParticleMass(particle_mass__kg);
+
+
+%% Aerodynamic Calculation
 % Calculate relative velocity in inertial frame
 relative_velocity_I__m_per_s = velocity_I_I__m_per_s - wind_velocity_I_I__m_per_s;
 
@@ -45,16 +57,7 @@ relative_velocity_B__m_per_s = ...
         attitude_quaternion_BI, ...
         relative_velocity_I__m_per_s);
 
-% Initialize type and size of output variables
-total_force_B__N = zeros(3,1);
-total_torque_B__Nm = zeros(3,1);
-
-% Call the MATLAB runtime function to compute the aerodynamic force and torque
-[total_force_B__N, total_torque_B__Nm] ...
-             = MatlabRuntime(relative_velocity_B__m_per_s, ...
-                        atmosphere_mass_density__kg_per_m3, ...
-                        atmosphere_number_density__1_per_m3, ...
-                        atmosphere_temperature__K, ...
-                        ParametersNewVleoAerodynamics);
+[total_force_B__N, total_torque_B__Nm] = calculator.calc_aero_load( ...
+    relative_velocity_B__m_per_s, surface_temp__K, conditions);
 
 end
