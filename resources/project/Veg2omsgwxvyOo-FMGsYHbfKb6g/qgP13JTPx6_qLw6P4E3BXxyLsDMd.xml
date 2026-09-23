@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Info>
+    <Files>
+        <File path="+vat/+geometry/RotatableMeshGeometry.m" value="62de8dc9"/>
+        <File path="+vat/+geometry" value="-1"/>
+        <File path="+vat/+gsi_models/Cook.m" value="5673e873"/>
+        <File path="+vat/+gsi_models/Maxwell.m" value="44f3823a"/>
+        <File path="+vat/+gsi_models/Newton.m" value="5d7b1eae"/>
+        <File path="+vat/+gsi_models/SchaafChambre.m" value="31984501"/>
+        <File path="+vat/+gsi_models/Sentman.m" value="a85a95f2"/>
+        <File path="+vat/+gsi_models/Storch.m" value="db61628e"/>
+        <File path="+vat/+gsi_models" value="-1"/>
+        <File path="+vat/+loads/HybridForceTorqueCalculator.m" value="d52e0d5"/>
+        <File path="+vat/+loads" value="-1"/>
+        <File path="+vat/+shading/ShadingPipeline.m" value="517a7009"/>
+        <File path="+vat/+shading" value="-1"/>
+        <File path="+vat/+visualization/show_hinges.m" value="84debd63"/>
+        <File path="+vat/+visualization/show_meshes.m" value="8e99c155"/>
+        <File path="+vat/+visualization/show_shading.m" value="4d7d01e5"/>
+        <File path="+vat/+visualization" value="-1"/>
+        <File path="+vat/AeroConditions.m" value="735211cf"/>
+        <File path="+vat/setLogLevel.m" value="c8930db3"/>
+        <File path="+vat" value="-1"/>
+        <File path="Vat.prj" value="fe84b66d"/>
+        <File path="bin/.vat_staged" value="0"/>
+        <File path="bin/Lerc.dll" value="e4fc389c"/>
+        <File path="bin/MexGateway.mexw64" value="8d3bfa69"/>
+        <File path="bin/assimp.dll" value="95bddbac"/>
+        <File path="bin/deflate.dll" value="3221085c"/>
+        <File path="bin/fmt.dll" value="4cf9d2d0"/>
+        <File path="bin/freetype.dll" value="2dac4649"/>
+        <File path="bin/glew32.dll" value="c8d485c"/>
+        <File path="bin/glfw3.dll" value="396b2901"/>
+        <File path="bin/jpeg8.dll" value="49e46a17"/>
+        <File path="bin/liblzma.dll" value="9b5b21e3"/>
+        <File path="bin/libpng16.dll" value="c125ca80"/>
+        <File path="bin/lz4.dll" value="40bf1b05"/>
+        <File path="bin/msvcp140.dll" value="7bcc6a38"/>
+        <File path="bin/pugixml.dll" value="e9c84ec1"/>
+        <File path="bin/spdlog.dll" value="13520695"/>
+        <File path="bin/tbb12.dll" value="e75a4cc5"/>
+        <File path="bin/tiff.dll" value="3a2f58d5"/>
+        <File path="bin/vcruntime140.dll" value="d5a58616"/>
+        <File path="bin/vcruntime140_1.dll" value="95cf0db2"/>
+        <File path="bin/vtkCommonColor-9.6.dll" value="b32905de"/>
+        <File path="bin/vtkCommonComputationalGeometry-9.6.dll" value="60474e87"/>
+        <File path="bin/vtkCommonCore-9.6.dll" value="44c51af8"/>
+        <File path="bin/vtkCommonDataModel-9.6.dll" value="92abbce8"/>
+        <File path="bin/vtkCommonExecutionModel-9.6.dll" value="a213f279"/>
+        <File path="bin/vtkCommonMath-9.6.dll" value="9c42fd6f"/>
+        <File path="bin/vtkCommonMisc-9.6.dll" value="6a898ae"/>
+        <File path="bin/vtkCommonSystem-9.6.dll" value="75be85c6"/>
+        <File path="bin/vtkCommonTransforms-9.6.dll" value="ccfdc7a1"/>
+        <File path="bin/vtkDICOMParser-9.6.dll" value="dce1290b"/>
+        <File path="bin/vtkFiltersCore-9.6.dll" value="bcf49724"/>
+        <File path="bin/vtkFiltersGeneral-9.6.dll" value="bcbd4a42"/>
+        <File path="bin/vtkFiltersGeometry-9.6.dll" value="341e2683"/>
+        <File path="bin/vtkFiltersHybrid-9.6.dll" value="9e6ea2cf"/>
+        <File path="bin/vtkFiltersHyperTree-9.6.dll" value="709cead6"/>
+        <File path="bin/vtkFiltersModeling-9.6.dll" value="1643a925"/>
+        <File path="bin/vtkFiltersReduction-9.6.dll" value="afca5fd2"/>
+        <File path="bin/vtkFiltersSources-9.6.dll" value="59a1db99"/>
+        <File path="bin/vtkFiltersTexture-9.6.dll" value="4a6856a5"/>
+        <File path="bin/vtkFiltersVerdict-9.6.dll" value="6e00a1c7"/>
+        <File path="bin/vtkIOCore-9.6.dll" value="59cb5a78"/>
+        <File path="bin/vtkIOImage-9.6.dll" value="3aafdd6c"/>
+        <File path="bin/vtkImagingColor-9.6.dll" value="4ae76b9f"/>
+        <File path="bin/vtkImagingCore-9.6.dll" value="d5f2600"/>
+        <File path="bin/vtkImagingGeneral-9.6.dll" value="5fc54f8a"/>
+        <File path="bin/vtkImagingHybrid-9.6.dll" value="dddabb06"/>
+        <File path="bin/vtkImagingSources-9.6.dll" value="f125a220"/>
+        <File path="bin/vtkInteractionStyle-9.6.dll" value="42461443"/>
+        <File path="bin/vtkInteractionWidgets-9.6.dll" value="82acc473"/>
+        <File path="bin/vtkRenderingAnnotation-9.6.dll" value="3bf48fed"/>
+        <File path="bin/vtkRenderingContext2D-9.6.dll" value="71962482"/>
+        <File path="bin/vtkRenderingCore-9.6.dll" value="8e258b58"/>
+        <File path="bin/vtkRenderingFreeType-9.6.dll" value="1eace1d0"/>
+        <File path="bin/vtkRenderingHyperTreeGrid-9.6.dll" value="1705e870"/>
+        <File path="bin/vtkRenderingOpenGL2-9.6.dll" value="59e256db"/>
+        <File path="bin/vtkRenderingUI-9.6.dll" value="91ade174"/>
+        <File path="bin/vtkRenderingVolume-9.6.dll" value="3b96a25b"/>
+        <File path="bin/vtkglad-9.6.dll" value="fcdedb7"/>
+        <File path="bin/vtkkissfft-9.6.dll" value="a45ce9b"/>
+        <File path="bin/vtkloguru-9.6.dll" value="a15803c2"/>
+        <File path="bin/vtkmetaio-9.6.dll" value="7a07e830"/>
+        <File path="bin/vtkscn-9.6.dll" value="ae74c577"/>
+        <File path="bin/vtksys-9.6.dll" value="96470597"/>
+        <File path="bin/vtktoken-9.6.dll" value="2d40d265"/>
+        <File path="bin/vtkverdict-9.6.dll" value="3e765e52"/>
+        <File path="bin/zlib.dll" value="92ca06fe"/>
+        <File path="bin/zstd.dll" value="8e562767"/>
+        <File path="bin" value="-1"/>
+        <File path="examples/geometries/shuttlecock_15360.obj" value="7033fc6f"/>
+        <File path="examples/geometries/shuttlecock_15k.obj" value="7033fc6f"/>
+        <File path="examples/geometries/shuttlecock_240.obj" value="fcf7e501"/>
+        <File path="examples/geometries/shuttlecock_3840.obj" value="489d155a"/>
+        <File path="examples/geometries/shuttlecock_61440.obj" value="1f39df3c"/>
+        <File path="examples/geometries/shuttlecock_96.obj" value="22b3c1ab"/>
+        <File path="examples/geometries/shuttlecock_960.obj" value="72ab57f6"/>
+        <File path="examples/geometries/soar_satellite.obj" value="61aeb16c"/>
+        <File path="examples/geometries" value="-1"/>
+        <File path="examples/quickstart.m" value="2c1aae17"/>
+        <File path="examples/rotate_wings.m" value="452e71b0"/>
+        <File path="examples/shuttlecock.m" value="7c1d425"/>
+        <File path="examples/soar_rotatable.m" value="be52a2c7"/>
+        <File path="examples" value="-1"/>
+        <File path="resources/project/EEtUlUb-dLAdf0KpMVivaUlztwA/ViJSgJhEQ4n0KOy8WTXYnZvRk5gd.xml" value="f7fe97e9"/>
+        <File path="resources/project/EEtUlUb-dLAdf0KpMVivaUlztwA/ViJSgJhEQ4n0KOy8WTXYnZvRk5gp.xml" value="234318e5"/>
+        <File path="resources/project/EEtUlUb-dLAdf0KpMVivaUlztwA/iY51AsR6CPBYSpMorW3PF4azkAgd.xml" value="9792bc1a"/>
+        <File path="resources/project/EEtUlUb-dLAdf0KpMVivaUlztwA/iY51AsR6CPBYSpMorW3PF4azkAgp.xml" value="d52efa2f"/>
+        <File path="resources/project/EEtUlUb-dLAdf0KpMVivaUlztwA" value="-1"/>
+        <File path="resources/project/NjSPEMsIuLUyIpr2u1Js5bVPsOs/2kj09UetkV_lru3gvSPXnY6-nM4d.xml" value="bb611af"/>
+        <File path="resources/project/NjSPEMsIuLUyIpr2u1Js5bVPsOs/2kj09UetkV_lru3gvSPXnY6-nM4p.xml" value="ffeae459"/>
+        <File path="resources/project/NjSPEMsIuLUyIpr2u1Js5bVPsOs/KKyDJtbdIBOlaeHmIZd5VX6vqx8d.xml" value="687c544f"/>
+        <File path="resources/project/NjSPEMsIuLUyIpr2u1Js5bVPsOs/KKyDJtbdIBOlaeHmIZd5VX6vqx8p.xml" value="677d161f"/>
+        <File path="resources/project/NjSPEMsIuLUyIpr2u1Js5bVPsOs/QWNDYJD5mGW1bWYvPx9DtKnxzw4d.xml" value="492b7d71"/>
+        <File path="resources/project/NjSPEMsIuLUyIpr2u1Js5bVPsOs/QWNDYJD5mGW1bWYvPx9DtKnxzw4p.xml" value="925e6a83"/>
+        <File path="resources/project/NjSPEMsIuLUyIpr2u1Js5bVPsOs/R1RggVhA72agIvELiuhWPRS8F0Id.xml" value="ced9c348"/>
+        <File path="resources/project/NjSPEMsIuLUyIpr2u1Js5bVPsOs/R1RggVhA72agIvELiuhWPRS8F0Ip.xml" value="78d335fb"/>
+        <File path="resources/project/NjSPEMsIuLUyIpr2u1Js5bVPsOs/aEHSZBIY-yve10yGis12Zr5DLZod.xml" value="45c060de"/>
+        <File path="resources/project/NjSPEMsIuLUyIpr2u1Js5bVPsOs/aEHSZBIY-yve10yGis12Zr5DLZop.xml" value="92618a8"/>
+        <File path="resources/project/NjSPEMsIuLUyIpr2u1Js5bVPsOs/j4xwF_j8iFTVayUMfxLgMnTbencd.xml" value="fb41a77c"/>
+        <File path="resources/project/NjSPEMsIuLUyIpr2u1Js5bVPsOs/j4xwF_j8iFTVayUMfxLgMnTbencp.xml" value="3edfd056"/>
+        <File path="resources/project/NjSPEMsIuLUyIpr2u1Js5bVPsOs/r8LR4nLmg9ai3oHrW1r_-KocQzkd.xml" value="bc362ee3"/>
+        <File path="resources/project/NjSPEMsIuLUyIpr2u1Js5bVPsOs/r8LR4nLmg9ai3oHrW1r_-KocQzkp.xml" value="e771ff1d"/>
+        <File path="resources/project/NjSPEMsIuLUyIpr2u1Js5bVPsOs" value="-1"/>
+        <File path="resources/project/Project.xml" value="c17943d5"/>
+        <File path="resources/project/fjRQtWiSIy7hIlj-Kmk87M7s21k/NjSPEMsIuLUyIpr2u1Js5bVPsOsd.xml" value="35346577"/>
+        <File path="resources/project/fjRQtWiSIy7hIlj-Kmk87M7s21k/NjSPEMsIuLUyIpr2u1Js5bVPsOsp.xml" value="594b5632"/>
+        <File path="resources/project/fjRQtWiSIy7hIlj-Kmk87M7s21k" value="-1"/>
+        <File path="resources/project/qaw0eS1zuuY1ar9TdPn1GMfrjbQ/7fkzei7Cl9zJkkPejMlFmpE8ttEd.xml" value="85faa8b7"/>
+        <File path="resources/project/qaw0eS1zuuY1ar9TdPn1GMfrjbQ/7fkzei7Cl9zJkkPejMlFmpE8ttEp.xml" value="db07570d"/>
+        <File path="resources/project/qaw0eS1zuuY1ar9TdPn1GMfrjbQ/GA87d8kGJlwiSE5TGet5iyuZThsd.xml" value="85faa8b7"/>
+        <File path="resources/project/qaw0eS1zuuY1ar9TdPn1GMfrjbQ/GA87d8kGJlwiSE5TGet5iyuZThsp.xml" value="d7ae5719"/>
+        <File path="resources/project/qaw0eS1zuuY1ar9TdPn1GMfrjbQ/ObgewgLbiDSKmDByDBVhXddeh3gd.xml" value="85faa8b7"/>
+        <File path="resources/project/qaw0eS1zuuY1ar9TdPn1GMfrjbQ/ObgewgLbiDSKmDByDBVhXddeh3gp.xml" value="a24dc3d3"/>
+        <File path="resources/project/qaw0eS1zuuY1ar9TdPn1GMfrjbQ/QJXUn6W0v1d83Q717qpId9vfyQcd.xml" value="85faa8b7"/>
+        <File path="resources/project/qaw0eS1zuuY1ar9TdPn1GMfrjbQ/QJXUn6W0v1d83Q717qpId9vfyQcp.xml" value="d0af80fa"/>
+        <File path="resources/project/qaw0eS1zuuY1ar9TdPn1GMfrjbQ/SMUKOYheeTn0FZHXdlDbXsX8hBsd.xml" value="85faa8b7"/>
+        <File path="resources/project/qaw0eS1zuuY1ar9TdPn1GMfrjbQ/SMUKOYheeTn0FZHXdlDbXsX8hBsp.xml" value="2b842204"/>
+        <File path="resources/project/qaw0eS1zuuY1ar9TdPn1GMfrjbQ/nDzqpERD87ckQh4VxlN1gLVX7OYd.xml" value="85faa8b7"/>
+        <File path="resources/project/qaw0eS1zuuY1ar9TdPn1GMfrjbQ/nDzqpERD87ckQh4VxlN1gLVX7OYp.xml" value="c4974a64"/>
+        <File path="resources/project/qaw0eS1zuuY1ar9TdPn1GMfrjbQ" value="-1"/>
+        <File path="resources/project/root/EEtUlUb-dLAdf0KpMVivaUlztwAp.xml" value="ff738d8b"/>
+        <File path="resources/project/root/GiiBklLgTxteCEmomM8RCvWT0nQd.xml" value="72486441"/>
+        <File path="resources/project/root/GiiBklLgTxteCEmomM8RCvWT0nQp.xml" value="7822fcfa"/>
+        <File path="resources/project/root/fjRQtWiSIy7hIlj-Kmk87M7s21kp.xml" value="8ea2f09d"/>
+        <File path="resources/project/root/qaw0eS1zuuY1ar9TdPn1GMfrjbQp.xml" value="be2563f7"/>
+        <File path="resources/project/rootp.xml" value="13231dc4"/>
+        <File path="resources/project/root" value="-1"/>
+        <File path="resources/project/uuid-43ecb372-6025-4ad3-bfc6-eb6ca8008b36.xml" value="13231dc4"/>
+        <File path="resources/project" value="-1"/>
+        <File path="resources" value="-1"/>
+    </Files>
+    <MetadataNode>
+        <path value="ProjectData:type:Info">
+            <node name="Info">
+                <entry key="Name" value="vat"/>
+            </node>
+        </path>
+        <path value="Root:type:Categories">
+            <path value="FileClassCategory:type:Category">
+                <node name="Info">
+                    <entry key="DataType" value="None"/>
+                    <entry key="Name" value="Classification"/>
+                    <entry key="ReadOnly" value="1"/>
+                    <entry key="SingleValued" value="1"/>
+                </node>
+                <path value="artifact:type:Label">
+                    <node name="Info">
+                        <entry key="Name" value="Artifact"/>
+                        <entry key="ReadOnly" value="READ_ONLY"/>
+                    </node>
+                </path>
+                <path value="convenience:type:Label">
+                    <node name="Info">
+                        <entry key="Name" value="Convenience"/>
+                        <entry key="ReadOnly" value="READ_ONLY"/>
+                    </node>
+                </path>
+                <path value="derived:type:Label">
+                    <node name="Info">
+                        <entry key="Name" value="Derived"/>
+                        <entry key="ReadOnly" value="READ_ONLY"/>
+                    </node>
+                </path>
+                <path value="design:type:Label">
+                    <node name="Info">
+                        <entry key="Name" value="Design"/>
+                        <entry key="ReadOnly" value="READ_ONLY"/>
+                    </node>
+                </path>
+                <path value="none:type:Label">
+                    <node name="Info">
+                        <entry key="Name" value="None"/>
+                        <entry key="ReadOnly" value="READ_ONLY"/>
+                    </node>
+                </path>
+                <path value="other:type:Label">
+                    <node name="Info">
+                        <entry key="Name" value="Other"/>
+                        <entry key="ReadOnly" value="READ_ONLY"/>
+                    </node>
+                </path>
+                <path value="test:type:Label">
+                    <node name="Info">
+                        <entry key="Name" value="Test"/>
+                        <entry key="ReadOnly" value="READ_ONLY"/>
+                    </node>
+                </path>
+            </path>
+        </path>
+        <path value="Root:type:Files">
+            <path value="+vat\+geometry\RotatableMeshGeometry.m:type:File"/>
+            <path value="+vat\+gsi_models\Sentman.m:type:File"/>
+            <path value="+vat\+loads\HybridForceTorqueCalculator.m:type:File"/>
+            <path value="+vat\+shading\ShadingPipeline.m:type:File"/>
+            <path value="+vat\+visualization\show_mesh.m:type:File"/>
+            <path value="+vat\AeroConditions.m:type:File"/>
+        </path>
+        <path value="Root:type:ProjectPath">
+            <path value="455d8a3a-366e-4218-8b42-d80c583d6a9f:type:Reference">
+                <node name="Info">
+                    <entry key="Ref" value="bin"/>
+                    <entry key="Type" value="Relative"/>
+                </node>
+            </path>
+            <path value="e5c4d329-a728-4c77-b104-d2e6656df22a:type:Reference">
+                <node name="Info">
+                    <entry key="Ref" value=""/>
+                    <entry key="Type" value="Relative"/>
+                </node>
+            </path>
+        </path>
+    </MetadataNode>
+    <Date value="16. September 2026 08:39:05"/>
+</Info>

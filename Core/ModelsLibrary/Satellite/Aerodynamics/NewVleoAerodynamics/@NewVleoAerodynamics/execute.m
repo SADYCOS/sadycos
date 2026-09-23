@@ -34,7 +34,7 @@ function [total_force_B__N, total_torque_B__Nm] ...
 %% Aerodynamics Calculation
 % Call the MatlabRuntime function extrinsic to run 
 % the non-code-generatable MEX wrapper classes in the MATLAB runtime
-coder.extrinsic('MatlabRuntime');
+% coder.extrinsic('MatlabRuntime');
 
 % Calculate relative velocity in inertial frame
 relative_velocity_I__m_per_s = velocity_I_I__m_per_s - wind_velocity_I_I__m_per_s;
