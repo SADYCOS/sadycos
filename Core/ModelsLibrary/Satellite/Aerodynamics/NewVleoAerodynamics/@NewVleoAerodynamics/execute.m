@@ -31,36 +31,20 @@ function [total_force_B__N, total_torque_B__Nm] ...
 %   total_torque_B__Nm: 3x1 vector of aerodynamic torque in body frame
 %
 
-%% Abreviations
-Param = ParametersNewVleoAerodynamics;
+%% call execute_extrinsic extrinsic to perform the aerodynamic calculations
+coder.extrinsic('execute_extrinsic');
 
-%% Load parameters from the ParametersNewVleoAerodynamics structure
-surface_temp__K = Param.surface_temperature__K;
-conditions = Param.aero_conditions{1};
-calculator = Param.calculator{1};
+% Preallocate output variables
+total_force_B__N = zeros(3, 1); %#ok<PREALL>
+total_torque_B__Nm = zeros(3, 1); %#ok<PREALL>
 
-%% Update the atmospheric conditions with the current values
-particle_mass__kg = atmosphere_mass_density__kg_per_m3 / atmosphere_number_density__1_per_m3;
-
-conditions.setDensity(atmosphere_mass_density__kg_per_m3);
-conditions.setTemperature(atmosphere_temperature__K);
-conditions.setParticleMass(particle_mass__kg);
-
-
-%% Aerodynamic Calculation
-% Calculate relative velocity in inertial frame
-relative_velocity_I__m_per_s = velocity_I_I__m_per_s - wind_velocity_I_I__m_per_s;
-
-% Transform relative velocity from inertial frame I to body frame B
-relative_velocity_B__m_per_s = ...
-    smu.unitQuat.att.transformVector( ...
-        attitude_quaternion_BI, ...
-        relative_velocity_I__m_per_s);
-
-% Change relative velocity to row vector for vat compatibility
-relative_velocity_B__m_per_s = relative_velocity_B__m_per_s(:)';
-
-[total_force_B__N, total_torque_B__Nm] = calculator.calc_aero_load( ...
-    relative_velocity_B__m_per_s, surface_temp__K, conditions);
+[total_force_B__N, total_torque_B__Nm] = ...
+    execute_extrinsic(attitude_quaternion_BI, ...
+                      velocity_I_I__m_per_s, ...
+                      wind_velocity_I_I__m_per_s, ...
+                      atmosphere_mass_density__kg_per_m3, ...
+                      atmosphere_number_density__1_per_m3, ...
+                      atmosphere_temperature__K, ...
+                      ParametersNewVleoAerodynamics);
 
 end
