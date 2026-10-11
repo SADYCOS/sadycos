@@ -91,7 +91,7 @@ surface_temperature__K = 300;
 surface_energy_accommodation_coefficient = 0.9;
 temperature_ratio_method = 1;
 shading_algorithm = 1;
-shading_resolution = 800;
+shading_resolution = 800; % screen resolution
 LogLevel = {"warn"};
 parameter_creator.addModel("Plant", NewVleoAerodynamics(obj_file_path, ...
                                                     surface_temperature__K, ...
