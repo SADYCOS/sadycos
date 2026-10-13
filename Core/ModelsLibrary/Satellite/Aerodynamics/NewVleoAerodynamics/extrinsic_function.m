@@ -31,7 +31,7 @@ function [total_force_B__N, total_torque_B__Nm] ...
     persistent pipeline
     persistent calculator
     persistent conditions
-%    persistent visibility
+%   persistent visibility
 
 
 %% Abreviations
@@ -44,12 +44,14 @@ alpha_e = Param.surface_energy_accommodation_coefficient;
 temperature_ratio_method = Param.temperature_ratio_method;
 shading_algorithm = Param.shading_algorithm;
 shading_resolution = Param.shading_resolution;
+num_pixel = Param.num_pixel;
+calculation_method = Param.calculation_method;
 mesh_file_path = Param.obj_file_path{1};
 
 
 %% Initialize persistent aerodynamic objects if they are empty
 % Check if any of the persistent objects are empty
-if isempty(gsi_model) || isempty(geometry) || isempty(pipeline) || isempty(calculator) 
+if isempty(gsi_model) || isempty(geometry) || isempty(pipeline)
 
 gsi_model = ...
     vat.gsi_models.Sentman(temperature_ratio_method, ...
@@ -64,12 +66,27 @@ pipeline = ...
         geometry, ...
         shading_algorithm, ...
         shading_resolution);
+end
 
-calculator = ...
-    vat.loads.HybridForceTorqueCalculator( ...
-        geometry, ...
-        pipeline, ...
-        gsi_model);
+%% Create the appropriate calculator based on the calculation method
+if isempty(calculator)
+    if calculation_method == 1
+        calculator = ...
+            vat.loads.PixelForceTorqueCalculator( ...
+                geometry, ...
+                gsi_model,...
+                num_pixel);
+
+    elseif calculation_method == 0
+        calculator = ...
+            vat.loads.HybridForceTorqueCalculator( ...
+                geometry, ...
+                pipeline, ...
+                gsi_model);
+                
+    else
+        error('Invalid calculation method. Please choose 1 for pixel calculator or 0 for hybrid calculator.');
+    end
 end
 
 
@@ -91,18 +108,14 @@ conditions.setTatmospheric(atmosphere_temperature__K);
 conditions.setParticleMass(particle_mass__kg);
 end
 
-%% Compute the aerodynamic force and torque using the HybridAeroLoadCalculator
+%% Compute the aerodynamic force and torque using select calculator 
 [force_B__N, torque_B__Nm] = calculator.calc_aero_load( ...
-        relative_velocity_B__m_per_s, ...
-        surface_temperature__K, ...
-        conditions);
+    relative_velocity_B__m_per_s, ...
+    surface_temperature__K, ...
+    conditions);
 
 total_force_B__N   = double(force_B__N);
 total_torque_B__Nm = double(torque_B__Nm);
 
-%%% Create visibility object if it is empty
-%if isempty(visibility)
-%    visibility = pipeline.shade(relative_velocity_B__m_per_s);
-%end 
 end
 
