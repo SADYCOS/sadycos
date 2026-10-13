@@ -24,6 +24,8 @@ classdef NewVleoAerodynamics < ModelBase
                                             temperature_ratio_method, ...
                                             shading_algorithm, ...
                                             shading_resolution, ...
+                                            num_pixel, ...
+                                            calculation_method, ...
                                             LogLevel)   
 % NewVleoAerodynamics
         %
@@ -42,6 +44,7 @@ classdef NewVleoAerodynamics < ModelBase
         %        temperature_ratio_method (1,1) {mustBeInteger, mustBePositive} 
         %        shading_algorithm (1,1) {mustBeInteger, mustBePositive} 
         %        shading_resolution (1,1) {mustBeInteger, mustBePositive}
+        %        calculation_method (1,1) {mustBeInteger, mustBePositive}
         %        LogLevel cell
         %    end
 
@@ -52,6 +55,8 @@ classdef NewVleoAerodynamics < ModelBase
             Parameters.temperature_ratio_method = temperature_ratio_method;
             Parameters.shading_algorithm = shading_algorithm;
             Parameters.shading_resolution = shading_resolution;
+            Parameters.num_pixel = num_pixel;
+            Parameters.calculation_method = calculation_method;
             Parameters.LogLevel = LogLevel;
             
             %% Set log level
