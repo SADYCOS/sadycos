@@ -3,7 +3,7 @@ function parameters_cells = configureParameters()
 %% General Parameters
 
 % Simulation Duration
-simulation_duration__s = 5;
+simulation_duration__s = 10;
 
 % Simulation Mode
 simulation_mode = "normal";
@@ -84,15 +84,16 @@ parameter_creator.addModel("Environment", Igrf(mjd0, simulation_duration__s, mag
 
 % New Aerodynamics Model
 % Get absolute path of this file's folder
-%[this_folder,~,~] = fileparts(mfilename("fullpath"));
-% obj_file_path = {fullfile(this_folder, "obj_files", "ISS.obj")};
-obj_file_path = {fullfile("Core", "external_namespaces", "vleo-aerodynamics-tool", "matlab", "examples", "geometries", "shuttlecock_15k.obj")};
+% [this_folder,~,~] = fileparts(mfilename("fullpath"));
+% obj_file_path = {fullfile(this_folder, "obj_files", "cuboid_sat_12.obj")};
+% obj_file_path = {fullfile("Core", "external_namespaces", "vleo-aerodynamics-tool", "matlab", "examples", "geometries", "shuttlecock_15k.obj")};
+obj_file_path = {fullfile("UserFiles", "Configurations", "+ExampleMission", "@NewAerodynamics", "obj_files", "cuboid_sat_4400.obj")};
 surface_temperature__K = 300;
 surface_energy_accommodation_coefficient = 0.9;
 temperature_ratio_method = 1;
 shading_algorithm = 1;
 shading_resolution = 800; % screen resolution
-num_pixel = 1000; % number of pixels for pixel calculator
+num_pixel = 100; % number of pixels for pixel calculator
 calculation_method = 1; % 1 = use pixel calculator; 0 = use hybrid calculator
 LogLevel = {"warn"};
 parameter_creator.addModel("Plant", NewVleoAerodynamics(obj_file_path, ...
